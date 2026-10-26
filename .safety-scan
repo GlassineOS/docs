@@ -1,0 +1,2 @@
+# Per-repository safety-scan rules (see GlassineOS/.github scripts/safety-scan.sh).
+# Every allow-path needs a reviewed reason above it.

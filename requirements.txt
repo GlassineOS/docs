@@ -1,0 +1,4 @@
+# MkDocs 2.0 breaks Material (plugins/theming removed, no migration path): stay on 1.x
+# until the docs move to a successor generator. Pages are plain Markdown + admonitions.
+mkdocs>=1.6,<2
+mkdocs-material>=9.7,<10

@@ -1,0 +1,63 @@
+site_name: GlassineOS
+site_description: A Linux distribution for Boox e-ink tablets, built on Alpine Linux.
+site_url: https://docs.glassine.org/
+repo_url: https://github.com/GlassineOS/docs
+edit_uri: edit/main/docs/
+copyright: Text CC-BY-SA-4.0 · GlassineOS is not affiliated with Onyx International.
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - search.suggest
+    - content.code.copy
+  palette:
+    # High contrast and no colour dependence: the docs get read on e-ink too.
+    - scheme: default
+      primary: white
+      accent: black
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Home: index.md
+  - Devices:
+      - devices/index.md
+      - Onyx Boox Note Air: devices/onyx-noteair/index.md
+  - Guides:
+      - guides/index.md
+      - guides/qualcomm-boot-and-edl.md
+      - guides/ab-on-single-slot.md
+      - guides/mainline-bring-up.md
+      - guides/boox-firmware.md
+  - Architecture:
+      - architecture/index.md
+      - architecture/boot-flow.md
+  - Decisions:
+      - decisions/index.md
+      - decisions/0001-independent-alpine-distribution.md
+      - decisions/0002-licenses.md
+      - decisions/0003-contribution-model.md
+      - decisions/0004-domain-and-ids.md
+      - decisions/0005-versioning.md
+      - decisions/0006-data-encryption.md
+      - decisions/0007-recovery-mainline-twrp.md
+      - decisions/0008-bring-your-own-stock-kernel.md
+      - decisions/0009-specs-and-acceptance.md
+  - Dead ends: dead-ends/index.md
+  - Contributing:
+      - contributing/writing-docs.md
+
+strict: true
