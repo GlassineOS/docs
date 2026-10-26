@@ -3,6 +3,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,14 +19,14 @@ jobs:
       - run: pip install -r requirements.txt
       - run: mkdocs build --strict
       - uses: actions/upload-pages-artifact@v5
-        if: github.event_name == 'push' && !github.event.repository.private
+        if: github.event_name != 'pull_request' && !github.event.repository.private
         with:
           path: site
 
   # Pages for private repositories needs a paid plan: deploy starts once the repo is public.
   deploy:
     needs: build
-    if: github.event_name == 'push' && !github.event.repository.private
+    if: github.event_name != 'pull_request' && !github.event.repository.private
     runs-on: ubuntu-latest
     permissions:
       pages: write
