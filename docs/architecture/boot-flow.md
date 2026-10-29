@@ -79,6 +79,12 @@ Its initramfs decides which role to play from the role marker:
 If any step fails, the initramfs stays put and offers a shell over USB networking
 instead of rebooting, because a reboot would only loop into the same failure.
 
+**Deployments layout** (built and host-tested, untested on hardware): instead of steps
+3 and 4, the initramfs first resumes or cancels a hibernated session. It then assembles
+the root from a read-only base and the picked deployment's layers, and moves its mounts
+into the new root before the switch. See
+[Root file system and deployments](root-and-deployments.md#boot-steps).
+
 ### Early services
 
 A boot service prepares the device before the rest of the system starts:
@@ -146,9 +152,12 @@ to run the GlassineOS initramfs. GlassineOS never ships a vendor kernel.
 ## Open questions
 
 - **Installed partition layout.** Devices run a development layout today.
-- **Recovery.** A recovery on the mainline kernel is planned; how it shares a partition
-  with test boots is open.
-- **Updates.** Which image boots next and how a failed update falls back. Planned: A/B
-  boot images first, A/B root images later.
+- **Recovery.** Decided: the recovery partition holds the mainline recovery
+  permanently, and new kernels get their test boot by kexec from the running system
+  instead ([0010](../decisions/0010-root-and-deployments.md)). Until that works, kernel
+  updates pause, and the test boot described above is a development flow only.
+- **Updates.** Decided: deployments on read-only bases, each tried before it counts
+  ([Root file system and deployments](root-and-deployments.md)). Not on devices yet.
 - **Marking a boot successful.** Nothing does this yet, so the GlassineOS slot has to
-  stay pinned where the bootloader counts retries.
+  stay pinned where the bootloader counts retries. For deployments, a boot-success
+  service will accept a candidate after a healthy boot.

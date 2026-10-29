@@ -45,6 +45,7 @@ nav:
   - Architecture:
       - architecture/index.md
       - architecture/boot-flow.md
+      - architecture/root-and-deployments.md
   - Decisions:
       - decisions/index.md
       - decisions/0001-independent-alpine-distribution.md
@@ -56,6 +57,7 @@ nav:
       - decisions/0007-recovery-mainline-twrp.md
       - decisions/0008-bring-your-own-stock-kernel.md
       - decisions/0009-specs-and-acceptance.md
+      - decisions/0010-root-and-deployments.md
   - Dead ends: dead-ends/index.md
   - Contributing:
       - contributing/writing-docs.md

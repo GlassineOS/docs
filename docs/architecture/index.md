@@ -12,7 +12,8 @@ in each repository's own `docs/` and are linked from here.
 | Desktop | sway with e-ink patches, shell, settings, keyboard | nothing (device config only) |
 | Distribution | Alpine base, our package and Flatpak repositories, images, updates | release |
 
-Pages: [Boot flow](boot-flow.md).
+Pages: [Boot flow](boot-flow.md), [Root file system and deployments](root-and-deployments.md)
+(the update model).
 
-Planned pages: e-ink engine and its buffer protocol, the e-ink hint protocol, update
-model, storage and encryption, recovery, package repositories and signing.
+Planned pages: e-ink engine and its buffer protocol, the e-ink hint protocol, storage
+and encryption, recovery, package repositories and signing.
