@@ -113,10 +113,12 @@ date.**
 - **Instead:** an OS-initiated idle hierarchy with the stock state IDs.
 - **Date:** 2026-09-28.
 
-### Compositing windows on the GPU in the e-ink engine
+### Compositing in the e-ink engine with a read-back
 
-- **Tried:** blend windows on the GPU before computing e-ink frames.
-- **Happened:** about twice as slow: reading the result back costs more than blending,
-  which takes under 1 % CPU anyway.
-- **Instead:** blend on the CPU; the GPU computes the panel drive frames.
-- **Date:** 2026-09-29.
+- **Tried (X desktop):** the e-ink engine blended windows on the GPU and read the result
+  back for its CPU stages.
+- **Happened:** about twice as slow: the read-back cost more than blending on the CPU.
+- **Instead:** the compositor (sway) renders on the GPU and hands its buffer to the
+  engine as a dma-buf; the engine converts it and computes the drive frames on the GPU,
+  with no read-back in between.
+- **Date:** 2026-09-29; the current design since 2026-10-11.
