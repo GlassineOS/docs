@@ -9,8 +9,9 @@ can't break it, and a reset that keeps the user's Wi-Fi and pairings when asked 
 
 Image-based designs solve this but make every package install a rebuild and a reboot.
 Arkane Linux (arkdep) is the closest model: deployments with a writable `/etc` and
-`/var` and a migrate list. It also lacks live package installs, and it silently drops
-unmigrated `/etc` edits.
+`/var` and a migrate list. It installs packages into a new deployment rather than
+live. A new deployment receives only the files on its migrate list; other `/etc` edits
+stay behind in the old one.
 
 ## Decision
 
@@ -75,7 +76,7 @@ unmigrated `/etc` edits.
 
 ## Status
 
-Accepted 2026-10-28. The reset carry and the recovery partition were added 2026-10-29.
-The first parts (the deployment model, the boot steps, reset and the shutdown switch)
+Accepted 2026-10-28, completed 2026-10-29 before publication (the reset carry and the
+recovery partition). The first parts (the deployment model, the boot steps, reset and the shutdown switch)
 are built and host-tested, and **untested on hardware**. Live packages, base streams,
 the loader and the migration are not built yet.
