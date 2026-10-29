@@ -77,6 +77,7 @@ stay behind in the old one.
 ## Status
 
 Accepted 2026-10-28, completed 2026-10-29 before publication (the reset carry and the
-recovery partition). The first parts (the deployment model, the boot steps, reset and the shutdown switch)
-are built and host-tested, and **untested on hardware**. Live packages, base streams,
+recovery partition). The first parts (the deployment model, the boot steps, reset, the shutdown switch and
+the boot-success service) are built and host-tested, including end to end in QEMU, and
+**untested on hardware**. Live packages, base streams,
 the loader and the migration are not built yet.

@@ -7,9 +7,12 @@ interface live in the `boot` repository, in `docs/deployments.md`, which is the
 reference for anything that reads or writes them.
 
 !!! warning "Status"
-    The deployment model, the boot steps, reset and the shutdown switch are built and
-    host-tested (real btrfs, ext4 and overlayfs, on the host kernel). They are
-    **untested on hardware**: devices still boot the plain layout. Live packages, base
+    The deployment model, the boot steps, reset, the shutdown switch and the
+    boot-success service are built and host-tested: on real btrfs, ext4 and overlayfs
+    on the host kernel, and end to end in QEMU (the real initramfs and init system,
+    including a switch at a real shutdown and a real resume from hibernation;
+    2026-10-29). They are **untested on hardware**: devices still boot the plain
+    layout. Live packages, base
     streams, the loader and the migration of existing installs are not built yet.
 
 ## Purpose
@@ -126,11 +129,10 @@ asking) before it writes anything.
 
 ## Open questions
 
-- **Hardware.** The first run on a device, and whether the init system keeps the
-  pre-mounted `/run` as expected.
+- **Hardware.** The first run on a device. (In QEMU the init system keeps the
+  pre-mounted `/run`, provided the base lists `/` as `bind,ro` in its `/etc/fstab`.)
 - **Live packages:** the install wrapper and the replay of the user's packages onto a
   new base.
 - **Base streams:** CI publishing and signing.
 - **The kexec loader**, and with it kernel updates.
-- **The boot-success service** that accepts a candidate.
 - **Migration** of existing installs from the mainline recovery.

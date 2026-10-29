@@ -160,4 +160,5 @@ to run the GlassineOS initramfs. GlassineOS never ships a vendor kernel.
   ([Root file system and deployments](root-and-deployments.md)). Not on devices yet.
 - **Marking a boot successful.** Nothing does this yet, so the GlassineOS slot has to
   stay pinned where the bootloader counts retries. For deployments, a boot-success
-  service will accept a candidate after a healthy boot.
+  service accepts a candidate after a healthy boot (built and tested in QEMU, not on
+  devices yet).
