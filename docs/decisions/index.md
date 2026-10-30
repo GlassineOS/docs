@@ -15,6 +15,7 @@ earlier one and both say so.
 | [0007](0007-recovery-mainline-twrp.md) | Recovery: TWRP on the mainline kernel first | accepted 2026-10-03 |
 | [0008](0008-bring-your-own-stock-kernel.md) | Stock-kernel flavor: bring your own kernel | accepted 2026-10-03 |
 | [0009](0009-specs-and-acceptance.md) | Specs per repository (Spec Kit + org preset), acceptance in images | accepted 2026-10-03 |
+| [0010](0010-root-and-deployments.md) | Root file system: read-only bases, deployments, live packages | accepted 2026-10-28 |
 
 Template for new records: copy any record and keep the four headings
 (Context, Decision, Consequences, Status).
