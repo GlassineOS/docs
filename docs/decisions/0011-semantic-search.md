@@ -62,7 +62,7 @@ an e-ink device, on arm64 musl systems, and offline.
 
 ## Status
 
-Proposed 2026-10-31. Open:
+Accepted 2026-10-31. Open:
 
 - Which profile computes the related pages.
 - How the vector results join the theme's own search: hooks into its results list, or
