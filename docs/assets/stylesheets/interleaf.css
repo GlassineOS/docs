@@ -2191,13 +2191,15 @@ body {
   border-radius: 0;
 }
 
-/* Search results open wider than the pill, towards the page. */
+/* The open search: the results panel hangs from the pill with the same left and right
+   edges, and the pill squares its lower corners to join it. */
 @media screen and (min-width: 60em) {
   [dir] .md-search__output {
-    left: auto;
+    left: 0;
     right: 0;
-    width: 560px;
-    max-width: calc(100vw - 64px);
+    width: auto;
+    max-width: none;
+    box-sizing: border-box;
     border-radius: 0 0 22px 22px;
     border-top: 1px solid var(--gl-rule);
   }
@@ -2206,7 +2208,34 @@ body {
     width: 100%;
   }
 
-  [data-md-toggle="search"]:checked ~ .md-header .md-search__form {
-    border-radius: 22px;
+  [data-md-toggle="search"]:checked ~ .md-header :is(.md-search__form, .md-search__input) {
+    border-radius: 22px 22px 0 0;
+  }
+}
+
+/* Scheme pill: Material shows the label after the checked radio with display:block.
+   After a click one radio is checked, after a reload none is (Material keeps the state
+   in storage), so the pill would change layout on click. Keep it a flex pill in both. */
+.md-option:checked + .gl-scheme__button:not([hidden]) {
+  display: inline-flex;
+}
+
+.md-option.focus-visible + .gl-scheme__button {
+  outline-style: solid;
+}
+
+/* No pressed or tap flashes on the switches: the state after a click is the state
+   after a reload. */
+.gl-scheme__button,
+.gl-accent__button {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Phones and tablets: the result list starts below the (taller) search bar. */
+@media screen and (max-width: 59.984375em) {
+  .md-search__output {
+    top: var(--gl-header-height);
   }
 }
