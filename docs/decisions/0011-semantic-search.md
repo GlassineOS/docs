@@ -45,9 +45,8 @@ an e-ink device, on arm64 musl systems, and offline.
   model for them.
 - **Agents use one tool.** `glassine-docs search "<query>"` returns the best chunks with
   their links and the docs commit. It uses the `transformer` profile by default and the
-  `static` profile with `--profile static`. An MCP server wraps the same code. The
-  org-sync job adds one line to every repository's `CLAUDE.md` that names this tool as
-  the entry point to project knowledge.
+  `static` profile with `--profile static`. The org-sync job adds one line to every
+  repository's `CLAUDE.md` that names this tool as the entry point to project knowledge.
 - **Only published documentation goes in.** Nothing private: no lab notes, no
   unpublished drafts.
 
