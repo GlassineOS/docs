@@ -2,5 +2,4 @@
 # GlassineOS/search. CI sets GLASSINE_SEARCH_REF (see .github/workflows/docs.yml).
 # Locally: GLASSINE_SEARCH_REF=<commit> pip install -r requirements-search.txt,
 # or from a checkout: pip install -e "../search[build]".
-# "derive" (onnx) is only needed while the build falls back to Hugging Face.
-glassine-docs[build,derive] @ git+https://github.com/GlassineOS/search@${GLASSINE_SEARCH_REF}
+glassine-docs[build] @ git+https://github.com/GlassineOS/search@${GLASSINE_SEARCH_REF}
