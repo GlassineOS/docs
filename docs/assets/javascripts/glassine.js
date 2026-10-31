@@ -1,10 +1,11 @@
-/* GlassineOS docs theme: the voice and pen buttons, the voice's words, decision
+/* GlassineOS docs theme: the Appearance panel, the voice's words, decision
    numbers in the navigation, and Mermaid diagrams in the voice's face. Everything here
    is optional: without JavaScript the pages keep the White voice, its house pen and
    Material's diagrams.
 
-   The voices and pens are read from the header buttons' data (generated from
-   theme/tokens.json); the words from the --gl-word-* variables of the current voice. */
+   The voices, pens and schemes are read from the header's token summary (generated
+   from theme/tokens.json); the words from the --gl-word-* variables of the current
+   voice. */
 (function () {
   "use strict";
 
@@ -50,10 +51,14 @@
     }
   }
 
-  function setupSwitches(T) {
-    var voiceButton = document.querySelector("[data-gl-switch=voice]");
-    var penButton = document.querySelector("[data-gl-switch=pen]");
-    if (!T || !voiceButton || !penButton) return;
+  /* The Appearance panel: one button in the bar, three radio groups inside. Voice and
+     pen are our radios; the scheme radios are Material's palette inputs, which apply
+     the scheme themselves on change. Previews carry the voice, pen and scheme they
+     show as data attributes; sync() keeps the parts that follow the page current. */
+  function setupAppearance(T) {
+    var button = document.querySelector(".gl-appearance__button");
+    var panel = document.getElementById("gl-appearance");
+    if (!T || !button || !panel) return;
 
     function voice() {
       var id = body.getAttribute("data-gl-voice");
@@ -67,47 +72,107 @@
       return v.pens[0];
     }
 
-    function next(list, item) {
-      return list[(list.indexOf(item) + 1) % list.length];
+    function storedPen(v) {
+      var id = null;
+      try { id = localStorage.getItem("gl-pen-" + v.id); } catch (e) { /* private mode */ }
+      for (var i = 0; i < v.pens.length; i++) if (v.pens[i].id === (id || v.house)) return v.pens[i];
+      return v.pens[0];
+    }
+
+    function each(selector, fn) {
+      var list = panel.querySelectorAll(selector);
+      for (var i = 0; i < list.length; i++) fn(list[i]);
     }
 
     function sync() {
-      var v = voice(), p = pen(v), nv = next(T.voices, v), np = next(v.pens, p);
-      voiceButton.querySelector(".gl-switch__name").textContent = v.label;
-      voiceButton.setAttribute("aria-label", "Voice: " + v.label + ". Switch to " + nv.label);
-      voiceButton.title = voiceButton.getAttribute("aria-label");
-      penButton.querySelector(".gl-switch__name").textContent = p.label;
-      penButton.setAttribute("aria-label", v.pen_word + ": " + p.label + ". Switch to " + np.label);
-      penButton.title = penButton.getAttribute("aria-label");
+      var v = voice(), p = pen(v);
+      var scheme = body.getAttribute("data-md-color-scheme") || T.defaults.scheme;
+      var text = { menu: v.words.menu, "menu-title": v.words["menu-title"], pen: v.pen_word };
+      var all = document.querySelectorAll("[data-gl-text]");
+      for (var i = 0; i < all.length; i++) {
+        var w = text[all[i].getAttribute("data-gl-text")];
+        if (w) all[i].textContent = w;
+      }
+      button.setAttribute("aria-label", v.words.menu + ": " + v.label + ", " + p.label);
+      button.title = button.getAttribute("aria-label");
+      each("input[name=gl-voice]", function (el) { el.checked = el.value === v.id; });
+      each("[data-gl-pens]", function (el) {
+        el.hidden = el.getAttribute("data-gl-pens") !== v.id;
+      });
+      each("input[name='gl-pen-" + v.id + "']", function (el) { el.checked = el.value === p.id; });
+      each("input[name=__palette]", function (el) {
+        el.checked = el.getAttribute("data-md-color-scheme") === scheme;
+      });
+      /* Voice cards and pen swatches show the current scheme; the scheme pages show
+         the current voice and pen. */
+      each(".gl-option--voice, .gl-option--pen .gl-swatch", function (el) {
+        el.setAttribute("data-md-color-scheme", scheme);
+      });
+      each(".gl-option__page", function (el) {
+        el.setAttribute("data-gl-voice", v.id);
+        el.setAttribute("data-gl-pen", p.id);
+      });
       applyWords();
     }
 
-    voiceButton.addEventListener("click", function () {
-      var v = next(T.voices, voice());
-      var stored = null;
-      try { stored = localStorage.getItem("gl-pen-" + v.id); } catch (e) { /* private mode */ }
-      var p = v.pens[0];
-      for (var i = 0; i < v.pens.length; i++) {
-        if (v.pens[i].id === (stored || v.house)) p = v.pens[i];
+    function open(state) {
+      panel.hidden = !state;
+      button.setAttribute("aria-expanded", state ? "true" : "false");
+      if (state) {
+        sync();
+        var first = panel.querySelector("input[name=gl-voice]:checked") || panel.querySelector("input");
+        if (first) first.focus();
       }
-      body.setAttribute("data-gl-voice", v.id);
-      body.setAttribute("data-gl-pen", p.id);
-      store("gl-voice", v.id);
-      sync();
-      /* Diagrams are drawn once, in the voice's face: draw them again. */
-      if (document.querySelector(".mermaid svg")) location.reload();
+    }
+
+    button.addEventListener("click", function () { open(panel.hidden); });
+    panel.querySelector(".gl-pop__close").addEventListener("click", function () {
+      open(false);
+      button.focus();
+    });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && !panel.hidden) {
+        open(false);
+        button.focus();
+      }
+    });
+    document.addEventListener("click", function (ev) {
+      if (!panel.hidden && !panel.contains(ev.target) && !button.contains(ev.target)) open(false);
+    });
+    /* Material steps to the next scheme on Enter anywhere in its form: inside the panel
+       Enter means "this one", which the radio already is. */
+    each("input[name=__palette]", function (el) {
+      el.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter") ev.stopPropagation();
+      });
+      el.addEventListener("change", function () { setTimeout(sync, 0); });
     });
 
-    penButton.addEventListener("click", function () {
-      var v = voice(), p = next(v.pens, pen(v));
-      body.setAttribute("data-gl-pen", p.id);
-      store("gl-pen-" + v.id, p.id);
-      sync();
+    each("input[name=gl-voice]", function (el) {
+      el.addEventListener("change", function () {
+        var v = null;
+        for (var i = 0; i < T.voices.length; i++) if (T.voices[i].id === el.value) v = T.voices[i];
+        if (!v) return;
+        body.setAttribute("data-gl-voice", v.id);
+        body.setAttribute("data-gl-pen", storedPen(v).id);
+        store("gl-voice", v.id);
+        sync();
+        /* Diagrams are drawn once, in the voice's face: draw them again. */
+        if (document.querySelector(".mermaid svg")) location.reload();
+      });
+    });
+
+    each("[data-gl-pens] input", function (el) {
+      el.addEventListener("change", function () {
+        var v = voice();
+        body.setAttribute("data-gl-pen", el.value);
+        store("gl-pen-" + v.id, el.value);
+        sync();
+      });
     });
 
     sync();
-    voiceButton.hidden = false;
-    penButton.hidden = false;
+    button.hidden = false;
   }
 
   /* "0006 — User data: …" in the navigation: the number goes into its own span so
@@ -169,7 +234,7 @@
   }
 
   hookMermaid();
-  setupSwitches(tokens());
+  setupAppearance(tokens());
   splitDecisionNumbers();
   applyWords();
 })();

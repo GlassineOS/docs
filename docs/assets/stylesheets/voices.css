@@ -183,12 +183,6 @@
   margin: 28px 0;
 }
 
-[dir][data-gl-voice="editorial"] .md-typeset details > summary {
-  border-radius: 0 !important;
-  border-color: var(--gl-ink) !important;
-  box-shadow: var(--gl-edge-button);
-}
-
 /* Stamps: a hairline box in the pen colour. */
 [data-gl-voice="editorial"] .md-typeset .gl-verified {
   color: var(--gl-pen);
@@ -459,14 +453,6 @@
   color: var(--gl-gold);
 }
 
-[dir][data-gl-voice="stationery"] .md-typeset details > summary {
-  border-radius: var(--gl-radius-ui) !important;
-  border: 0 !important;
-  background: var(--gl-cream) !important;
-  color: var(--gl-button-fg);
-  box-shadow: var(--gl-edge-button);
-}
-
 /* Stamps: a gold seal ring before small capitals. */
 [data-gl-voice="stationery"] .md-typeset .gl-verified {
   flex-direction: row;
@@ -509,24 +495,6 @@
 
 [data-gl-voice="stationery"] .md-typeset .gl-cards a::before {
   background-color: var(--gl-gold);
-}
-
-/* Footer on the leather. */
-[data-gl-voice="stationery"] .md-footer,
-[data-gl-voice="stationery"] .md-footer-meta {
-  background: var(--gl-leather-dark);
-  border-top: 0;
-}
-
-[data-gl-voice="stationery"] .md-copyright,
-[data-gl-voice="stationery"] .md-copyright__highlight,
-[data-gl-voice="stationery"] .md-copyright a {
-  color: var(--gl-cream);
-}
-
-[data-gl-voice="stationery"] .md-copyright a:hover,
-[data-gl-voice="stationery"] .md-copyright a:focus {
-  color: var(--gl-foil);
 }
 
 /* The search results open on paper, so the field's cream and the leather stay out. */

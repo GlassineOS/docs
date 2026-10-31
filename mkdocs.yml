@@ -9,9 +9,9 @@ copyright: Text CC-BY-SA-4.0 · GlassineOS is not affiliated with Onyx Internati
 theme:
   name: material
   # Three voices (White, Editorial, Stationery), each with three pens, in three
-  # schemes; the reader picks them in the header. All values come from
-  # theme/tokens.json (hooks/tokens.py turns them into CSS variables). Templates and
-  # styles live in overrides/ and docs/assets/.
+  # schemes; the reader picks them in the header's Appearance panel. All values come
+  # from theme/tokens.json (hooks/tokens.py turns them into CSS variables). Templates
+  # and styles live in overrides/ and docs/assets/.
   custom_dir: overrides
   # Fonts are self-hosted (docs/assets/fonts): no requests to Google Fonts.
   font: false
@@ -22,34 +22,26 @@ theme:
     - navigation.path
     - search.suggest
     - content.code.copy
-  # Three schemes, cycled by the scheme button. The first option whose media query
-  # matches is the default: E-ink on slow-refresh screens, otherwise the system
-  # light/dark setting. The E-ink scheme is greys only, with no colour dependence.
+  # Three schemes, the Scheme row of the Appearance panel. The first option whose
+  # media query matches is the default: E-ink on slow-refresh screens, otherwise the
+  # system light/dark setting. The E-ink scheme is greys only, with no colour
+  # dependence.
   palette:
     - scheme: paper
       label: Paper
       media: "(prefers-color-scheme: light) and (not (update: slow))"
       primary: custom
       accent: custom
-      toggle:
-        icon: material/circle-half-full
-        name: "Colour scheme: Paper. Switch to Night"
     - scheme: night
       label: Night
       media: "(prefers-color-scheme: dark) and (not (update: slow))"
       primary: custom
       accent: custom
-      toggle:
-        icon: material/circle-half-full
-        name: "Colour scheme: Night. Switch to E-ink"
     - scheme: eink
       label: E-ink
       media: "(update: slow)"
       primary: custom
       accent: custom
-      toggle:
-        icon: material/circle-half-full
-        name: "Colour scheme: E-ink. Switch to Paper"
 
 extra_css:
   - assets/stylesheets/fonts.css
