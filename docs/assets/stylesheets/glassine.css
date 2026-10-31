@@ -134,9 +134,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Focus follows the surface: the ring takes the element's own text colour, which is
+   already chosen for the surface it sits on. Controls in the bar and the current page
+   in the navigation take the voice's ring instead (gold on Stationery's leather). */
 :focus-visible {
-  outline: 2px solid var(--gl-pen) !important;
+  outline: 2px solid currentColor !important;
   outline-offset: 2px;
+}
+
+.gl-header :is(.gl-switch, .md-search__form, .gl-source, .md-header__button):is(:focus-visible, :focus-within),
+.md-nav--primary .md-nav__link--active:focus-visible {
+  outline: 2px solid var(--gl-focus-bar) !important;
+  outline-offset: 2px;
+}
+
+.md-nav--primary .md-nav__link--active:focus-visible {
+  outline-color: var(--gl-focus-nav-on) !important;
 }
 
 /* Wider grid, as drawn (1440 px frame, 32 px gutters). */
@@ -391,20 +404,14 @@ body {
   color: var(--gl-ink-soft);
 }
 
-/* Appearance: voice, scheme and pen, each a button that steps to the next choice.
-   The scheme button is Material's palette toggle (one radio per scheme; the visible
-   label switches to the next one). */
+/* Appearance: one button in the bar opens a panel with three radio groups (voice,
+   scheme, pen) and a sample line. The scheme radios are Material's palette inputs.
+   Each option carries the voice, pen and scheme it shows as data attributes, so the
+   generated token rules give it that palette. */
 .gl-appearance {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex: none;
-}
-
-.md-header__option.gl-scheme {
-  max-width: none;
-  min-width: 44px;
-  opacity: 1;
   flex: none;
 }
 
@@ -415,9 +422,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
-  padding: 0 16px;
+  padding: 0 12px 0 10px;
   box-sizing: border-box;
   border: 0;
   border-radius: var(--gl-radius-ui);
@@ -432,28 +439,13 @@ body {
   user-select: none;
 }
 
-.gl-switch[hidden],
-.gl-switch--pen[hidden] {
+.gl-switch[hidden] {
   display: none;
 }
 
-.gl-switch:hover {
+.gl-switch:hover .gl-switch__name {
   text-decoration: underline;
   text-underline-offset: 4px;
-}
-
-.gl-switch__icon {
-  display: none;
-  width: 18px;
-  height: 18px;
-  flex: none;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-}
-
-.gl-switch--pen {
-  padding: 0 14px 0 10px;
 }
 
 .gl-swatch {
@@ -465,22 +457,363 @@ body {
 .gl-swatch rect { fill: var(--gl-swatch-2); rx: var(--gl-swatch-radius); }
 .gl-swatch circle { fill: var(--gl-swatch-1); }
 
-/* Greys only in E-ink: there is no pen to choose. */
-[data-md-color-scheme="eink"] .gl-switch--pen {
+.gl-appearance__caret {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gl-appearance__button[aria-expanded="true"] .gl-appearance__caret {
+  transform: rotate(180deg);
+}
+
+/* The panel. */
+.gl-pop {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 14px);
+  z-index: 5;
+  width: 620px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 22px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--gl-pop-bg);
+  color: var(--gl-ink);
+  /* The page's pen, resolved here: the voice cards inside carry their own. */
+  --gl-pick: var(--gl-pen);
+  --gl-pick-on: var(--gl-pop-bg);
+  border-radius: var(--gl-radius);
+  box-shadow: var(--gl-edge-pop);
+  font-family: var(--gl-font-text);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+}
+
+.gl-pop[hidden] {
   display: none;
 }
 
-/* Material shows the label after the checked radio with display:block. After a click
-   one radio is checked, after a reload none is (Material keeps the state in storage),
-   so the button would change layout on click. Keep it a flex button in both. */
-.md-option:checked + .gl-switch:not([hidden]) {
-  display: inline-flex;
+.gl-pop__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.md-option.focus-visible + .gl-switch,
-.md-option:focus-visible + .gl-switch {
-  outline: 2px solid var(--gl-pen);
+.gl-pop__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gl-pop__title {
+  font-family: var(--gl-font-head);
+  font-size: 22px;
+  font-weight: 600;
+  font-style: var(--gl-title-style);
+}
+
+.gl-pop__hint {
+  font-size: 13px;
+  color: var(--gl-ink-soft);
+}
+
+.gl-pop__head .gl-pop__hint {
+  font-size: 14px;
+}
+
+.gl-pop__close {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--gl-radius-ui);
+  background: transparent;
+  color: var(--gl-ink);
+  box-shadow: inset 0 0 0 1px var(--gl-rule);
+  cursor: pointer;
+}
+
+.gl-pop__close svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.gl-pop__row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  column-gap: 18px;
+  align-items: start;
+  padding-top: 16px;
+  border-top: var(--gl-rule-line);
+}
+
+.gl-pop__label {
+  padding-top: 4px;
+  font-family: var(--gl-font-label);
+  font-size: var(--gl-label-size);
+  font-weight: var(--gl-label-weight);
+  font-variant: var(--gl-label-variant);
+  text-transform: var(--gl-label-transform);
+  letter-spacing: var(--gl-label-spacing);
+  color: var(--gl-label-colour);
+}
+
+.gl-pop__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Options: a visually hidden native radio, then its label. */
+.gl-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+.gl-options[hidden] {
+  display: none;
+}
+
+.gl-option__input,
+.md-option.gl-option__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Material un-hides the sibling after the current scheme's input: keep it out. */
+.gl-option__sink {
+  display: none !important;
+}
+
+.gl-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 6px 12px 6px 8px;
+  border-radius: var(--gl-radius-ui);
+  color: var(--gl-ink);
+  box-shadow: inset 0 0 0 1px var(--gl-ink-soft);
+  font-family: var(--gl-font-text);
+  font-size: 15px;
+  line-height: 1.2;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gl-option__input:checked + .gl-option,
+.gl-option__input:checked + .gl-option__sink + .gl-option {
+  background: var(--gl-sheet);
+  box-shadow: inset 0 0 0 2px var(--gl-ink);
+  font-weight: 700;
+}
+
+.gl-option__input:focus-visible + .gl-option,
+.gl-option__input:focus-visible + .gl-option__sink + .gl-option,
+.gl-option__input.focus-visible + .gl-option__sink + .gl-option {
+  outline: 2px solid var(--gl-ink) !important;
   outline-offset: 2px;
+}
+
+/* Voice: a card in that voice's own paper, ink and face. Its own text colours come
+   from the card's data attributes, not from the page. */
+.gl-option--voice {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 124px;
+  padding: 12px 14px;
+  background: var(--gl-paper);
+  color: var(--gl-ink);
+  border-radius: var(--gl-option-radius);
+  box-shadow: var(--gl-edge);
+  font-family: var(--gl-font-head);
+}
+
+.gl-option__input:checked + .gl-option--voice {
+  background: var(--gl-paper);
+  box-shadow: var(--gl-edge);
+  font-weight: 400;
+}
+
+.gl-option__glyph {
+  font-size: 36px;
+  line-height: 1;
+  font-style: var(--gl-title-style);
+  font-weight: var(--gl-brand-weight);
+}
+
+.gl-option--voice .gl-option__name {
+  font-size: 16px;
+  font-weight: 600;
+  font-variant: var(--gl-head-variant);
+  letter-spacing: var(--gl-head-spacing);
+}
+
+.gl-option__tag {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--gl-ink-soft);
+  font-style: var(--gl-title-style);
+}
+
+.gl-option__check {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  padding: 5px;
+  border-radius: 50%;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The chosen voice: a ring and a check in the page's pen (set by glassine.js on the
+   group, since the card itself carries another voice's colours). */
+.gl-option__input:checked + .gl-option--voice {
+  outline: 2.5px solid var(--gl-pick, currentColor);
+  outline-offset: 4px;
+}
+
+.gl-option__input:checked + .gl-option--voice .gl-option__check {
+  display: block;
+  background: var(--gl-pick, currentColor);
+  stroke: var(--gl-pick-on, #FFFFFF);
+}
+
+.gl-option__input:focus-visible + .gl-option--voice {
+  outline: 2px solid var(--gl-ink) !important;
+  outline-offset: 2px;
+}
+
+.gl-option__input:checked:focus-visible + .gl-option--voice {
+  outline: 2.5px solid var(--gl-pick, currentColor) !important;
+  outline-offset: 4px;
+  box-shadow: var(--gl-edge), 0 0 0 7px var(--gl-pop-bg), 0 0 0 9px var(--gl-ink);
+}
+
+/* Scheme: a small page in that scheme. */
+.gl-option--scheme {
+  min-height: 56px;
+  padding: 6px 10px 6px 6px;
+}
+
+.gl-option__page {
+  flex: 0 0 52px;
+  height: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-radius: var(--gl-swatch-radius);
+  background: var(--gl-paper);
+  box-shadow: inset 0 0 0 1px var(--gl-ink);
+}
+
+.gl-option__page > span {
+  display: block;
+  height: 2px;
+}
+
+.gl-option__page > span:nth-child(1) { width: 70%; background: var(--gl-ink); }
+.gl-option__page > span:nth-child(2) { width: 90%; background: var(--gl-ink-soft); }
+.gl-option__page > span:nth-child(3) { width: 55%; height: 4px; border-radius: 2px; background: var(--gl-hl); }
+
+.gl-option__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.gl-option__sub {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--gl-ink-soft);
+}
+
+.gl-option--pen .gl-swatch {
+  width: 36px;
+  height: 26px;
+}
+
+.gl-option--pen .gl-swatch circle {
+  stroke: var(--gl-ink);
+  stroke-width: 1;
+}
+
+/* The sample line: a link, a marked word and a margin note, in the page's voice. */
+.gl-pop__sample {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 18px;
+  padding: 12px 14px;
+  border-radius: var(--gl-radius-code);
+  background: var(--gl-sheet);
+  font-size: 15px;
+}
+
+.gl-pop__link {
+  color: var(--gl-link-colour);
+  text-decoration: var(--gl-link-decoration);
+  text-decoration-color: var(--gl-link-decoration-colour);
+  text-decoration-thickness: var(--gl-link-thickness);
+  text-underline-offset: 4px;
+  background: var(--gl-link-band);
+  padding: 0 2px;
+  pointer-events: none;
+}
+
+.gl-pop__mark {
+  color: inherit;
+  background: var(--gl-mark);
+  text-decoration: var(--gl-mark-decoration);
+  text-decoration-color: var(--gl-pen);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  padding: 0 3px;
+}
+
+.gl-pop__note {
+  font-family: var(--gl-font-hand);
+  font-style: var(--gl-note-style);
+  color: var(--gl-pen);
 }
 
 /* Repository link. */
@@ -546,13 +879,10 @@ body {
   }
 }
 
-/* Phones: the buttons keep their 44 px but show an icon; the name stays for screen
-   readers. */
+/* Phones: the Appearance button keeps its 44 px but shows only the swatch (the name
+   stays for screen readers), and the panel opens as a sheet under the bar, its groups
+   stacked. */
 @media screen and (max-width: 44.984375em) {
-  .gl-appearance {
-    gap: 6px;
-  }
-
   .gl-switch__name {
     position: absolute;
     width: 1px;
@@ -562,18 +892,51 @@ body {
     white-space: nowrap;
   }
 
-  .gl-switch,
-  .gl-switch--pen {
-    width: 44px;
+  .gl-appearance__button {
+    width: 52px;
     padding: 0;
   }
 
-  .gl-switch__icon {
-    display: block;
+  .gl-appearance__caret {
+    display: none;
   }
 
   .gl-swatch {
     width: 26px;
+  }
+
+  .gl-pop {
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    top: 72px;
+    width: auto;
+    max-width: none;
+    padding: 18px 16px 16px;
+  }
+
+  .gl-pop__row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 10px;
+  }
+
+  .gl-options--scheme,
+  .gl-options--pen {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .gl-options--voice {
+    gap: 10px;
+  }
+
+  .gl-option--voice {
+    min-height: 0;
+    padding: 10px;
+  }
+
+  .gl-option__tag {
+    display: none;
   }
 }
 
@@ -889,8 +1252,13 @@ body {
     padding: 2px 8px;
   }
 
-  .md-nav__toggle ~ .md-nav {
-    background: var(--gl-desk);
+  /* Every drawer level lies on the desk (Stationery: leather), as the navigation
+     text is chosen for it; Material would paint the lists in its page colour. */
+  .md-nav__toggle ~ .md-nav,
+  .md-nav--primary,
+  .md-nav--primary .md-nav,
+  .md-nav--primary .md-nav__title ~ .md-nav__list {
+    background-color: var(--gl-desk);
   }
 
   .md-nav__title .md-nav__icon {
@@ -1719,7 +2087,8 @@ body {
   }
 }
 
-/* Collapsible details: a pill that opens. */
+/* Collapsible details: a control that opens (a pill in White, a framed button in
+   Editorial, a gold-edged tab in Stationery: summary-* tokens). */
 .md-typeset details {
   padding: 0;
   background-color: transparent;
@@ -1731,9 +2100,14 @@ body {
   min-height: 48px;
   margin: 0;
   padding: 0 20px;
-  border: 1.5px solid var(--gl-rule);
-  border-radius: 999px;
-  background: var(--gl-paper);
+  border: 0;
+  border-radius: var(--gl-summary-radius);
+  background: var(--gl-summary-bg);
+  color: var(--gl-ink);
+  box-shadow: var(--gl-summary-edge);
+  font-family: var(--gl-font-text);
+  font-style: var(--gl-summary-style);
+  font-weight: var(--gl-summary-weight);
   cursor: pointer;
   list-style: none;
 }
@@ -2074,14 +2448,14 @@ body {
 
 .md-footer {
   margin-top: 48px;
-  background-color: var(--gl-paper);
-  color: var(--gl-ink-soft);
-  border-top: 1px solid var(--gl-rule);
+  background-color: var(--gl-foot-bg);
+  color: var(--gl-foot-fg);
+  border-top: var(--gl-foot-rule);
 }
 
 .md-footer-meta,
 .md-footer-meta:not([hidden]) {
-  background-color: var(--gl-paper);
+  background-color: var(--gl-foot-bg);
 }
 
 .md-footer-meta__inner {
@@ -2099,25 +2473,26 @@ body {
   gap: 12px;
   font-family: var(--gl-font-text);
   font-size: 14px;
-  color: var(--gl-ink-soft);
+  color: var(--gl-foot-fg);
 }
 
 .md-copyright__highlight {
-  color: var(--gl-ink-soft);
+  color: var(--gl-foot-fg);
 }
 
 .md-typeset .md-copyright a,
 .md-copyright a {
   background: none;
   padding: 0;
-  color: var(--gl-ink-soft);
+  color: var(--gl-foot-link);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .md-copyright a:hover,
 .md-copyright a:focus {
-  color: var(--gl-ink);
+  color: var(--gl-foot-link);
+  text-decoration-thickness: 2px;
 }
 
 @media screen and (max-width: 44.984375em) {
@@ -2166,8 +2541,7 @@ body {
 }
 
 .md-typeset details[class] > summary {
-  background-color: var(--gl-paper) !important;
-  border-color: var(--gl-rule) !important;
+  background-color: var(--gl-summary-bg) !important;
 }
 
 .md-typeset .admonition:is(.warning, .caution, .attention) > .admonition-title {
@@ -2223,8 +2597,8 @@ body {
 
 [dir] .md-typeset details > summary {
   padding: 0 20px !important;
-  border: 1.5px solid var(--gl-rule) !important;
-  border-radius: 999px !important;
+  border: 0 !important;
+  border-radius: var(--gl-summary-radius) !important;
 }
 
 [dir] .md-typeset details {

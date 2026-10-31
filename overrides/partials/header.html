@@ -1,5 +1,5 @@
-{#- Header: logo and name, search field, the three appearance buttons (voice, scheme,
-    pen) and the repository link. Material's search partial and data-md-component
+{#- Header: logo and name, search field, the Appearance button and panel (voice,
+    scheme, pen) and the repository link. Material's search partial and data-md-component
     hooks are kept unchanged. The voices and pens come from theme/tokens.json (see
     hooks/tokens.py). -#}
 {% set gl = config.extra.glassine_theme %}
@@ -24,19 +24,71 @@
         {% include "partials/search.html" %}
       {% endif %}
     {% endif %}
-    <div class="gl-appearance" role="group" aria-label="Appearance">
-      {#- Voice and pen need JavaScript; they stay hidden without it. -#}
-      <button type="button" class="gl-switch gl-switch--voice" data-gl-switch="voice" hidden>
-        <svg class="gl-switch__icon" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="M2 15 6.5 3h1L12 15M3.7 11h6.6M12.5 9.2c.6-.9 1.4-1.3 2.3-1.3 1.3 0 2.2.8 2.2 2.2V15M17 12.2c-.6-.3-1.3-.4-2-.4-1.4 0-2.5.6-2.5 1.8 0 .9.7 1.5 1.7 1.5 1.3 0 2.8-.9 2.8-2.9"/></svg>
-        <span class="gl-switch__name">{{ gl.voices[0].label }}</span>
-      </button>
-      {% if config.theme.palette and not config.theme.palette is mapping %}
-        {% include "partials/palette.html" %}
-      {% endif %}
-      <button type="button" class="gl-switch gl-switch--pen" data-gl-switch="pen" hidden>
+    {#- Appearance: one button that opens a panel with three radio groups (voice,
+        scheme, pen) and a sample line. Voice and pen need JavaScript; without it the
+        button stays hidden and the page keeps the default voice and house pen. The
+        scheme radios are Material's palette inputs. Every option carries the voice,
+        pen and scheme it shows as data attributes, so the generated token rules colour
+        its preview. -#}
+    {% set v0 = gl.voices[0] %}
+    <div class="gl-appearance">
+      <button type="button" class="gl-switch gl-appearance__button" aria-haspopup="dialog" aria-expanded="false" aria-controls="gl-appearance" hidden>
         <svg class="gl-swatch" viewBox="0 0 28 20" aria-hidden="true" focusable="false"><rect x="1" y="7" width="19" height="10" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg>
-        <span class="gl-switch__name"></span>
+        <span class="gl-switch__name" data-gl-text="menu">{{ v0.words.menu }}</span>
+        <svg class="gl-appearance__caret" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2 4.5 6 8.5 10 4.5"/></svg>
       </button>
+      <div class="gl-pop" id="gl-appearance" role="dialog" aria-labelledby="gl-appearance-title" hidden>
+        <div class="gl-pop__head">
+          <div class="gl-pop__heading">
+            <span class="gl-pop__title" id="gl-appearance-title" data-gl-text="menu-title">{{ v0.words["menu-title"] }}</span>
+            <span class="gl-pop__hint">Changes apply as you choose. The page behind shows them.</span>
+          </div>
+          <button type="button" class="gl-pop__close" aria-label="Close appearance">
+            <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 2l10 10M12 2 2 12"/></svg>
+          </button>
+        </div>
+        <div class="gl-pop__row">
+          <span class="gl-pop__label" id="gl-voice-label">Voice</span>
+          <div class="gl-options gl-options--voice" role="radiogroup" aria-labelledby="gl-voice-label">
+            {% for v in gl.voices %}
+              <input class="gl-option__input" type="radio" name="gl-voice" id="gl-voice-{{ v.id }}" value="{{ v.id }}">
+              <label class="gl-option gl-option--voice" for="gl-voice-{{ v.id }}" data-gl-voice="{{ v.id }}" data-gl-pen="{{ v.house }}" data-md-color-scheme="paper">
+                <span class="gl-option__glyph" aria-hidden="true">Aa</span>
+                <span class="gl-option__name">{{ v.label }}</span>
+                <span class="gl-option__tag">{{ v.tag }}</span>
+                <svg class="gl-option__check" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 6.2 5 8.6 9.5 3.6"/></svg>
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="gl-pop__row">
+          <span class="gl-pop__label" id="gl-scheme-label">Scheme</span>
+          <div class="gl-pop__cell">
+            {% if config.theme.palette and not config.theme.palette is mapping %}
+              {% include "partials/palette.html" %}
+            {% endif %}
+            <span class="gl-pop__hint">E-ink switches on by itself on slow-refresh screens.</span>
+          </div>
+        </div>
+        <div class="gl-pop__row">
+          <span class="gl-pop__label" id="gl-pen-label" data-gl-text="pen">{{ v0.words.pen }}</span>
+          {% for v in gl.voices %}
+            <div class="gl-options gl-options--pen" role="radiogroup" aria-labelledby="gl-pen-label" data-gl-pens="{{ v.id }}"{% if not loop.first %} hidden{% endif %}>
+              {% for p in v.pens %}
+                <input class="gl-option__input" type="radio" name="gl-pen-{{ v.id }}" id="gl-pen-{{ v.id }}-{{ p.id }}" value="{{ p.id }}">
+                <label class="gl-option gl-option--pen" for="gl-pen-{{ v.id }}-{{ p.id }}">
+                  <svg class="gl-swatch" viewBox="0 0 28 20" aria-hidden="true" focusable="false" data-gl-voice="{{ v.id }}" data-gl-pen="{{ p.id }}" data-md-color-scheme="paper"><rect x="1" y="7" width="19" height="10" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg>
+                  <span>{{ p.label }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="gl-pop__sample">
+          <span>A <a href="#" class="gl-pop__link" tabindex="-1">link</a>, a <mark class="gl-pop__mark">marked word</mark> and a <span class="gl-pop__note">note in the margin</span>.</span>
+          <span class="gl-pop__hint">Saved in this browser.</span>
+        </div>
+      </div>
     </div>
     <script type="application/json" id="__gl-tokens">{{ gl | tojson }}</script>
     {% if not config.theme.palette is mapping %}

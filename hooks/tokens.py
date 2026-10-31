@@ -4,9 +4,9 @@ theme/tokens.json is the single source of truth for the three voices (White,
 Editorial, Stationery), their pens and the three schemes. At build time this hook
 
   - writes assets/stylesheets/tokens.css (the --gl-* variables), and
-  - puts a short summary (voices, pens, defaults) into config.extra.glassine_theme
-    for the templates: the header buttons and the script that applies the reader's
-    choice before the page renders.
+  - puts a short summary (voices, pens, schemes, words, defaults) into
+    config.extra.glassine_theme for the templates: the Appearance panel in the header
+    and the script that applies the reader's choice before the page renders.
 
 In token values, {name} refers to another token of the same voice and scheme and
 becomes var(--gl-name). Nothing else is rewritten: values are plain CSS.
@@ -92,13 +92,15 @@ def summary(tokens):
             {
                 "id": vid,
                 "label": v["label"],
+                "tag": v["tag"],
+                "words": v["words"],
                 "pen_word": v["words"]["pen"],
                 "house": _house(v["pens"]),
                 "pens": [{"id": pid, "label": p["label"], "slot": p["slot"]} for pid, p in v["pens"].items()],
             }
             for vid, v in tokens["voices"].items()
         ],
-        "schemes": [{"id": sid, "label": s["label"]} for sid, s in tokens["schemes"].items()],
+        "schemes": [{"id": sid, "label": s["label"], "sub": s["sub"]} for sid, s in tokens["schemes"].items()],
     }
 
 
