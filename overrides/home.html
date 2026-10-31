@@ -1,0 +1,23 @@
+{#- Home page: the content plus a drawn tablet beside the title. -#}
+{% extends "main.html" %}
+
+{% block content %}
+  <div class="gl-hero-art" aria-hidden="true">
+    <svg viewBox="0 0 360 300" focusable="false">
+      <g transform="rotate(-5 165 149)">
+        <rect class="gl-f-paper gl-s-ink" x="70" y="18" width="190" height="262" rx="22" stroke-width="2.5"/>
+        <rect class="gl-f-sheet" x="88" y="40" width="154" height="206" rx="6"/>
+        <path class="gl-s-soft" d="M104 66h110M104 82h122M104 98h96M104 140h104M104 156h120M104 182h90" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect class="gl-f-hl" x="100" y="118" width="128" height="14" rx="4" opacity="0.85"/>
+        <path class="gl-s-soft" d="M104 124h116" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path class="gl-s-pen" d="M150 200 C 190 196, 214 210, 206 224 C 196 238, 140 238, 124 226 C 110 214, 128 200, 168 200" fill="none" stroke-width="3" stroke-linecap="round"/>
+        <circle class="gl-s-ink" cx="165" cy="263" r="5" fill="none" stroke-width="2"/>
+      </g>
+      <path class="gl-s-ink" d="M318 40 L222 228" stroke-width="10" stroke-linecap="round"/>
+      <path class="gl-f-ink" d="M222 228 L216 244 L230 234 Z"/>
+      <path class="gl-s-pen" d="M318 40 L300 76" stroke-width="10" stroke-linecap="round"/>
+    </svg>
+    <span class="gl-hero-art__note">e-ink first,<br>pen first.</span>
+  </div>
+  {{ super() }}
+{% endblock %}

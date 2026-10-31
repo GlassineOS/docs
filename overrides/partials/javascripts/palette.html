@@ -1,0 +1,5 @@
+{#- Runs before the page renders, so the chosen scheme and accent apply without a
+    flash. Scheme: the stored choice, else the first option whose media query matches
+    (E-ink on slow-refresh screens, else the system light/dark setting). Accent: the
+    stored choice from the accent picker. -#}
+<script>!function(){var b=document.body,p=null;try{p=__md_get("__palette")}catch(e){}if(!(p&&p.color)){var o=document.querySelectorAll("[data-md-component=palette] input[data-md-color-media]");for(var i=0;i<o.length;i++){var q=o[i].getAttribute("data-md-color-media");var m=false;try{m=matchMedia(q).matches}catch(e){}if(m){p={color:{scheme:o[i].getAttribute("data-md-color-scheme")}};break}}}if(p&&p.color){for(var k in p.color)if(k!=="media")b.setAttribute("data-md-color-"+k,p.color[k])}var a=null;try{a=localStorage.getItem("gl-accent")}catch(e){}if(a==="cobalt"||a==="vermilion"||a==="violet")b.setAttribute("data-gl-accent",a)}()</script>

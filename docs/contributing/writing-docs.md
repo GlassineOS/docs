@@ -31,6 +31,22 @@ The safety scan blocks most of these, but not all. Read your diff.
 | Decision | `decisions/NNNN-*.md` | context · decision · consequences · status |
 | Dead end | `dead-ends/index.md` | tried · happened · stopped because · instead · date |
 
+## Marks
+
+Plain Markdown covers almost everything. A few optional marks are styled by the theme;
+none of them carries meaning that the text doesn't already say.
+
+| Write | Gives |
+|---|---|
+| `==text==` | a highlighter mark |
+| `*text*{ .gl-note }` at the start of a paragraph | a hand-written note beside the paragraph |
+| `**Verified on hardware** Note Air · 2026-10-02` + `{ .gl-verified }` on the next line | a stamp |
+| `**From source** untested on hardware` + `{ .gl-untested }` on the next line | a dashed stamp |
+| `---` | a drawn rule |
+
+Admonition types differ by shape: `note` (grey sheet), `tip` (dashed, hand-written
+title), `warning` (ink border, tab), `danger` (thick border, no undo).
+
 ## Preview
 
 ```sh

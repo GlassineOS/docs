@@ -2,28 +2,70 @@ site_name: GlassineOS
 site_description: A Linux distribution for Boox e-ink tablets, built on Alpine Linux.
 site_url: https://docs.glassine.org/
 repo_url: https://github.com/GlassineOS/docs
+repo_name: GlassineOS/docs
 edit_uri: edit/main/docs/
 copyright: Text CC-BY-SA-4.0 · GlassineOS is not affiliated with Onyx International.
 
 theme:
   name: material
+  # "Interleaf": a strict print layer (greys, grid, rules) with a pen layer on top
+  # (accent colours, a hand, drawn marks). Templates and styles live in overrides/
+  # and docs/assets/.
+  custom_dir: overrides
+  # Fonts are self-hosted (docs/assets/fonts): no requests to Google Fonts.
+  font: false
+  language: en
   features:
     - navigation.sections
     - navigation.indexes
+    - navigation.path
     - search.suggest
     - content.code.copy
+  # Three schemes, cycled by the scheme button. The first option whose media query
+  # matches is the default: E-ink on slow-refresh screens, otherwise the system
+  # light/dark setting. The E-ink scheme is greys only, with no colour dependence.
   palette:
-    # High contrast and no colour dependence: the docs get read on e-ink too.
-    - scheme: default
-      primary: white
-      accent: black
+    - scheme: paper
+      label: Paper
+      media: "(prefers-color-scheme: light) and (not (update: slow))"
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/circle-half-full
+        name: "Colour scheme: Paper. Switch to Night"
+    - scheme: night
+      label: Night
+      media: "(prefers-color-scheme: dark) and (not (update: slow))"
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/circle-half-full
+        name: "Colour scheme: Night. Switch to E-ink"
+    - scheme: eink
+      label: E-ink
+      media: "(update: slow)"
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/circle-half-full
+        name: "Colour scheme: E-ink. Switch to Paper"
+
+extra_css:
+  - assets/stylesheets/fonts.css
+  - assets/stylesheets/interleaf.css
+
+extra_javascript:
+  - assets/javascripts/interleaf.js
 
 markdown_extensions:
   - admonition
   - attr_list
+  - md_in_html
+  - pymdownx.mark
   - tables
   - toc:
       permalink: true
+      title: On this page
   - pymdownx.details
   - pymdownx.superfences:
       custom_fences:
