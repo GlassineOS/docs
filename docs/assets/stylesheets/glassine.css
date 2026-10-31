@@ -77,11 +77,13 @@
   --md-admonition-fg-color: var(--gl-ink);
   --md-admonition-bg-color: var(--gl-paper);
 
-  --md-footer-fg-color: var(--gl-ink);
-  --md-footer-fg-color--light: var(--gl-ink-soft);
-  --md-footer-fg-color--lighter: var(--gl-ink-soft);
-  --md-footer-bg-color: var(--gl-paper);
-  --md-footer-bg-color--dark: var(--gl-paper);
+  /* The footer has its own surface (Stationery: leather): its tokens, not the page's.
+     Material uses fg-color for a hovered link, --light for links, --lighter for text. */
+  --md-footer-fg-color: var(--gl-foot-hover);
+  --md-footer-fg-color--light: var(--gl-foot-link);
+  --md-footer-fg-color--lighter: var(--gl-foot-fg);
+  --md-footer-bg-color: var(--gl-foot-bg);
+  --md-footer-bg-color--dark: var(--gl-foot-bg);
 
   --md-mermaid-font-family: var(--gl-font-hand);
   --md-mermaid-edge-color: var(--gl-ink);
@@ -2501,7 +2503,7 @@ body {
 
 .md-copyright a:hover,
 .md-copyright a:focus {
-  color: var(--gl-foot-link);
+  color: var(--gl-foot-hover);
   text-decoration-thickness: 2px;
 }
 
