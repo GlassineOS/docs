@@ -42,13 +42,17 @@ from a release of GlassineOS/search.
 
 **Ranking.** BM25 and vector search each rank all chunks; reciprocal rank fusion
 (`1 / (60 + rank)`, summed) merges the two lists. The static profile first picks the
-100 nearest chunks by their sign bits, then rescores those with the int8 vectors.
+100 nearest chunks by their sign bits, then rescores those with the int8 vectors. On
+the site, the theme's own keyword search takes the place of BM25, and the 10 best
+vector hits join its list.
 
-**Site.** Pages load only a few inline lines. The first focus on, or key in, the
-search box loads the search script, which starts a web worker with the static model
-(8 MB, once per model change) and the index. The theme's keyword results show at once;
-when the worker is ready, its fused results replace them in the same panel. Each page
-ends with related pages, computed in the build from the static vectors.
+**Site.** The plugin swaps the theme's search worker for its own, which runs the
+theme's worker inside it: the search box, results, highlighting and keys stay the
+theme's. Keyword results show at once. The first query also loads the static model
+(8 MB, once per model change) and the vectors; from then on each result list is the
+keyword list and the vector list fused, and sections that only the vectors find join
+it. A page loads nothing extra but the worker (6 KB). Each page ends with related
+pages, computed in the build from the static vectors.
 
 **Command.** `glassine-docs search "<query>"` checks the site's `manifest.json` with
 its ETag, downloads only files whose hash changed, and keeps everything in
