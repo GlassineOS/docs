@@ -1020,18 +1020,28 @@ body {
 
 .md-sidebar {
   top: var(--gl-header-height);
-  padding: 24px 0;
+  padding: 32px 0;
 }
 
+/* The sidebars keep some air towards the text: the navigation wraps before it reaches
+   the column, the contents list starts clear of it. */
 @media screen and (min-width: 76.25em) {
   .md-sidebar--primary {
-    width: 250px;
+    width: 266px;
+  }
+
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    margin-right: 16px;
   }
 }
 
 @media screen and (min-width: 60em) {
   .md-sidebar--secondary {
-    width: 220px;
+    width: 236px;
+  }
+
+  .md-sidebar--secondary .md-sidebar__scrollwrap {
+    margin-left: 16px;
   }
 }
 

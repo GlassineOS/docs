@@ -231,6 +231,14 @@
   margin-bottom: 48px;
 }
 
+/* The sheet lies on the desk with leather showing on both sides. */
+@media screen and (min-width: 60em) {
+  [data-gl-voice="stationery"] .md-content {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+}
+
 /* Material's accent by surface: the pen on paper and sheet, on-accent (cream) where
    text lies on leather. Material's link hover rules read the accent, so setting it on
    these containers keeps hovered text in its own colour (plus the 2px underline)
