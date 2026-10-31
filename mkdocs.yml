@@ -8,9 +8,10 @@ copyright: Text CC-BY-SA-4.0 · GlassineOS is not affiliated with Onyx Internati
 
 theme:
   name: material
-  # "Interleaf": a strict print layer (greys, grid, rules) with a pen layer on top
-  # (accent colours, a hand, drawn marks). Templates and styles live in overrides/
-  # and docs/assets/.
+  # Three voices (White, Editorial, Stationery), each with three pens, in three
+  # schemes; the reader picks them in the header. All values come from
+  # theme/tokens.json (hooks/tokens.py turns them into CSS variables). Templates and
+  # styles live in overrides/ and docs/assets/.
   custom_dir: overrides
   # Fonts are self-hosted (docs/assets/fonts): no requests to Google Fonts.
   font: false
@@ -52,10 +53,15 @@ theme:
 
 extra_css:
   - assets/stylesheets/fonts.css
-  - assets/stylesheets/interleaf.css
+  - assets/stylesheets/tokens.css
+  - assets/stylesheets/glassine.css
+  - assets/stylesheets/voices.css
 
 extra_javascript:
-  - assets/javascripts/interleaf.js
+  - assets/javascripts/glassine.js
+
+hooks:
+  - hooks/tokens.py
 
 plugins:
   # The theme's search must stay first: the semantic search hooks into its search box.

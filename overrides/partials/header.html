@@ -1,6 +1,8 @@
-{#- Interleaf header: logo and name, search pill, accent picker, scheme button,
-    repository link. Material's search partial and data-md-component hooks are kept
-    unchanged. -#}
+{#- Header: logo and name, search field, the three appearance buttons (voice, scheme,
+    pen) and the repository link. Material's search partial and data-md-component
+    hooks are kept unchanged. The voices and pens come from theme/tokens.json (see
+    hooks/tokens.py). -#}
+{% set gl = config.extra.glassine_theme %}
 <header class="md-header gl-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header') }}">
     <label class="md-header__button md-icon gl-header__drawer" for="__drawer" title="{{ lang.t('nav') }}">
@@ -22,16 +24,21 @@
         {% include "partials/search.html" %}
       {% endif %}
     {% endif %}
-    <div class="gl-accent" role="group" aria-label="Accent colour" hidden>
-      <button type="button" class="gl-accent__button" data-gl-accent-value="cobalt" aria-pressed="false" aria-label="Accent: Cobalt and Marigold" title="Accent: Cobalt and Marigold"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><rect x="1" y="7" width="19" height="10" rx="3" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg></button>
-      <button type="button" class="gl-accent__button" data-gl-accent-value="vermilion" aria-pressed="false" aria-label="Accent: Vermilion and Mint" title="Accent: Vermilion and Mint"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><rect x="1" y="7" width="19" height="10" rx="3" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg></button>
-      <button type="button" class="gl-accent__button" data-gl-accent-value="violet" aria-pressed="false" aria-label="Accent: Violet and Peach" title="Accent: Violet and Peach"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><rect x="1" y="7" width="19" height="10" rx="3" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg></button>
-    </div>
-    {% if config.theme.palette %}
-      {% if not config.theme.palette is mapping %}
+    <div class="gl-appearance" role="group" aria-label="Appearance">
+      {#- Voice and pen need JavaScript; they stay hidden without it. -#}
+      <button type="button" class="gl-switch gl-switch--voice" data-gl-switch="voice" hidden>
+        <svg class="gl-switch__icon" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="M2 15 6.5 3h1L12 15M3.7 11h6.6M12.5 9.2c.6-.9 1.4-1.3 2.3-1.3 1.3 0 2.2.8 2.2 2.2V15M17 12.2c-.6-.3-1.3-.4-2-.4-1.4 0-2.5.6-2.5 1.8 0 .9.7 1.5 1.7 1.5 1.3 0 2.8-.9 2.8-2.9"/></svg>
+        <span class="gl-switch__name">{{ gl.voices[0].label }}</span>
+      </button>
+      {% if config.theme.palette and not config.theme.palette is mapping %}
         {% include "partials/palette.html" %}
       {% endif %}
-    {% endif %}
+      <button type="button" class="gl-switch gl-switch--pen" data-gl-switch="pen" hidden>
+        <svg class="gl-swatch" viewBox="0 0 28 20" aria-hidden="true" focusable="false"><rect x="1" y="7" width="19" height="10" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg>
+        <span class="gl-switch__name"></span>
+      </button>
+    </div>
+    <script type="application/json" id="__gl-tokens">{{ gl | tojson }}</script>
     {% if not config.theme.palette is mapping %}
       {% include "partials/javascripts/palette.html" %}
     {% endif %}
