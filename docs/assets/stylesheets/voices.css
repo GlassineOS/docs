@@ -231,6 +231,15 @@
   margin-bottom: 48px;
 }
 
+/* Material's accent by surface: the pen on paper and sheet, on-accent (cream) where
+   text lies on leather. Material's link hover rules read the accent, so setting it on
+   these containers keeps hovered text in its own colour (plus the 2px underline)
+   without fighting their specificity. On e-ink the desk is paper: the pen stays. */
+[data-gl-voice="stationery"] :is(.md-header, .md-footer),
+[data-gl-voice="stationery"]:not([data-md-color-scheme="eink"]) .md-sidebar {
+  --md-accent-fg-color: var(--gl-on-accent);
+}
+
 [data-gl-voice="stationery"] .md-content > .md-content__inner {
   padding-top: 36px;
 }
