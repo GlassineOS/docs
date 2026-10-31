@@ -58,6 +58,7 @@ nav:
       - decisions/0008-bring-your-own-stock-kernel.md
       - decisions/0009-specs-and-acceptance.md
       - decisions/0010-root-and-deployments.md
+      - decisions/0011-semantic-search.md
   - Dead ends: dead-ends/index.md
   - Contributing:
       - contributing/writing-docs.md
