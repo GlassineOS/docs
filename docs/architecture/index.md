@@ -13,7 +13,7 @@ in each repository's own `docs/` and are linked from here.
 | Distribution | Alpine base, our package and Flatpak repositories, images, updates | release |
 
 Pages: [Boot flow](boot-flow.md), [Root file system and deployments](root-and-deployments.md)
-(the update model).
+(the update model), [Search](search.md) (this site's search and `glassine-docs`).
 
 Planned pages: e-ink engine and its buffer protocol, the e-ink hint protocol, storage
 and encryption, recovery, package repositories and signing.

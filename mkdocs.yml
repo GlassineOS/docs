@@ -57,6 +57,11 @@ extra_css:
 extra_javascript:
   - assets/javascripts/interleaf.js
 
+plugins:
+  # The theme's search must stay first: the semantic search hooks into its search box.
+  - search
+  - glassine-search
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -88,6 +93,7 @@ nav:
       - architecture/index.md
       - architecture/boot-flow.md
       - architecture/root-and-deployments.md
+      - architecture/search.md
   - Decisions:
       - decisions/index.md
       - decisions/0001-independent-alpine-distribution.md

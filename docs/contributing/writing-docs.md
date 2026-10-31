@@ -51,5 +51,6 @@ title), `warning` (ink border, tab), `danger` (thick border, no undo).
 
 ```sh
 pip install -r requirements.txt
-mkdocs serve
+pip install -e "../search[build]"   # the search plugin, from a GlassineOS/search checkout
+GLASSINE_SEARCH_PROFILES=static mkdocs serve
 ```

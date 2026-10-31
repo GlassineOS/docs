@@ -8,6 +8,15 @@ on:
 permissions:
   contents: read
 
+env:
+  # GlassineOS/search, pinned by full commit. TODO: set after the repository is pushed.
+  GLASSINE_SEARCH_REF: 0000000000000000000000000000000000000000
+  # TEMPORARY: fetch model files from Hugging Face while the models-1 release of
+  # GlassineOS/search does not exist yet (hashes are checked either way). Remove
+  # this line, and "derive" in requirements-search.txt, once the release is up.
+  GLASSINE_MODELS_HF: "1"
+  NO_MKDOCS_2_WARNING: "1"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +25,21 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt -r requirements-search.txt
+      # Model files change only with the search package; embeddings are keyed by chunk
+      # text and model, so every build restores the newest set and saves its own.
+      - uses: actions/cache@v6
+        with:
+          path: .cache/glassine-search/models
+          key: search-models-${{ env.GLASSINE_SEARCH_REF }}
+          restore-keys: search-models-
+      - uses: actions/cache@v6
+        with:
+          path: .cache/glassine-search/embeddings
+          key: search-embeddings-${{ env.GLASSINE_SEARCH_REF }}-${{ github.sha }}
+          restore-keys: |
+            search-embeddings-${{ env.GLASSINE_SEARCH_REF }}-
+            search-embeddings-
       - run: mkdocs build --strict
       - uses: actions/upload-pages-artifact@v5
         if: github.event_name != 'pull_request' && !github.event.repository.private
