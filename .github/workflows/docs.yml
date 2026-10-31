@@ -8,6 +8,11 @@ on:
 permissions:
   contents: read
 
+env:
+  # GlassineOS/search, pinned by full commit. Models come from its release models-1.
+  GLASSINE_SEARCH_REF: 7ffb0a9f024b87b0744b0378186e16592d4d3176
+  NO_MKDOCS_2_WARNING: "1"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +21,21 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt -r requirements-search.txt
+      # Model files change only with the search package; embeddings are keyed by chunk
+      # text and model, so every build restores the newest set and saves its own.
+      - uses: actions/cache@v6
+        with:
+          path: .cache/glassine-search/models
+          key: search-models-${{ env.GLASSINE_SEARCH_REF }}
+          restore-keys: search-models-
+      - uses: actions/cache@v6
+        with:
+          path: .cache/glassine-search/embeddings
+          key: search-embeddings-${{ env.GLASSINE_SEARCH_REF }}-${{ github.sha }}
+          restore-keys: |
+            search-embeddings-${{ env.GLASSINE_SEARCH_REF }}-
+            search-embeddings-
       - run: mkdocs build --strict
       - uses: actions/upload-pages-artifact@v5
         if: github.event_name != 'pull_request' && !github.event.repository.private

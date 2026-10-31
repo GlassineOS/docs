@@ -1,0 +1,5 @@
+# The search build (MkDocs plugin glassine-search), pinned by full commit of
+# GlassineOS/search. CI sets GLASSINE_SEARCH_REF (see .github/workflows/docs.yml).
+# Locally: GLASSINE_SEARCH_REF=<commit> pip install -r requirements-search.txt,
+# or from a checkout: pip install -e "../search[build]".
+glassine-docs[build] @ git+https://github.com/GlassineOS/search@${GLASSINE_SEARCH_REF}
