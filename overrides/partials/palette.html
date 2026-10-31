@@ -1,5 +1,6 @@
 {#- Scheme button: Material's palette toggle (one radio per scheme, the visible label
-    switches to the next one), drawn as a pill that names the current scheme. -#}
+    switches to the next one), drawn as one of the appearance buttons. It names the
+    current scheme. -#}
 <form class="md-header__option gl-scheme" data-md-component="palette">
   {% for option in config.theme.palette %}
     {% set scheme  = option.scheme  | d("default", true) %}
@@ -7,9 +8,9 @@
     {% set accent  = option.accent  | d("indigo", true) %}
     <input class="md-option" data-md-color-media="{{ option.media }}" data-md-color-scheme="{{ scheme | replace(' ', '-') }}" data-md-color-primary="{{ primary | replace(' ', '-') }}" data-md-color-accent="{{ accent | replace(' ', '-') }}" {% if option.toggle %} aria-label="{{ option.toggle.name }}" {% else %} aria-hidden="true" {% endif %} type="radio" name="__palette" id="__palette_{{ loop.index0 }}">
     {% if option.toggle %}
-      <label class="gl-scheme__button" title="{{ option.toggle.name }}" for="__palette_{{ loop.index % loop.length }}" hidden>
-        <svg viewBox="0 0 18 18" aria-hidden="true" focusable="false"><circle class="gl-f-paper gl-s-ink" cx="9" cy="9" r="7.5" stroke-width="1.5"/><path class="gl-f-pen" d="M9 1.5 A7.5 7.5 0 0 1 9 16.5 Z"/></svg>
-        <span class="gl-scheme__name">{{ option.label | d(scheme) }}</span>
+      <label class="gl-switch gl-switch--scheme" title="{{ option.toggle.name }}" for="__palette_{{ loop.index % loop.length }}" hidden>
+        <svg class="gl-switch__icon" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><circle cx="9" cy="9" r="7.5"/><path d="M9 1.5 A7.5 7.5 0 0 1 9 16.5 Z" fill="currentColor" stroke="none"/></svg>
+        <span class="gl-switch__name">{{ option.label | d(scheme) }}</span>
       </label>
     {% endif %}
   {% endfor %}

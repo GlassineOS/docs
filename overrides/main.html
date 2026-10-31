@@ -1,5 +1,6 @@
-{#- Interleaf theme: page pagination sits at the end of the content column, below a
-    drawn rule, instead of in Material's footer bar. -#}
+{#- Page pagination sits at the end of the content column, below a rule, instead of in
+    Material's footer bar. The direction words are the White voice's; glassine.js puts
+    in the current voice's words (from theme/tokens.json). -#}
 {% extends "base.html" %}
 
 {% block content %}
@@ -9,13 +10,13 @@
     <nav class="gl-pagination{% if not page.previous_page %} gl-pagination--next-only{% endif %}" aria-label="{{ lang.t('footer') }}">
       {% if page.previous_page %}
         <a href="{{ page.previous_page.url | url }}" class="gl-pagination__link gl-pagination__link--prev" rel="prev">
-          <span class="gl-pagination__dir">← {{ lang.t("footer.previous") }}</span>
+          <span class="gl-pagination__dir" data-gl-word="previous">← {{ lang.t("footer.previous") }}</span>
           <span class="gl-pagination__title">{{ page.previous_page.title }}</span>
         </a>
       {% endif %}
       {% if page.next_page %}
         <a href="{{ page.next_page.url | url }}" class="gl-pagination__link gl-pagination__link--next" rel="next">
-          <span class="gl-pagination__dir">{{ lang.t("footer.next") }} →</span>
+          <span class="gl-pagination__dir" data-gl-word="next">{{ lang.t("footer.next") }} →</span>
           <span class="gl-pagination__title">{{ page.next_page.title }}</span>
         </a>
       {% endif %}

@@ -1,0 +1,2248 @@
+/* =====================================================================================
+   GlassineOS documentation theme, on top of Material for MkDocs.
+
+   One structure, three voices. White (the instrument: IBM Plex, keycap edges, a pen
+   layer of hand-drawn marks), Editorial (the journal: Source Serif, rules, frames,
+   small capitals) and Stationery (the desk: EB Garamond, leather, gold, laid paper,
+   all in flat colours). This file is the structure and the White voice; voices.css
+   changes the shapes for the other two. Every value that differs between voices,
+   pens and schemes is a --gl-* variable generated from theme/tokens.json.
+
+   Attributes on <body>: data-gl-voice=white|editorial|stationery, data-gl-pen=<pen>,
+   data-md-color-scheme=paper|night|eink (Material's palette toggle). E-ink is greys
+   only: pens become ink, the highlighter a light grey, no textures.
+   No animations or transitions anywhere: the docs are read on e-ink screens.
+   ===================================================================================== */
+
+/* ---- Tokens ----------------------------------------------------------------------------
+   The colours, fonts, sizes, edges and words of each voice come from theme/tokens.json,
+   turned into --gl-* variables in assets/stylesheets/tokens.css at build time. This
+   file uses them; voices.css holds what differs in shape between the voices. */
+
+:root {
+  --gl-header-height: 72px;
+}
+
+/* Map the tokens onto Material's variables. */
+[data-md-color-scheme="paper"],
+[data-md-color-scheme="night"],
+[data-md-color-scheme="eink"] {
+  --md-default-bg-color: var(--gl-paper);
+  --md-default-bg-color--light: var(--gl-paper);
+  --md-default-bg-color--lighter: var(--gl-sheet);
+  --md-default-bg-color--lightest: var(--gl-sheet);
+  --md-default-fg-color: var(--gl-ink);
+  --md-default-fg-color--light: var(--gl-ink-soft);
+  --md-default-fg-color--lighter: var(--gl-ink-soft);
+  --md-default-fg-color--lightest: var(--gl-rule);
+
+  --md-primary-fg-color: var(--gl-paper);
+  --md-primary-fg-color--light: var(--gl-hl);
+  --md-primary-fg-color--dark: var(--gl-paper);
+  --md-primary-bg-color: var(--gl-ink);
+  --md-primary-bg-color--light: var(--gl-ink-soft);
+  --md-accent-fg-color: var(--gl-pen);
+  --md-accent-fg-color--transparent: var(--gl-sheet);
+  --md-accent-bg-color: var(--gl-paper);
+  --md-accent-bg-color--light: var(--gl-paper);
+
+  --md-typeset-color: var(--gl-ink);
+  --md-typeset-a-color: var(--gl-pen);
+  --md-typeset-mark-color: var(--gl-hl);
+  --md-typeset-del-color: var(--gl-sheet);
+  --md-typeset-ins-color: var(--gl-sheet);
+  --md-typeset-kbd-color: var(--gl-paper);
+  --md-typeset-kbd-accent-color: var(--gl-paper);
+  --md-typeset-kbd-border-color: var(--gl-ink);
+  --md-typeset-table-color: var(--gl-rule);
+  --md-typeset-table-color--light: var(--gl-sheet);
+
+  --md-code-bg-color: var(--gl-sheet);
+  --md-code-fg-color: var(--gl-ink);
+  --md-code-hl-color: var(--gl-hl);
+  --md-code-hl-color--light: var(--gl-hl);
+  --md-code-hl-number-color: var(--gl-ink);
+  --md-code-hl-special-color: var(--gl-ink);
+  --md-code-hl-function-color: var(--gl-ink);
+  --md-code-hl-constant-color: var(--gl-ink);
+  --md-code-hl-keyword-color: var(--gl-ink);
+  --md-code-hl-string-color: var(--gl-ink);
+  --md-code-hl-name-color: var(--gl-ink);
+  --md-code-hl-operator-color: var(--gl-ink);
+  --md-code-hl-punctuation-color: var(--gl-ink);
+  --md-code-hl-comment-color: var(--gl-ink-soft);
+  --md-code-hl-generic-color: var(--gl-ink);
+  --md-code-hl-variable-color: var(--gl-ink);
+
+  --md-admonition-fg-color: var(--gl-ink);
+  --md-admonition-bg-color: var(--gl-paper);
+
+  --md-footer-fg-color: var(--gl-ink);
+  --md-footer-fg-color--light: var(--gl-ink-soft);
+  --md-footer-fg-color--lighter: var(--gl-ink-soft);
+  --md-footer-bg-color: var(--gl-paper);
+  --md-footer-bg-color--dark: var(--gl-paper);
+
+  --md-mermaid-font-family: var(--gl-font-hand);
+  --md-mermaid-edge-color: var(--gl-ink);
+  --md-mermaid-node-bg-color: var(--gl-paper);
+  --md-mermaid-node-fg-color: var(--gl-ink);
+  --md-mermaid-label-bg-color: var(--gl-sheet);
+  --md-mermaid-label-fg-color: var(--gl-ink);
+
+  --md-shadow-z1: none;
+  --md-shadow-z2: none;
+  --md-shadow-z3: none;
+  --md-text-font-family: var(--gl-font-text);
+  --md-code-font-family: var(--gl-font-code);
+}
+
+/* ---- Drawn marks (masks, filled with the pen colour) -------------------------------- */
+
+:root {
+  --gl-mask-circle-a: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -2 106 96'><path d='M58 6 C 90 8, 98 40, 88 62 C 76 88, 30 92, 12 70 C -2 52, 6 18, 34 9 C 46 5, 60 5, 72 10' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'/></svg>");
+  --gl-mask-circle-b: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -2 106 96'><path d='M40 8 C 74 2, 98 30, 90 58 C 82 86, 36 92, 14 72 C -4 54, 4 22, 30 12 C 42 7, 56 6, 66 9' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'/></svg>");
+  --gl-mask-rule: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 16' preserveAspectRatio='none'><path d='M3 9 C 40 2, 70 14, 110 8 S 180 2, 220 8 S 290 14, 330 8 S 400 2, 440 8 S 520 14, 597 7' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'/></svg>");
+  --gl-mask-squiggle: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'><path d='M2 6 C 30 1, 50 9, 80 5 S 140 1, 198 6' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'/></svg>");
+  --gl-mask-bullet: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 14'><path d='M2 7 C 6 5, 11 9, 16 6' fill='none' stroke='black' stroke-width='2.8' stroke-linecap='round'/></svg>");
+  --gl-mask-stroke-v: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 100' preserveAspectRatio='none'><path d='M6 2 C 3 30, 9 60, 5 98' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'/></svg>");
+  --gl-mask-arrow: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 20' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M2 11 C 10 8, 18 12, 27 10'/><path d='M20 3 L27 10 L19 17'/></svg>");
+  --gl-mask-info: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'><circle cx='9' cy='9' r='7.5'/><path d='M9 8v5M9 5v.5'/></svg>");
+  --gl-mask-warning: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8'><path d='M8 1.5 14.8 14H1.2Z' stroke-linejoin='round'/><path d='M8 6v4M8 11.6v.6' stroke-linecap='round'/></svg>");
+  --gl-mask-danger: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3 3l10 10M13 3 3 13' stroke='black' stroke-width='2.2' stroke-linecap='round'/></svg>");
+  --gl-mask-chevron: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 2l5 5-5 5'/></svg>");
+  --gl-mask-copy: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'><rect x='5' y='5' width='9' height='9' rx='2'/><path d='M11 2H4a2 2 0 0 0-2 2v7'/></svg>");
+  --gl-mask-search: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'><circle cx='10.5' cy='10.5' r='6.5'/><path d='M15.5 15.5 21 21'/></svg>");
+  --gl-mask-check: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9.5l4 4L15 4'/></svg>");
+}
+
+/* ---- No motion -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  transition: none !important;
+  animation: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* ---- Base ------------------------------------------------------------------------------- */
+
+body {
+  background-color: var(--gl-desk);
+  color: var(--gl-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gl-pen) !important;
+  outline-offset: 2px;
+}
+
+/* Wider grid, as drawn (1440 px frame, 32 px gutters). */
+.md-grid {
+  max-width: 1440px;
+}
+
+/* ---- Header ----------------------------------------------------------------------------- */
+
+.md-header {
+  background: var(--gl-bar-bg);
+  color: var(--gl-bar-fg);
+  border-bottom: var(--gl-bar-border);
+  box-shadow: var(--gl-bar-shadow);
+}
+
+.md-header--shadow {
+  box-shadow: var(--gl-bar-shadow);
+}
+
+.md-header__inner {
+  position: relative;
+  min-height: var(--gl-header-height);
+  padding: 0 32px;
+  gap: 12px;
+  font-family: var(--gl-font-text);
+}
+
+.md-header__button {
+  margin: 0;
+  padding: 0;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gl-bar-fg);
+  border-radius: var(--gl-radius-ui);
+}
+
+.md-header__button:hover {
+  opacity: 1;
+  background: transparent;
+  box-shadow: var(--gl-edge-button);
+}
+
+/* SVG helpers for inline drawings: fill/stroke from the tokens. */
+.gl-f-paper { fill: var(--gl-paper); }
+.gl-f-sheet { fill: var(--gl-sheet); }
+.gl-f-ink { fill: var(--gl-ink); }
+.gl-f-hl { fill: var(--gl-hl); }
+.gl-f-pen { fill: var(--gl-pen); }
+.gl-s-ink { stroke: var(--gl-ink); }
+.gl-s-soft { stroke: var(--gl-ink-soft); }
+.gl-s-pen { stroke: var(--gl-pen); }
+
+.gl-brand {
+  display: inline-flex;
+  min-width: 44px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  color: var(--gl-bar-brand);
+  text-decoration: none;
+}
+
+.gl-brand:hover,
+.gl-brand:focus {
+  color: var(--gl-bar-brand);
+}
+
+.gl-logo {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  overflow: visible;
+}
+
+.gl-logo__sheet { stroke: var(--gl-logo-stroke); rx: var(--gl-logo-radius); }
+.gl-logo__leaf { fill: var(--gl-logo-fill); rx: var(--gl-logo-radius); }
+.gl-logo__stroke { stroke: var(--gl-logo-pen); }
+
+.gl-brand__name {
+  font-family: var(--gl-font-head);
+  font-size: 23px;
+  font-weight: var(--gl-brand-weight);
+  font-style: var(--gl-brand-style);
+  font-variant: var(--gl-head-variant);
+  letter-spacing: var(--gl-brand-spacing);
+  white-space: nowrap;
+}
+
+.gl-brand__name em {
+  font-style: inherit;
+  font-weight: inherit;
+}
+
+.gl-header__spacer {
+  flex: 1 1 24px;
+}
+
+/* One label style, used wherever the page labels rather than tells: header buttons,
+   section labels, table heads, code titles, the direction of the pagination. */
+.gl-label,
+.gl-switch,
+.md-nav--secondary .md-nav__title,
+.md-typeset table:not([class]) th,
+.md-typeset .highlight span.filename,
+.gl-pagination__dir,
+.md-path {
+  font-family: var(--gl-font-label);
+  font-size: var(--gl-label-size);
+  font-weight: var(--gl-label-weight);
+  font-variant: var(--gl-label-variant);
+  text-transform: var(--gl-label-transform);
+  letter-spacing: var(--gl-label-spacing);
+}
+
+/* Search field (Material's search form, restyled; DOM and hooks unchanged). */
+.md-search {
+  flex: 0 1 560px;
+  min-width: 0;
+}
+
+@media screen and (min-width: 60em) {
+  .md-search {
+    padding: 0;
+  }
+
+  .md-search__inner,
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__inner {
+    width: 560px;
+    max-width: 100%;
+    float: none;
+    padding: 0;
+  }
+
+  .md-search__form,
+  .md-search__form:hover,
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+    height: 44px;
+    border-radius: var(--gl-radius-ui);
+    background: var(--gl-field-bg);
+    box-shadow: var(--gl-edge-field);
+  }
+
+  .md-search__input {
+    height: 44px;
+    padding-left: 46px;
+    border-radius: var(--gl-radius-ui);
+    background: transparent;
+    color: var(--gl-field-fg);
+    font-family: var(--gl-font-text);
+    font-size: 16px;
+  }
+
+  .md-search__input::placeholder {
+    font-style: var(--gl-title-style);
+  }
+
+  .md-search__input::placeholder,
+  .md-search__input ~ .md-search__icon,
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__input,
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__input::placeholder {
+    color: var(--gl-field-fg);
+  }
+
+  .md-search__icon[for="__search"] {
+    top: 12px;
+    left: 16px;
+    color: var(--gl-field-fg);
+  }
+
+  /* The open search: the results panel hangs from the field with the same left and
+     right edges. */
+  [dir] .md-search__output {
+    top: 44px;
+    left: 0;
+    right: 0;
+    width: auto;
+    max-width: none;
+    box-sizing: border-box;
+    border: 1.5px solid var(--gl-ink);
+    border-top: 0;
+    border-radius: 0 0 var(--gl-radius-ui) var(--gl-radius-ui);
+    box-shadow: none;
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__output {
+    box-shadow: none;
+  }
+
+  [dir] .md-search__scrollwrap {
+    width: 100%;
+    background-color: var(--gl-paper);
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header :is(.md-search__form, .md-search__input) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .md-search__options {
+    top: 6px;
+    right: 6px;
+  }
+
+  .md-search__suggest {
+    padding-left: 46px;
+    font-family: var(--gl-font-text);
+    font-size: 16px;
+    line-height: 44px;
+    color: var(--gl-ink-soft);
+  }
+
+  /* Material hides header options while the search is open: keep them, nothing moves. */
+  [data-md-toggle="search"]:checked ~ .md-header .md-header__option {
+    max-width: 100%;
+    opacity: 1;
+  }
+}
+
+.md-search__overlay {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.md-search-result {
+  color: var(--gl-ink);
+}
+
+.md-search-result__meta {
+  background-color: var(--gl-sheet);
+  color: var(--gl-ink-soft);
+  font-family: var(--gl-font-text);
+}
+
+.md-search-result__link:focus,
+.md-search-result__link:hover,
+.md-search-result__more > summary:focus > div,
+.md-search-result__more > summary:hover > div {
+  background-color: var(--gl-sheet);
+}
+
+.md-search-result mark {
+  color: var(--gl-ink);
+  background: linear-gradient(transparent 58%, var(--gl-hl) 58%);
+  text-decoration: none;
+}
+
+.md-search-result__icon {
+  color: var(--gl-ink-soft);
+}
+
+/* Appearance: voice, scheme and pen, each a button that steps to the next choice.
+   The scheme button is Material's palette toggle (one radio per scheme; the visible
+   label switches to the next one). */
+.gl-appearance {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.md-header__option.gl-scheme {
+  max-width: none;
+  min-width: 44px;
+  opacity: 1;
+  flex: none;
+}
+
+.gl-switch {
+  height: 44px;
+  min-width: 44px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: var(--gl-radius-ui);
+  background: var(--gl-button-bg);
+  color: var(--gl-button-fg);
+  box-shadow: var(--gl-edge-button);
+  cursor: pointer;
+  white-space: nowrap;
+  /* No pressed or tap flashes: the state after a click is the state after a reload. */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.gl-switch[hidden],
+.gl-switch--pen[hidden] {
+  display: none;
+}
+
+.gl-switch:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.gl-switch__icon {
+  display: none;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.gl-switch--pen {
+  padding: 0 14px 0 10px;
+}
+
+.gl-swatch {
+  width: 30px;
+  height: 20px;
+  flex: none;
+}
+
+.gl-swatch rect { fill: var(--gl-swatch-2); rx: var(--gl-swatch-radius); }
+.gl-swatch circle { fill: var(--gl-swatch-1); }
+
+/* Greys only in E-ink: there is no pen to choose. */
+[data-md-color-scheme="eink"] .gl-switch--pen {
+  display: none;
+}
+
+/* Material shows the label after the checked radio with display:block. After a click
+   one radio is checked, after a reload none is (Material keeps the state in storage),
+   so the button would change layout on click. Keep it a flex button in both. */
+.md-option:checked + .gl-switch:not([hidden]) {
+  display: inline-flex;
+}
+
+.md-option.focus-visible + .gl-switch,
+.md-option:focus-visible + .gl-switch {
+  outline: 2px solid var(--gl-pen);
+  outline-offset: 2px;
+}
+
+/* Repository link. */
+.md-header__source.gl-header__source {
+  width: auto;
+  margin: 0;
+  flex: none;
+}
+
+.gl-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--gl-font-text);
+  font-size: 15px;
+  color: var(--gl-bar-fg);
+  text-decoration: none;
+}
+
+.gl-source:hover {
+  color: var(--gl-bar-fg);
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.gl-source__icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Header on smaller screens. */
+@media screen and (min-width: 76.25em) {
+  .gl-header__drawer {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 76.234375em) {
+  .md-header__inner {
+    padding: 0 16px;
+  }
+}
+
+@media screen and (max-width: 59.984375em) {
+  .md-header__inner {
+    min-height: 64px;
+    gap: 6px;
+    padding: 0 12px;
+  }
+
+  .gl-header__source {
+    display: none;
+  }
+
+  .md-search {
+    flex: none;
+  }
+}
+
+/* Phones: the buttons keep their 44 px but show an icon; the name stays for screen
+   readers. */
+@media screen and (max-width: 44.984375em) {
+  .gl-appearance {
+    gap: 6px;
+  }
+
+  .gl-switch__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .gl-switch,
+  .gl-switch--pen {
+    width: 44px;
+    padding: 0;
+  }
+
+  .gl-switch__icon {
+    display: block;
+  }
+
+  .gl-swatch {
+    width: 26px;
+  }
+}
+
+@media screen and (max-width: 29.984375em) {
+  .gl-brand__name {
+    display: none;
+  }
+}
+
+/* Search overlay on phones and tablets: Material's full-width panel, recoloured. */
+@media screen and (max-width: 59.984375em) {
+  .md-search__inner {
+    background-color: var(--gl-paper);
+  }
+
+  .md-search__form {
+    background-color: var(--gl-paper);
+    border-bottom: 1px solid var(--gl-rule);
+    height: var(--gl-header-height);
+  }
+
+  .md-search__input {
+    height: 100%;
+    font-family: var(--gl-font-text);
+    font-size: 18px;
+    color: var(--gl-ink);
+  }
+
+  .md-search__icon[for="__search"] {
+    width: 44px;
+    height: 44px;
+    top: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gl-ink);
+  }
+
+  .md-search__input + .md-search__icon {
+    color: var(--gl-ink);
+  }
+
+  .md-search__options {
+    top: 14px;
+  }
+
+  .md-search__options > .md-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .md-search__suggest {
+    display: none;
+  }
+
+  /* The result list starts below the (taller) search bar. */
+  .md-search__output {
+    top: var(--gl-header-height);
+  }
+
+  .md-search__scrollwrap {
+    background-color: var(--gl-paper);
+  }
+}
+
+/* ---- Layout ----------------------------------------------------------------------------- */
+
+.md-main__inner {
+  margin-top: 24px;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 76.234375em) {
+  .md-main__inner {
+    padding: 0;
+  }
+}
+
+.md-sidebar {
+  top: var(--gl-header-height);
+  padding: 24px 0;
+}
+
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary {
+    width: 250px;
+  }
+}
+
+@media screen and (min-width: 60em) {
+  .md-sidebar--secondary {
+    width: 220px;
+  }
+}
+
+/* Reading measure; on wide screens the free left margin carries the section numbers. */
+.md-content__inner {
+  max-width: 720px;
+  margin: 0 16px 32px;
+  padding-top: 8px;
+}
+
+@media screen and (min-width: 60em) {
+  .md-content > .md-content__inner {
+    margin: 0 48px 48px 40px !important;
+  }
+}
+
+@media screen and (min-width: 76.25em) {
+  .md-content > .md-content__inner {
+    margin: 0 64px 48px 88px !important;
+  }
+
+  /* Pages without a table of contents (the home page) get the wider column. */
+  .md-main__inner:has(.md-sidebar--secondary[hidden]) .md-content__inner {
+    max-width: 940px;
+  }
+}
+
+.md-content__inner::before {
+  display: none;
+}
+
+/* ---- Navigation (left) ------------------------------------------------------------------ */
+
+.md-nav {
+  font-family: var(--gl-font-text);
+  font-size: var(--gl-nav-size);
+  line-height: 1.4;
+}
+
+.md-nav__link {
+  margin-top: 0;
+  padding: 5px 0;
+  min-height: 32px;
+  box-sizing: border-box;
+  align-items: center;
+  color: var(--gl-nav-fg);
+}
+
+.md-nav__link:hover,
+.md-nav__link:focus,
+.md-nav__item .md-nav__link--active:hover {
+  color: var(--gl-nav-fg);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.md-nav__item .md-nav__link--active,
+.md-nav__item .md-nav__link--active code {
+  color: var(--gl-nav-fg);
+}
+
+/* Current page: in White a hand-swiped highlighter mark; the other voices underline,
+   or lay gold foil, through the same tokens. */
+.md-nav--primary .md-nav__link--active:not(.md-nav__container) ,
+.md-nav--primary .md-nav__container:has(> .md-nav__link--active) > .md-nav__link--active {
+  font-weight: 600;
+}
+
+.md-nav--primary .md-nav__link--active .md-ellipsis {
+  padding: 4px 12px;
+  margin-left: -12px;
+  color: var(--gl-nav-on-fg);
+  background: var(--gl-nav-on-bg);
+  font-style: var(--gl-nav-on-style);
+  text-decoration: var(--gl-nav-on-decoration);
+  text-decoration-color: var(--gl-pen);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  border-radius: var(--gl-nav-on-radius);
+  transform: rotate(var(--gl-nav-on-rotate));
+  display: inline-block;
+  max-width: calc(100% + 12px);
+  white-space: normal;
+}
+
+.gl-nav-number {
+  font-family: var(--gl-font-code);
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--gl-nav-soft);
+  margin-right: 4px;
+}
+
+.md-nav__link--active .gl-nav-number {
+  color: inherit;
+}
+
+@media screen and (min-width: 76.25em) {
+  .md-nav--primary > .md-nav__list > .md-nav__item {
+    margin-bottom: 4px;
+  }
+
+  /* Section labels, in the voice's label style. */
+  .md-nav--primary .md-nav__item--section {
+    margin: 20px 0 0;
+    padding-top: 14px;
+    border-top: var(--gl-nav-sep);
+  }
+
+  .md-nav--primary > .md-nav__list > .md-nav__item--section:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav__link {
+    font-family: var(--gl-font-label);
+    font-size: var(--gl-label-size);
+    font-weight: var(--gl-label-weight);
+    font-variant: var(--gl-label-variant);
+    text-transform: var(--gl-label-transform);
+    letter-spacing: var(--gl-label-spacing);
+    color: var(--gl-nav-soft);
+    min-height: 0;
+    padding: 0 0 4px;
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav__link a,
+  .md-nav--primary .md-nav__item--section > .md-nav__container > a {
+    color: var(--gl-nav-soft);
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav__link--active .md-ellipsis,
+  .md-nav--primary .md-nav__item--section > .md-nav__container > .md-nav__link--active .md-ellipsis {
+    color: var(--gl-nav-on-fg);
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav {
+    margin-left: 0;
+  }
+
+  .md-nav--primary .md-nav__item--section .md-nav__item {
+    padding: 0;
+  }
+
+  .md-nav--primary > .md-nav__title,
+  .md-nav--primary > .md-nav__source {
+    display: none;
+  }
+}
+
+/* Coarse pointers (phones, e-ink tablets): every link is a 44 px target. */
+@media (pointer: coarse) {
+  .md-nav__link,
+  .md-nav--primary .md-nav__item--section > .md-nav__link {
+    min-height: 44px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* Drawer (phones and tablets). */
+@media screen and (max-width: 76.234375em) {
+  .md-sidebar--primary {
+    background: var(--gl-desk);
+    border-right: 1px solid var(--gl-rule);
+  }
+
+  .md-nav--primary .md-nav__title {
+    background: var(--gl-bar-bg);
+    color: var(--gl-bar-fg);
+    border-bottom: var(--gl-bar-border);
+    font-family: var(--gl-font-head);
+    font-size: 21px;
+    font-weight: 600;
+    height: auto;
+    min-height: 72px;
+    padding: 16px 16px 12px 72px;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+  }
+
+  .md-nav--primary .md-nav__title .md-nav__button.md-logo {
+    left: 16px;
+    top: 14px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .md-nav--primary .md-nav__title .md-nav__button.md-logo svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .md-nav--primary .md-nav__title[for="__drawer"] {
+    background: var(--gl-bar-bg);
+  }
+
+  .md-nav--primary > .md-nav__source {
+    background: var(--gl-bar-bg);
+    color: var(--gl-bar-fg);
+    padding: 4px 16px;
+  }
+
+  .md-nav--primary .md-nav__item {
+    border-top: 1px solid var(--gl-rule);
+  }
+
+  .md-nav--primary .md-nav__link {
+    min-height: 48px;
+    padding: 4px 16px;
+    margin: 0;
+  }
+
+  .md-nav--primary .md-nav__link--active .md-ellipsis {
+    margin-left: -6px;
+    padding: 2px 8px;
+  }
+
+  .md-nav__toggle ~ .md-nav {
+    background: var(--gl-desk);
+  }
+
+  .md-nav__title .md-nav__icon {
+    color: var(--gl-bar-fg);
+  }
+}
+
+/* ---- On this page (right) -------------------------------------------------------------- */
+
+.md-nav--secondary .md-nav__title {
+  color: var(--gl-nav-soft);
+  background: transparent;
+  box-shadow: none;
+  padding: 0 0 6px;
+  position: static;
+}
+
+.md-nav--secondary > .md-nav__list {
+  counter-reset: gl-toc;
+}
+
+.md-nav--secondary > .md-nav__list > .md-nav__item {
+  counter-increment: gl-toc;
+}
+
+.md-nav--secondary > .md-nav__list > .md-nav__item > .md-nav__link {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.md-nav--secondary > .md-nav__list > .md-nav__item > .md-nav__link::before {
+  content: counter(gl-toc, var(--gl-num-list));
+  flex: none;
+  min-width: 0.8em;
+  font-family: var(--gl-font-num);
+  font-style: var(--gl-num-style);
+  font-size: 17px;
+  line-height: 1;
+  color: var(--gl-nav-soft);
+}
+
+.md-nav--secondary .md-nav__link--active {
+  color: var(--gl-toc-on);
+  font-weight: 600;
+}
+
+.md-nav--secondary .md-nav__link--active::before {
+  color: var(--gl-toc-on) !important;
+}
+
+.md-nav--secondary .md-nav__link--active:hover,
+.md-nav--secondary .md-nav__link--active:focus {
+  color: var(--gl-toc-on);
+}
+
+.md-nav--secondary .md-nav .md-nav {
+  margin-left: 28px;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav__link {
+  color: var(--gl-nav-soft);
+  font-size: 14px;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav__link--active {
+  color: var(--gl-toc-on);
+}
+
+/* ---- Breadcrumb: the page's eyebrow ---------------------------------------------------- */
+
+.md-path {
+  margin: 8px 16px 0;
+  color: var(--gl-label-colour);
+}
+
+@media screen and (min-width: 60em) {
+  .md-path {
+    margin-left: 40px;
+  }
+}
+
+@media screen and (min-width: 76.25em) {
+  .md-path {
+    margin-left: 88px;
+  }
+}
+
+.md-path__link {
+  color: var(--gl-label-colour);
+}
+
+.md-path__link:hover,
+.md-path__link:focus {
+  color: var(--gl-label-colour);
+  text-decoration: underline;
+}
+
+/* The home page is implied: show only the section. */
+.md-path__item:first-child:not(:only-child) {
+  display: none;
+}
+
+.md-path__item:not(:first-child)::before {
+  background-color: currentColor;
+}
+
+.md-path__item:nth-child(2)::before {
+  display: none;
+}
+
+.md-path__item:nth-child(2) {
+  padding-left: 0;
+}
+
+/* ---- Typeset -------------------------------------------------------------------------- */
+
+.md-typeset {
+  font-family: var(--gl-font-text);
+  font-size: var(--gl-body-size);
+  line-height: var(--gl-line-height);
+  color: var(--gl-ink);
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  font-family: var(--gl-font-head);
+  color: var(--gl-ink);
+  font-weight: var(--gl-h2-weight);
+  letter-spacing: var(--gl-head-spacing);
+}
+
+/* The page head: the title above a rule (single, double or gold, by voice). */
+.md-typeset h1 {
+  font-size: var(--gl-h1-size);
+  font-weight: var(--gl-h1-weight);
+  font-style: var(--gl-h1-style);
+  line-height: 1.1;
+  letter-spacing: var(--gl-h1-spacing);
+  margin: 0 0 28px;
+  padding-bottom: 20px;
+  border-bottom: var(--gl-head-rule);
+}
+
+.md-typeset h1 em,
+.md-typeset h2 em {
+  font-weight: 400;
+}
+
+.md-typeset h2 {
+  font-size: var(--gl-h2-size);
+  font-variant: var(--gl-head-variant);
+  line-height: 1.2;
+  margin: 56px 0 18px;
+  padding-top: var(--gl-h2-pad);
+  border-top: var(--gl-h2-rule);
+  position: relative;
+}
+
+.md-typeset h3 {
+  font-size: calc(var(--gl-body-size) * 1.25);
+  line-height: 1.3;
+  margin: 36px 0 12px;
+}
+
+.md-typeset h4 {
+  font-family: var(--gl-font-text);
+  font-size: var(--gl-body-size);
+  font-weight: 600;
+  letter-spacing: 0;
+  margin: 28px 0 8px;
+}
+
+.md-typeset p,
+.md-typeset ul,
+.md-typeset ol {
+  margin: 0 0 22px;
+}
+
+.md-typeset strong {
+  font-weight: var(--gl-strong-weight);
+}
+
+.md-typeset em {
+  font-style: italic;
+}
+
+/* Section numbers: each h2 of the page gets its number. White circles it by hand in
+   the pen colour; Editorial sets "§ 1" in the margin; Stationery "I." in gold, inline.
+   They hang into the free left margin on wide screens. */
+.md-content__inner {
+  counter-reset: gl-h2;
+}
+
+.md-content__inner > h2 {
+  counter-increment: gl-h2;
+  padding-left: 66px;
+}
+
+.md-content__inner > h2::before,
+.md-content__inner > h2::after {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 56px;
+  height: 54px;
+  margin-top: -27px;
+}
+
+.md-content__inner > h2::before {
+  content: var(--gl-num-prefix) counter(gl-h2, var(--gl-num-list)) var(--gl-num-suffix);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--gl-font-num);
+  font-size: var(--gl-num-size);
+  font-weight: var(--gl-num-weight);
+  font-style: var(--gl-num-style);
+  font-variant: normal;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--gl-num-colour);
+}
+
+.md-content__inner > h2::after {
+  content: "";
+  background-color: var(--gl-pen);
+  -webkit-mask: var(--gl-mask-circle-a) center / 100% 100% no-repeat;
+  mask: var(--gl-mask-circle-a) center / 100% 100% no-repeat;
+}
+
+.md-content__inner > h2:nth-of-type(even)::after {
+  -webkit-mask-image: var(--gl-mask-circle-b);
+  mask-image: var(--gl-mask-circle-b);
+}
+
+@media screen and (min-width: 76.25em) {
+  .md-content__inner > h2 {
+    padding-left: 0;
+  }
+
+  .md-content__inner > h2::before,
+  .md-content__inner > h2::after {
+    left: -74px;
+  }
+}
+
+/* Permalinks. */
+.md-typeset .headerlink {
+  color: var(--gl-ink-soft);
+  font-family: var(--gl-font-text);
+  font-style: normal;
+  margin-left: 8px;
+}
+
+.md-typeset .headerlink:hover,
+.md-typeset .headerlink:focus,
+.md-typeset :target > .headerlink {
+  color: var(--gl-pen);
+}
+
+/* Links: White draws a low highlighter band (filled on hover); the other voices
+   underline in the pen colour or in gold. */
+.md-typeset a {
+  color: var(--gl-link-colour);
+  text-decoration: var(--gl-link-decoration);
+  text-decoration-color: var(--gl-link-decoration-colour);
+  text-decoration-thickness: var(--gl-link-thickness);
+  text-underline-offset: 4px;
+  background: var(--gl-link-band);
+  padding: 0 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.md-typeset a:hover,
+.md-typeset a:focus {
+  color: var(--gl-ink);
+  text-decoration-color: var(--gl-ink);
+  background: var(--gl-link-hover, var(--gl-hl));
+}
+
+.md-typeset a.headerlink,
+.md-typeset a.md-clipboard,
+.md-typeset a.gl-card,
+.md-typeset .gl-cards a,
+.md-typeset .md-search-result__link,
+.md-typeset a.gl-pagination__link {
+  background: none;
+  padding: 0;
+  text-decoration: none;
+}
+
+.md-typeset a code {
+  color: inherit;
+  background: transparent;
+}
+
+/* Highlighter mark: ==text== */
+.md-typeset mark {
+  color: inherit;
+  background: var(--gl-mark);
+  text-decoration: var(--gl-mark-decoration);
+  text-decoration-color: var(--gl-pen);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  padding: 0 3px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Squiggle underline: *text*{ .gl-squiggle } */
+.md-typeset .gl-squiggle {
+  font-style: inherit;
+  position: relative;
+  white-space: nowrap;
+  color: var(--gl-ink);
+}
+
+.md-typeset .gl-squiggle::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 10px;
+  background-color: var(--gl-pen);
+  -webkit-mask: var(--gl-mask-squiggle) center / 100% 100% no-repeat;
+  mask: var(--gl-mask-squiggle) center / 100% 100% no-repeat;
+}
+
+/* Lead paragraph: a paragraph with { .gl-lead } */
+.md-typeset .gl-lead {
+  font-size: var(--gl-lead-size);
+  line-height: 1.5;
+  color: var(--gl-ink-soft);
+}
+
+.md-typeset .gl-lead mark,
+.md-typeset .gl-lead strong {
+  color: var(--gl-ink);
+}
+
+/* Lists: drawn dashes in the pen colour. */
+.md-typeset ul:not([class]) {
+  list-style: none;
+}
+
+.md-typeset ul:not([class]) > li {
+  position: relative;
+  margin-left: 32px;
+  margin-bottom: 12px;
+}
+
+.md-typeset ul:not([class]) > li::before {
+  content: "";
+  position: absolute;
+  left: -32px;
+  top: 0.6em;
+  width: 18px;
+  height: 14px;
+  background-color: var(--gl-pen);
+  -webkit-mask: var(--gl-mask-bullet) center / contain no-repeat;
+  mask: var(--gl-mask-bullet) center / contain no-repeat;
+}
+
+.md-typeset ol li {
+  margin-left: 32px;
+  margin-bottom: 12px;
+}
+
+.md-typeset ol li::marker {
+  font-family: var(--gl-font-num);
+  font-style: var(--gl-num-style);
+  font-weight: var(--gl-num-weight);
+  color: var(--gl-num-colour);
+}
+
+.md-typeset li > ul,
+.md-typeset li > ol {
+  margin-top: 12px;
+}
+
+/* Squiggle rule: --- */
+.md-typeset hr {
+  height: 16px;
+  margin: 40px 0;
+  border: 0;
+  background-color: var(--gl-pen);
+  -webkit-mask: var(--gl-mask-rule) center / 100% 100% no-repeat;
+  mask: var(--gl-mask-rule) center / 100% 100% no-repeat;
+}
+
+/* Quote: a single pen stroke down the left side. */
+.md-typeset blockquote {
+  position: relative;
+  margin: 0 0 22px;
+  padding: 4px 0 4px 22px;
+  border-left: 0;
+  font-size: var(--gl-lead-size);
+  line-height: 1.5;
+  color: var(--gl-ink);
+}
+
+.md-typeset blockquote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background-color: var(--gl-pen);
+  -webkit-mask: var(--gl-mask-stroke-v) center / 100% 100% no-repeat;
+  mask: var(--gl-mask-stroke-v) center / 100% 100% no-repeat;
+}
+
+/* Inline code and keys. */
+.md-typeset code,
+.md-typeset kbd,
+.md-typeset pre {
+  font-family: var(--gl-font-code);
+}
+
+.md-typeset code {
+  font-size: 0.8em;
+  padding: 2px 6px;
+  border-radius: var(--gl-radius-code);
+  background-color: var(--gl-sheet);
+  color: var(--gl-ink);
+  word-break: normal;
+}
+
+.md-typeset kbd {
+  font-size: 0.78em;
+  color: var(--gl-ink);
+  background: var(--gl-paper);
+  border: 0;
+  border-radius: min(var(--gl-radius-ui), 7px);
+  box-shadow: var(--gl-edge-button);
+  padding: 1px 7px 3px;
+}
+
+/* Code blocks: a keycap-edged sheet (White), a ruled box (Editorial), an index card
+   (Stationery). The title bar names the block; the copy button sits in it. */
+.md-typeset pre {
+  margin: 0 0 22px;
+}
+
+.md-typeset .highlight {
+  margin: 0 0 22px;
+  border: var(--gl-code-border);
+  border-radius: var(--gl-radius-code);
+  box-shadow: var(--gl-code-shadow);
+  background: var(--gl-code-head-bg);
+  overflow: hidden;
+}
+
+.md-typeset .highlight pre {
+  margin: 0;
+}
+
+.md-typeset pre > code,
+.md-typeset .highlight pre > code {
+  font-size: 14.5px;
+  line-height: var(--gl-code-line);
+  padding: 14px 18px;
+  border-radius: 0;
+  background: var(--gl-code-bg);
+}
+
+.md-typeset > pre > code {
+  border: var(--gl-code-border);
+  border-radius: var(--gl-radius-code);
+}
+
+.md-typeset .highlight span.filename {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 6px 120px 6px 18px;
+  color: var(--gl-label-colour);
+  background: var(--gl-code-head-bg);
+  border-bottom: var(--gl-code-head);
+  border-radius: 0;
+}
+
+.md-typeset .highlight span.filename::before {
+  display: none;
+}
+
+.md-typeset .highlight span.filename + pre > code {
+  border-radius: 0;
+}
+
+/* Highlighting by weight and slant only; hl_lines get the highlighter. */
+.highlight .k,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt,
+.highlight .nb,
+.highlight .nf,
+.highlight .gh,
+.highlight .gu,
+.highlight .gp {
+  font-weight: 600;
+}
+
+.highlight .c,
+.highlight .c1,
+.highlight .ch,
+.highlight .cm,
+.highlight .cp,
+.highlight .cpf,
+.highlight .cs,
+.highlight .sd {
+  font-style: italic;
+}
+
+.md-typeset .highlight .hll {
+  background-color: var(--gl-hl);
+  margin: 0 -18px;
+  padding: 0 18px;
+}
+
+/* Copy button: a 44 px button in the voice's button style ("Copy" beside the icon in
+   titled blocks). Material 9.8 puts it in .md-code__nav; 9.7 used .md-clipboard. */
+.md-typeset .md-code__nav {
+  top: 6px;
+  right: 8px;
+  padding: 0;
+  gap: 4px;
+  background: transparent;
+  border-radius: 0;
+}
+
+.md-typeset :is(.md-code__button, .md-clipboard) {
+  position: relative;
+  width: auto;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: var(--gl-radius-ui);
+  background: var(--gl-button-bg-code, var(--gl-paper));
+  box-shadow: var(--gl-edge-button);
+  color: var(--gl-ink);
+  font-family: var(--gl-font-label);
+  font-size: var(--gl-label-size);
+  font-weight: var(--gl-label-weight);
+  font-variant: var(--gl-label-variant);
+  text-transform: var(--gl-label-transform);
+  letter-spacing: var(--gl-label-spacing);
+}
+
+.md-typeset .md-clipboard {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+}
+
+.md-typeset :is(.md-code__button[data-md-type="copy"], .md-clipboard)::before {
+  content: var(--gl-word-copy);
+  order: 2;
+}
+
+.md-typeset :is(.md-code__button[data-md-type="copy"], .md-clipboard)::after {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  background-color: var(--gl-pen);
+  -webkit-mask-image: var(--gl-mask-copy);
+  mask-image: var(--gl-mask-copy);
+}
+
+.md-typeset :is(.md-code__button, .md-clipboard):hover,
+.md-typeset :is(.md-code__button, .md-clipboard):focus {
+  color: var(--gl-ink);
+  text-decoration: underline;
+}
+
+.md-typeset .md-code__button--active {
+  outline: 1.5px solid var(--gl-ink);
+}
+
+/* In blocks without a title the button floats over the code: icon only, so it hides
+   as little as possible. */
+.md-typeset .highlight:not(:has(> span.filename)) :is(.md-code__button, .md-clipboard) {
+  padding: 0;
+  width: 44px;
+}
+
+.md-typeset .highlight:not(:has(> span.filename)) :is(.md-code__button, .md-clipboard)::before {
+  content: none;
+}
+
+/* Tables: the head in the label style between rules; the last row closes the table
+   with the voice's rule (solid, double, gold). */
+.md-typeset__scrollwrap {
+  margin: 0 0 22px;
+}
+
+.md-typeset__table {
+  display: block;
+  padding: 0;
+}
+
+.md-typeset table:not([class]) {
+  display: table;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  border-collapse: collapse;
+  background: transparent;
+  font-family: var(--gl-font-text);
+  font-size: var(--gl-table-size);
+  line-height: 1.45;
+}
+
+.md-typeset table:not([class]) th {
+  min-width: 0;
+  padding: 10px 14px 10px 0;
+  color: var(--gl-th-colour);
+  background: transparent;
+  border-top: var(--gl-th-top);
+  border-bottom: var(--gl-th-bottom);
+  vertical-align: bottom;
+}
+
+.md-typeset table:not([class]) td {
+  padding: 10px 14px 10px 0;
+  border-top: 0;
+  border-bottom: var(--gl-td);
+  vertical-align: top;
+}
+
+.md-typeset table:not([class]) tbody tr:last-child td {
+  border-bottom: var(--gl-td-last);
+}
+
+.md-typeset table:not([class]) tbody tr:hover {
+  background: transparent;
+  box-shadow: none;
+}
+
+.md-typeset table:not([class]) td code {
+  font-size: 0.85em;
+}
+
+/* ---- Admonitions: types differ by shape, not hue -------------------------------------- */
+
+.md-typeset .admonition,
+.md-typeset details {
+  position: relative;
+  margin: 28px 0;
+  padding: 16px 20px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--gl-ink);
+  background-color: var(--gl-sheet);
+  border: 1.5px solid var(--gl-rule);
+  border-radius: 16px;
+  box-shadow: none;
+  overflow: visible;
+  font-size: var(--gl-body-size);
+}
+
+.md-typeset .admonition > :last-child,
+.md-typeset details > :last-child {
+  margin-bottom: 0;
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  position: relative;
+  margin: 0 0 6px;
+  padding: 0;
+  font-family: var(--gl-font-text);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--gl-ink);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.md-typeset .admonition-title::before,
+.md-typeset summary::before {
+  position: static;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  background-color: var(--gl-pen);
+  -webkit-mask-image: var(--gl-mask-info);
+  mask-image: var(--gl-mask-info);
+}
+
+.md-typeset .admonition .admonition-title + *,
+.md-typeset details summary + * {
+  margin-top: 0;
+}
+
+/* Note (and the quiet types): a grey sheet. Inherits the defaults above. */
+
+/* Tip: optional advice gets the hand. */
+.md-typeset :is(.admonition, details):is(.tip, .hint, .important) {
+  background-color: transparent;
+  border: 2px dashed var(--gl-ink-soft);
+  border-radius: 16px;
+}
+
+.md-typeset :is(.admonition, details):is(.tip, .hint, .important) > :is(.admonition-title, summary) {
+  font-family: var(--gl-font-hand);
+  font-size: 22px;
+  color: var(--gl-pen);
+}
+
+.md-typeset .admonition:is(.tip, .hint, .important) > .admonition-title::before {
+  display: none;
+}
+
+/* Warning: ink border, a tilted highlighter tab for the title. */
+.md-typeset :is(.admonition, details):is(.warning, .caution, .attention) {
+  margin-top: 40px;
+  padding: 30px 22px 18px;
+  background-color: transparent;
+  border: 2px solid var(--gl-ink);
+  border-radius: 16px;
+  box-shadow: 0 3px 0 var(--gl-shade);
+}
+
+.md-typeset .admonition:is(.warning, .caution, .attention) > .admonition-title {
+  position: absolute;
+  top: -18px;
+  left: 20px;
+  max-width: calc(100% - 40px);
+  margin: 0;
+  padding: 3px 12px;
+  font-family: var(--gl-font-label);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gl-ink);
+  background: var(--gl-hl);
+  border: 1.5px solid var(--gl-ink);
+  border-radius: 10px;
+  transform: rotate(-2deg);
+}
+
+.md-typeset .admonition:is(.warning, .caution, .attention) > .admonition-title::before {
+  width: 16px;
+  height: 16px;
+  background-color: var(--gl-ink);
+  -webkit-mask-image: var(--gl-mask-warning);
+  mask-image: var(--gl-mask-warning);
+}
+
+/* Danger: thick pen border, a solid pen tab and a mark in the margin. No undo. */
+.md-typeset :is(.admonition, details):is(.danger, .error, .failure, .fail, .missing, .bug) {
+  margin-top: 40px;
+  padding: 30px 22px 18px;
+  background-color: transparent;
+  border: 3.5px solid var(--gl-pen);
+  border-radius: 16px;
+}
+
+.md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug) > .admonition-title {
+  position: absolute;
+  top: -18px;
+  left: 18px;
+  max-width: calc(100% - 40px);
+  margin: 0;
+  padding: 4px 12px;
+  font-family: var(--gl-font-label);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gl-paper);
+  background: var(--gl-pen);
+  border-radius: 10px;
+  transform: rotate(1.5deg);
+}
+
+.md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug) > .admonition-title::before {
+  width: 16px;
+  height: 16px;
+  background-color: var(--gl-paper);
+  -webkit-mask-image: var(--gl-mask-danger);
+  mask-image: var(--gl-mask-danger);
+}
+
+.md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug)::after {
+  content: "!";
+  position: absolute;
+  right: 10px;
+  top: 2px;
+  font-family: var(--gl-font-hand);
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--gl-pen);
+  transform: rotate(10deg);
+}
+
+@media screen and (min-width: 45em) {
+  .md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug)::after {
+    right: -40px;
+    top: 6px;
+  }
+}
+
+/* Collapsible details: a pill that opens. */
+.md-typeset details {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+}
+
+.md-typeset details > summary {
+  display: inline-flex;
+  min-height: 48px;
+  margin: 0;
+  padding: 0 20px;
+  border: 1.5px solid var(--gl-rule);
+  border-radius: 999px;
+  background: var(--gl-paper);
+  cursor: pointer;
+  list-style: none;
+}
+
+.md-typeset details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.md-typeset details > summary::before {
+  width: 14px;
+  height: 14px;
+  -webkit-mask-image: var(--gl-mask-chevron);
+  mask-image: var(--gl-mask-chevron);
+}
+
+.md-typeset details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.md-typeset details > summary::after {
+  display: none;
+}
+
+.md-typeset details[open] > summary {
+  margin-bottom: 12px;
+}
+
+.md-typeset details > :not(summary) {
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+.md-typeset details:is(.tip, .hint, .important, .warning, .caution, .attention, .danger, .error, .failure, .fail, .missing, .bug) {
+  padding: 0;
+  border: 0;
+  margin-top: 28px;
+}
+
+/* ---- Mermaid ---------------------------------------------------------------------------- */
+
+.md-typeset .mermaid {
+  margin: 0 0 22px;
+  padding: 28px 20px;
+  border-radius: var(--gl-radius-code);
+  background-color: var(--gl-sheet);
+  text-align: center;
+}
+
+/* ---- Stamps and margin notes (opt-in) --------------------------------------------------- */
+
+/* **Verified on:** Note Air, 2026-10-02 { .gl-verified }  /  { .gl-untested } */
+.md-typeset .gl-verified,
+.md-typeset .gl-untested {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin: 8px 8px 22px;
+  padding: 8px 18px;
+  font-family: var(--gl-font-text);
+  font-size: 15px;
+  line-height: 1.4;
+  text-align: center;
+  border-radius: 14px;
+}
+
+.md-typeset .gl-verified {
+  color: var(--gl-ink);
+  background: var(--gl-hl);
+  border: 1.5px solid var(--gl-ink);
+  transform: rotate(-1.5deg);
+}
+
+.md-typeset .gl-untested {
+  color: var(--gl-ink-soft);
+  border: 2px dashed var(--gl-ink-soft);
+  transform: rotate(2deg);
+}
+
+.md-typeset :is(.gl-verified, .gl-untested) strong {
+  font-family: var(--gl-font-label);
+  font-size: var(--gl-label-size);
+  font-weight: var(--gl-label-weight);
+  font-variant: var(--gl-label-variant);
+  letter-spacing: var(--gl-label-spacing);
+  text-transform: var(--gl-label-transform);
+}
+
+/* *note text*{ .gl-note } at the start of a paragraph: floats into the right of the
+   column on wide screens, sits inline in the hand on phones and e-readers. */
+.md-typeset .gl-note {
+  display: block;
+  margin: 0 0 8px;
+  font-family: var(--gl-font-hand);
+  font-size: var(--gl-note-size);
+  font-style: var(--gl-note-style);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--gl-pen);
+  transform: rotate(var(--gl-note-rotate));
+  transform-origin: left center;
+}
+
+.md-typeset .gl-note::before {
+  content: var(--gl-note-prefix);
+}
+
+@media screen and (min-width: 45em) {
+  .md-typeset p > .gl-note:first-child {
+    float: right;
+    width: 200px;
+    margin: 4px 0 8px 32px;
+  }
+}
+
+/* ---- Home page ------------------------------------------------------------------------- */
+
+.gl-hero-art {
+  display: none;
+}
+
+@media screen and (min-width: 45em) {
+  .gl-hero-art {
+    display: block;
+    position: relative;
+    float: right;
+    width: 38%;
+    max-width: 360px;
+    margin: -8px 0 16px 24px;
+  }
+
+  .gl-hero-art svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .gl-hero-art__note {
+    position: absolute;
+    right: -8px;
+    bottom: 6px;
+    font-family: var(--gl-font-hand);
+    font-size: 22px;
+    font-style: var(--gl-note-style);
+    line-height: 1.1;
+    color: var(--gl-pen);
+    transform: rotate(calc(var(--gl-note-rotate) - 1deg));
+  }
+}
+
+.md-typeset .gl-home-title {
+  font-size: calc(var(--gl-h1-size) + 10px);
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 44.984375em) {
+  .md-typeset .gl-home-title {
+    font-size: 40px;
+  }
+
+  .md-typeset h1 {
+    font-size: 34px;
+  }
+}
+
+.md-typeset .gl-hero-art ~ .admonition {
+  clear: both;
+}
+
+/* Cards: a list of links inside <div class="gl-cards" markdown>. */
+.md-typeset .gl-cards > ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+@media screen and (max-width: 59.984375em) {
+  .md-typeset .gl-cards > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 29.984375em) {
+  .md-typeset .gl-cards > ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.md-typeset .gl-cards > ul > li {
+  margin: 0;
+  display: flex;
+}
+
+.md-typeset .gl-cards > ul > li::before {
+  display: none;
+}
+
+.md-typeset .gl-cards a {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px;
+  border: 0;
+  border-radius: var(--gl-radius);
+  box-shadow: var(--gl-edge);
+  background: var(--gl-card-bg);
+  color: var(--gl-ink);
+  font-family: var(--gl-font-text);
+  font-size: calc(var(--gl-body-size) - 2px);
+  line-height: 1.45;
+}
+
+.md-typeset .gl-cards a:hover,
+.md-typeset .gl-cards a:focus {
+  color: var(--gl-ink);
+  background: var(--gl-card-bg);
+  outline: 2px solid var(--gl-ink);
+  outline-offset: 2px;
+}
+
+.md-typeset .gl-cards a.gl-card--featured {
+  background: var(--gl-tint);
+}
+
+.md-typeset .gl-cards a.gl-card--tilt {
+  transform: rotate(0.8deg);
+}
+
+.md-typeset .gl-cards a::before {
+  content: "";
+  width: 34px;
+  height: 34px;
+  background-color: var(--gl-pen);
+  -webkit-mask: var(--gl-card-icon, var(--gl-mask-arrow)) center / contain no-repeat;
+  mask: var(--gl-card-icon, var(--gl-mask-arrow)) center / contain no-repeat;
+}
+
+.md-typeset .gl-cards a strong {
+  display: block;
+  font-family: var(--gl-font-head);
+  font-size: 21px;
+  font-weight: 600;
+  font-style: var(--gl-title-style);
+  line-height: 1.3;
+  color: var(--gl-ink);
+}
+
+.md-typeset .gl-cards a .gl-card__text {
+  color: var(--gl-ink-soft);
+}
+
+.md-typeset .gl-cards a .gl-note {
+  position: absolute;
+  top: -16px;
+  right: 14px;
+  margin: 0;
+  font-size: 19px;
+  transform: rotate(5deg);
+  float: none;
+  width: auto;
+}
+
+.md-typeset .gl-cards a[data-gl-icon="devices"] { --gl-card-icon: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M9 3h16a2 2 0 0 1 2 2v24a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM15 26h4'/></svg>"); }
+.md-typeset .gl-cards a[data-gl-icon="guides"] { --gl-card-icon: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 7c5-2 9-2 13 1 4-3 8-3 13-1v20c-5-2-9-2-13 1-4-3-8-3-13-1zM17 8v20'/></svg>"); }
+.md-typeset .gl-cards a[data-gl-icon="architecture"] { --gl-card-icon: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 28h24M8 28V14l9-8 9 8v14M13 28v-8h8v8'/></svg>"); }
+.md-typeset .gl-cards a[data-gl-icon="decisions"] { --gl-card-icon: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M7 17l6 6L27 9'/></svg>"); }
+.md-typeset .gl-cards a[data-gl-icon="dead-ends"] { --gl-card-icon: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 17h14M14 9l-8 8 8 8M26 6v22'/></svg>"); }
+.md-typeset .gl-cards a[data-gl-icon="writing"] { --gl-card-icon: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 5l7 7L13 28H6v-7zM18 9l7 7'/></svg>"); }
+
+/* ---- Pagination ------------------------------------------------------------------------- */
+
+.md-typeset hr.gl-rule-end {
+  margin: 56px 0 24px;
+}
+
+.gl-pagination {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  font-family: var(--gl-font-text);
+}
+
+.md-typeset a.gl-pagination__link {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 44px;
+  padding: 14px 18px;
+  border-radius: var(--gl-radius);
+  box-shadow: var(--gl-edge);
+  background: var(--gl-card-bg);
+  color: var(--gl-ink);
+}
+
+.md-typeset a.gl-pagination__link:hover,
+.md-typeset a.gl-pagination__link:focus {
+  background: var(--gl-card-bg);
+  color: var(--gl-ink);
+  outline: 2px solid var(--gl-ink);
+  outline-offset: 2px;
+}
+
+.gl-pagination__link--next {
+  grid-column: 2;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.gl-pagination__dir {
+  color: var(--gl-label-colour);
+}
+
+.gl-pagination__title {
+  font-family: var(--gl-font-head);
+  font-style: var(--gl-title-style);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+@media screen and (max-width: 44.984375em) {
+  .gl-pagination {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gl-pagination__link--next {
+    grid-column: 1;
+  }
+}
+
+/* ---- Footer ----------------------------------------------------------------------------- */
+
+.md-footer {
+  margin-top: 48px;
+  background-color: var(--gl-paper);
+  color: var(--gl-ink-soft);
+  border-top: 1px solid var(--gl-rule);
+}
+
+.md-footer-meta,
+.md-footer-meta:not([hidden]) {
+  background-color: var(--gl-paper);
+}
+
+.md-footer-meta__inner {
+  padding: 0 32px;
+}
+
+.md-copyright {
+  width: 100%;
+  margin: 0;
+  padding: 22px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--gl-font-text);
+  font-size: 14px;
+  color: var(--gl-ink-soft);
+}
+
+.md-copyright__highlight {
+  color: var(--gl-ink-soft);
+}
+
+.md-typeset .md-copyright a,
+.md-copyright a {
+  background: none;
+  padding: 0;
+  color: var(--gl-ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.md-copyright a:hover,
+.md-copyright a:focus {
+  color: var(--gl-ink);
+}
+
+@media screen and (max-width: 44.984375em) {
+  .md-footer-meta__inner {
+    padding: 0 16px;
+  }
+}
+
+/* ---- Print ------------------------------------------------------------------------------ */
+
+@media print {
+  .gl-appearance,
+  .gl-pagination,
+  .gl-rule-end,
+  .gl-hero-art {
+    display: none;
+  }
+}
+
+/* ---- Overrides for Material's per-type admonition colours ---------------------------- */
+/* Material colours each admonition type with its own hue (border, title band, icon). In
+   this theme the types differ by shape only, so those hues are reset here. */
+
+.md-typeset :is(.admonition, details)[class] {
+  border-color: var(--gl-rule) !important;
+}
+
+.md-typeset :is(.admonition, details):is(.tip, .hint, .important) {
+  border-color: var(--gl-ink-soft) !important;
+}
+
+.md-typeset :is(.admonition, details):is(.warning, .caution, .attention) {
+  border-color: var(--gl-ink) !important;
+}
+
+.md-typeset :is(.admonition, details):is(.danger, .error, .failure, .fail, .missing, .bug) {
+  border-color: var(--gl-pen) !important;
+}
+
+.md-typeset details[class] {
+  border-color: transparent !important;
+}
+
+.md-typeset :is(.admonition, details)[class] > :is(.admonition-title, summary) {
+  background-color: transparent !important;
+}
+
+.md-typeset details[class] > summary {
+  background-color: var(--gl-paper) !important;
+  border-color: var(--gl-rule) !important;
+}
+
+.md-typeset .admonition:is(.warning, .caution, .attention) > .admonition-title {
+  background-color: var(--gl-hl) !important;
+}
+
+.md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug) > .admonition-title {
+  background-color: var(--gl-pen) !important;
+}
+
+.md-typeset .admonition[class] > .admonition-title::before {
+  background-color: var(--gl-pen) !important;
+  -webkit-mask-image: var(--gl-mask-info) !important;
+  mask-image: var(--gl-mask-info) !important;
+}
+
+.md-typeset details[class] > summary::before {
+  background-color: var(--gl-pen) !important;
+  -webkit-mask-image: var(--gl-mask-chevron) !important;
+  mask-image: var(--gl-mask-chevron) !important;
+}
+
+.md-typeset .admonition:is(.warning, .caution, .attention) > .admonition-title::before {
+  background-color: var(--gl-ink) !important;
+  -webkit-mask-image: var(--gl-mask-warning) !important;
+  mask-image: var(--gl-mask-warning) !important;
+}
+
+.md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug) > .admonition-title::before {
+  background-color: var(--gl-paper) !important;
+  -webkit-mask-image: var(--gl-mask-danger) !important;
+  mask-image: var(--gl-mask-danger) !important;
+}
+
+.md-typeset blockquote {
+  border-left: 0 !important;
+}
+
+/* Titled code blocks: the copy pill sits in the title bar. */
+.md-typeset .highlight:has(> span.filename) .md-code__nav,
+.md-typeset .highlight:has(> span.filename) .md-clipboard {
+  top: -50px;
+}
+
+[dir] .md-typeset :is(.admonition, details) > :is(.admonition-title, summary) {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+[dir] .md-typeset .admonition:is(.warning, .caution, .attention, .danger, .error, .failure, .fail, .missing, .bug) > .admonition-title {
+  padding: 4px 14px;
+}
+
+[dir] .md-typeset details > summary {
+  padding: 0 20px !important;
+  border: 1.5px solid var(--gl-rule) !important;
+  border-radius: 999px !important;
+}
+
+[dir] .md-typeset details {
+  border: 0 !important;
+  border-radius: 0;
+}
+
+/* Search results reuse the typeset headings: keep the page-head rules out of them. */
+.md-search-result .md-typeset :is(h1, h2) {
+  border: 0;
+  padding: 0;
+  font-variant: normal;
+  letter-spacing: 0;
+}
+
+/* Material keeps its own display on the drawer and search buttons (it hides them by
+   width); centre their icons inside the 44 px box instead. */
+.md-header__button.md-icon svg {
+  display: block;
+  margin: 10px auto;
+}
