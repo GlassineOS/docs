@@ -1,0 +1,6 @@
+{#- A plain repository link. Unlike Material's version it does not query the GitHub
+    API for stars and forks, so pages make no requests to third parties for it. -#}
+<a href="{{ config.repo_url }}" title="{{ lang.t('source') }}" class="md-source gl-source">
+  <svg class="gl-source__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7"/></svg>
+  <span class="gl-source__name">{{ config.repo_name }}</span>
+</a>

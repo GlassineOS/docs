@@ -1,0 +1,44 @@
+{#- Interleaf header: logo and name, search pill, accent picker, scheme button,
+    repository link. Material's search partial and data-md-component hooks are kept
+    unchanged. -#}
+<header class="md-header gl-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header') }}">
+    <label class="md-header__button md-icon gl-header__drawer" for="__drawer" title="{{ lang.t('nav') }}">
+      {% set icon = config.theme.icon.menu or "material/menu" %}
+      {% include ".icons/" ~ icon ~ ".svg" %}
+    </label>
+    <a href="{{ config.extra.homepage | d(nav.homepage.url, true) | url }}" title="{{ config.site_name | e }}" class="gl-brand" aria-label="{{ config.site_name }}" data-md-component="logo">
+      {% include "partials/logo.html" %}
+      <span class="gl-brand__name">{% if config.site_name == "GlassineOS" %}Glassine<em>OS</em>{% else %}{{ config.site_name }}{% endif %}</span>
+    </a>
+    <span class="gl-header__spacer"></span>
+    {% if "material/search" in config.plugins %}
+      {% set search = config.plugins["material/search"] | attr("config") %}
+      {% if search.enabled %}
+        <label class="md-header__button md-icon gl-header__search-toggle" for="__search" title="{{ lang.t('search.placeholder') }}">
+          {% set icon = config.theme.icon.search or "material/magnify" %}
+          {% include ".icons/" ~ icon ~ ".svg" %}
+        </label>
+        {% include "partials/search.html" %}
+      {% endif %}
+    {% endif %}
+    <div class="gl-accent" role="group" aria-label="Accent colour" hidden>
+      <button type="button" class="gl-accent__button" data-gl-accent-value="cobalt" aria-pressed="false" aria-label="Accent: Cobalt and Marigold" title="Accent: Cobalt and Marigold"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><rect x="1" y="7" width="19" height="10" rx="3" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg></button>
+      <button type="button" class="gl-accent__button" data-gl-accent-value="vermilion" aria-pressed="false" aria-label="Accent: Vermilion and Mint" title="Accent: Vermilion and Mint"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><rect x="1" y="7" width="19" height="10" rx="3" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg></button>
+      <button type="button" class="gl-accent__button" data-gl-accent-value="violet" aria-pressed="false" aria-label="Accent: Violet and Peach" title="Accent: Violet and Peach"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><rect x="1" y="7" width="19" height="10" rx="3" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg></button>
+    </div>
+    {% if config.theme.palette %}
+      {% if not config.theme.palette is mapping %}
+        {% include "partials/palette.html" %}
+      {% endif %}
+    {% endif %}
+    {% if not config.theme.palette is mapping %}
+      {% include "partials/javascripts/palette.html" %}
+    {% endif %}
+    {% if config.repo_url %}
+      <div class="md-header__source gl-header__source">
+        {% include "partials/source.html" %}
+      </div>
+    {% endif %}
+  </nav>
+</header>

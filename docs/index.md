@@ -1,8 +1,15 @@
-# GlassineOS documentation
+---
+template: home.html
+hide:
+  - toc
+---
 
-GlassineOS is a Linux distribution for Boox e-ink tablets, built on Alpine Linux, with a
-mainline kernel, an e-ink display engine written for these panels, and a touch- and
-pen-first desktop.
+# GlassineOS *documentation* { .gl-home-title }
+
+GlassineOS is a Linux distribution for ==Boox e-ink tablets==, built on Alpine Linux, with a
+mainline kernel, an e-ink display engine written for these panels, and a
+*touch- and pen-first*{ .gl-squiggle } desktop.
+{ .gl-lead }
 
 !!! warning "Hobby project, largely AI-written"
     Most of GlassineOS and of these docs is written with AI coding agents, guided by one
@@ -12,14 +19,16 @@ pen-first desktop.
 
 ## Where to start
 
-| You want to… | Read |
-|---|---|
-| know if your device is supported | [Devices](devices/index.md) |
-| understand how Boox devices boot, flash and recover | [Guides](guides/index.md) |
-| understand how GlassineOS is built | [Architecture](architecture/index.md) |
-| know why things are the way they are | [Decisions](decisions/index.md) |
-| avoid repeating failed approaches | [Dead ends](dead-ends/index.md) |
-| write or fix documentation | [Writing docs](contributing/writing-docs.md) |
+<div class="gl-cards" markdown>
+
+- [**Devices** <span class="gl-card__text">Is my tablet supported?</span>](devices/index.md){ .gl-card--featured data-gl-icon="devices" }
+- [**Guides** <span class="gl-card__text">How Boox devices boot, flash and recover.</span>](guides/index.md){ data-gl-icon="guides" }
+- [**Architecture** <span class="gl-card__text">How GlassineOS is built.</span>](architecture/index.md){ data-gl-icon="architecture" }
+- [**Decisions** <span class="gl-card__text">Why things are the way they are.</span>](decisions/index.md){ data-gl-icon="decisions" }
+- [**Dead ends** <span class="gl-card__text">Failed approaches, so you skip them.</span> <span class="gl-note">read this one!</span>](dead-ends/index.md){ .gl-card--tilt data-gl-icon="dead-ends" }
+- [**Writing docs** <span class="gl-card__text">Write or fix documentation.</span>](contributing/writing-docs.md){ data-gl-icon="writing" }
+
+</div>
 
 ## How these docs are kept
 
