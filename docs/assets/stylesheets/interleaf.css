@@ -297,9 +297,11 @@ body {
   flex: 1 1 24px;
 }
 
-/* Search pill (Material's search form, restyled; DOM and hooks unchanged). */
+/* Search pill (Material's search form, restyled; DOM and hooks unchanged). Wide enough
+   for the result previews; it shrinks first when the header runs out of room. */
 .md-search {
-  flex: 0 1 340px;
+  flex: 0 1 560px;
+  min-width: 0;
 }
 
 @media screen and (min-width: 60em) {
@@ -309,7 +311,7 @@ body {
 
   .md-search__inner,
   [data-md-toggle="search"]:checked ~ .md-header .md-search__inner {
-    width: 340px;
+    width: 560px;
     max-width: 100%;
     float: none;
     padding: 0;
