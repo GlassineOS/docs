@@ -10,7 +10,7 @@ permissions:
 
 env:
   # GlassineOS/search, pinned by full commit. TODO: set after the repository is pushed.
-  GLASSINE_SEARCH_REF: 1c01fc3885d904360a63854a87c8edc0b230db8a
+  GLASSINE_SEARCH_REF: 2c59e3d93cc3428b37ee7f5bd58654c6a934f88c
   # TEMPORARY: fetch model files from Hugging Face while the models-1 release of
   # GlassineOS/search does not exist yet (hashes are checked either way). Remove
   # this line, and "derive" in requirements-search.txt, once the release is up.
