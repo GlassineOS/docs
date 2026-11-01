@@ -402,7 +402,11 @@ ordered threshold; black and white stay fixed.
 |---|---|---|---|
 | Blue noise | default | CPU | 64×64 threshold table, transposed and shifted against the stagger's groups, so the two don't line up |
 | Bayer | `dither_pattern=bayer` | CPU | 8×8, a visible grid |
-| Dizzy | `dither_pattern=dizzy`, or per app | CPU workers | error diffusion in a random order (Liam Appelbe's method), 8 layers of a 64×64 tile in motion. Commit 10.6–11.5 ms (2026-10-14) |
+| Dizzy | `dither_pattern=dizzy`, or per app | CPU workers | error diffusion in a random order, 8 layers of a 64×64 tile in motion. Commit 10.6–11.5 ms (2026-10-14) |
+
+Dizzy dithering is the work of Liam Appelbe, who published the method in
+[Dizzy dithering](https://liamappelbe.medium.com/dizzy-dithering-2ae76dbceba1). Our
+form works on a shuffled 64×64 tile, in layers for the worker threads.
 
 An app's own `dither=` wins. On the GPU, dizzy's correct block form is about 4× slower than
 the CPU on the A509 (2026-10-24), so `dizzy_where=cpu` stays the default.
