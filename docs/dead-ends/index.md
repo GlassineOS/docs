@@ -122,3 +122,51 @@ date.**
   engine as a dma-buf; the engine converts it and computes the drive frames on the GPU,
   with no read-back in between.
 - **Date:** 2026-09-29; the current design since 2026-10-11.
+
+## E-ink engine
+
+### Motion greys as cut A2 steps (a2grey)
+
+- **Tried:** in motion runs, drive real greys with cut A2 steps instead of black-and-white
+  dots.
+- **Happened:** about 29 ms a frame on a real scroll (GPU about 23), against the 12.5 ms
+  budget and about 5 ms for the normal path on the same injected scroll. On the panel it was
+  "faster, but utterly garbled". Yet the GPU matched the CPU reference (21 frames compared,
+  0 differ) and a mid-run read of the panel buffer matched the source at visible levels, so
+  the commit was clean and the garble lies past it. What it is was not determined. One GPU
+  fault with Chromium's process as the offender hit during testing; its cause is unproven
+  (Chromium hangs happen without this mode too).
+- **Stopped because:** the speed needs at least 2.3× with no known way to get it, and the
+  look failed the eye test. The maintainer's call.
+- **Instead:** motion stays black and white, dithered at the commit; the run's end restores
+  the greys.
+- **Date:** shelved 2026-11-01. To resume: find out what the garble is first (a photo), then
+  test at the rate the mode really runs (its curves were measured at the full frame rate).
+
+### The 1-bit dither path, as framed
+
+- **Tried (bench and design review only):** commit dithered runs into a 1-bit plane instead
+  of bytes. A synthetic bench looked excellent: 1.19 ms against 5.75 ms for today's three
+  passes.
+- **Happened:** the bench leaves out what the engine forces back in. During a run the engine
+  re-derives levels from the byte shadow on its stream thread, so the bytes must still
+  exist unless the engine learns to read planes, which is a separate project.
+- **Stopped because:** with the expansion back to bytes, the estimated margin over a merged
+  byte pass was small (about 7 % of the daemon's CPU, an estimate) for a lot of new mode
+  transitions.
+- **Instead:** `commit_skip`: a dithered commit writes only the tiles the scan flagged
+  (commit −39 %, daemon −7 %, verified on hardware 2026-11-01).
+- **Date:** 2026-11-01.
+
+### One pass for scan and commit
+
+- **Tried (bench only):** merge scan and commit into one pass, keeping levels apart, since a
+  target is allocated per hand-off rectangle, known only after the policy.
+- **Happened:** on a real page, on a Silver core: −17 % of the bench job (3.71–3.75 →
+  3.11–3.12 ms) when each piece is written only if its levels differ; writing every piece was
+  slower than today. Scaled to the real job that is about 4–7 % of the daemon's CPU, **an
+  estimate**.
+- **Stopped because:** the pass has to guess the policy's choice before the policy runs and
+  have a way back. The gain doesn't cover that speculation and its test risk.
+- **Instead:** the separate passes with `commit_skip`.
+- **Date:** 2026-11-01.
