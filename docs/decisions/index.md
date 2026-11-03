@@ -18,6 +18,7 @@ date.
 | [0009](0009-specs-and-acceptance.md) | Specs per repository (Spec Kit + org preset), acceptance in images | accepted 2026-10-03 |
 | [0010](0010-root-and-deployments.md) | Root file system: read-only bases, deployments, live packages | accepted 2026-10-28 |
 | [0011](0011-semantic-search.md) | Semantic search over the documentation: static and transformer profiles | accepted 2026-10-31 |
+| [0012](0012-where-documentation-lives.md) | Where documentation lives, and what the search index covers | proposed 2026-11-03 |
 
 Template for new records: copy any record and keep the four headings
 (Context, Decision, Consequences, Status).

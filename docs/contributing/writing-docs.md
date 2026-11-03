@@ -21,6 +21,20 @@
 
 The safety scan blocks most of these, but not all. Read your diff.
 
+## Where a page belongs
+
+Ask one question: must this text change in the same commit as the code? If so, it belongs
+in that code repository. If not, it belongs here.
+
+| Where | What |
+|---|---|
+| This repository | Cross-cutting and explanatory documentation: architecture, decisions, guides, device pages, dead ends |
+| The code repository | README, build and usage notes, CLI and configuration reference, specs |
+
+Where the two meet, the page here owns the design and the reasons. The repository owns
+exact names and flags, and the page links to it. [Decision
+0012](../decisions/0012-where-documentation-lives.md) has the reasons.
+
 ## Page types
 
 | Type | Where | Template |
