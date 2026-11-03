@@ -68,7 +68,6 @@ Accepted 2026-10-31. Open:
 - How the vector results join the theme's own search: hooks into its results list, or
   our own results component beside it. A prototype decides.
 - The models of both profiles.
-- Wider scope: the index is meant to hold all project knowledge eventually, either by
-  moving it into the documentation or as an index across the organisation's
-  repositories that links into each. The chunk IDs and the manifest's source list allow
-  both.
+- Wider scope: the index is meant to hold all project knowledge eventually.
+  [0012](0012-where-documentation-lives.md) (proposed 2026-11-03) takes this up, and says
+  what the chunk IDs and the manifest's source list allow today.
