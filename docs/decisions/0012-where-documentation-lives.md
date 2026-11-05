@@ -44,7 +44,7 @@ and the shape of the manifest, not for the build: it reads one source and writes
   build needs an input list of sources, a way to fetch and render their pages, and links
   that leave the site. The site's search worker and the related pages also assume a
   single source. The full list is in
-  [GlassineOS/search#2](https://github.com/GlassineOS/search/issues/2).
+  [GlassineOS/search#1](https://github.com/GlassineOS/search/issues/1).
 
 ## Status
 

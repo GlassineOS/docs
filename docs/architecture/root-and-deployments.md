@@ -11,9 +11,11 @@ reference for anything that reads or writes them.
     boot-success service are built and host-tested: on real btrfs, ext4 and overlayfs
     on the host kernel, and end to end in QEMU (the real initramfs and init system,
     including a switch at a real shutdown and a real resume from hibernation;
-    2026-10-29). They are **untested on hardware**: devices still boot the plain
-    layout. Live packages, base
-    streams, the loader and the migration of existing installs are not built yet.
+    2026-10-29). On hardware (Note Air, 2026-10-31 to 2026-11-01): an existing install
+    migrated, deployments boot and are accepted, a base update arrived as an
+    incremental stream, and live packages were replayed onto a new base across an
+    Alpine branch change. Rollback and reset are untested on hardware. Signed streams
+    from CI and the kernel hand-off are not built yet.
 
 ## Purpose
 
@@ -129,10 +131,8 @@ asking) before it writes anything.
 
 ## Open questions
 
-- **Hardware.** The first run on a device. (In QEMU the init system keeps the
-  pre-mounted `/run`, provided the base lists `/` as `bind,ro` in its `/etc/fstab`.)
-- **Live packages:** the install wrapper and the replay of the user's packages onto a
-  new base.
-- **Base streams:** CI publishing and signing.
-- **The kexec loader**, and with it kernel updates.
-- **Migration** of existing installs from the mainline recovery.
+- **Hardware:** rollback and reset on a device.
+- **Base streams:** CI publishing and signing. Until then the person's computer builds
+  them ([0013](../decisions/0013-images-from-dockerfile-stages.md)).
+- **The kernel hand-off**, one method per device
+  ([0010](../decisions/0010-root-and-deployments.md)), and with it kernel updates.
