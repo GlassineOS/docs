@@ -10,7 +10,7 @@ permissions:
 
 env:
   # GlassineOS/search, pinned by full commit. Models come from its release models-1.
-  GLASSINE_SEARCH_REF: 7ffb0a9f024b87b0744b0378186e16592d4d3176
+  GLASSINE_SEARCH_REF: 27b35dea17d6f170cddbee2c5f87778429ccec26
   NO_MKDOCS_2_WARNING: "1"
 
 jobs:
