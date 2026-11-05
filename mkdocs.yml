@@ -91,6 +91,8 @@ nav:
       - architecture/index.md
       - architecture/boot-flow.md
       - architecture/root-and-deployments.md
+      - architecture/eink-engine.md
+      - architecture/cpu-gpu.md
       - architecture/search.md
   - Decisions:
       - decisions/index.md

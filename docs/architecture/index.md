@@ -13,7 +13,9 @@ in each repository's own `docs/` and are linked from here.
 | Distribution | Alpine base, our package and Flatpak repositories, images, updates | release |
 
 Pages: [Boot flow](boot-flow.md), [Root file system and deployments](root-and-deployments.md)
-(the update model), [Search](search.md) (this site's search and `glassine-docs`).
+(the update model), [E-ink engine](eink-engine.md) (the display daemon and its buffer
+protocol with sway), [CPU and GPU](cpu-gpu.md) (what runs where, with measurements),
+[Search](search.md) (this site's search and `glassine-docs`).
 
-Planned pages: e-ink engine and its buffer protocol, the e-ink hint protocol, storage
-and encryption, recovery, package repositories and signing.
+Planned pages: the e-ink hint protocol, storage and encryption, recovery, package
+repositories and signing.
