@@ -106,6 +106,7 @@ nav:
       - decisions/0010-root-and-deployments.md
       - decisions/0011-semantic-search.md
       - decisions/0012-where-documentation-lives.md
+      - decisions/0013-images-from-dockerfile-stages.md
   - Dead ends: dead-ends/index.md
   - Contributing:
       - contributing/writing-docs.md

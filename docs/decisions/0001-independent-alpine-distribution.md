@@ -27,4 +27,6 @@ from our own package repository.
 
 ## Status
 
-Accepted 2026-10-03.
+Accepted 2026-10-03. The build tooling ("Alpine-native tooling") is superseded by
+[0013](0013-images-from-dockerfile-stages.md): images are built from Dockerfile stages
+with BuildKit. Alpine stays the base.
