@@ -19,8 +19,8 @@ BuildKit, from Alpine and our own package repository
 
 - Alpine is the only upstream for the base system, security updates and release cadence
   (about every six months).
-- Device, kernel, boot, firmware-extraction and Qualcomm service packages are ours to
-  maintain.
+- The kernel and the device, boot, firmware-extraction and Qualcomm service packages
+  are ours to maintain.
 - postmarketOS documentation and packages may be read and reused under their licenses,
   with attribution. We don't send them contributions and don't bring AI-made work into
   their spaces.
