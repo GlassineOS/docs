@@ -11,8 +11,9 @@ developed largely with AI coding agents and will stay that way.
 ## Decision
 
 GlassineOS is an independent distribution based on Alpine Linux. It does not depend on
-postmarketOS tooling, packages or branding. Images are built with Alpine-native tooling
-from our own package repository.
+postmarketOS tooling, packages or branding. Images are built from Dockerfile stages with
+BuildKit, from Alpine and our own package repository
+([0013](0013-images-from-dockerfile-stages.md)).
 
 ## Consequences
 
@@ -27,6 +28,5 @@ from our own package repository.
 
 ## Status
 
-Accepted 2026-10-03. The build tooling ("Alpine-native tooling") is superseded by
-[0013](0013-images-from-dockerfile-stages.md): images are built from Dockerfile stages
-with BuildKit. Alpine stays the base.
+Accepted 2026-10-03, revised 2026-11-05 (how images are built: see
+[0013](0013-images-from-dockerfile-stages.md)).

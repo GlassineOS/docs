@@ -2,13 +2,12 @@
 
 ## Context
 
-[0001](0001-independent-alpine-distribution.md) said images are built with Alpine-native
-tooling: a builder grown from the image script, using Alpine's root file system tools.
-That builder has no place for e-ink files in `/etc/skel` or for a device's system
-configuration apart from the generic system, so every target would become its own 2 GB
-image. A new build takes hours, because nothing is cached between steps. Builds have
-also failed on inputs nobody declared: files missing from a checkout, quoting in long
-shell blocks.
+Images were built by a script using Alpine's root file system tools, and the plan was to
+grow a builder from it. That approach has no place for e-ink files in `/etc/skel` or for
+a device's system configuration apart from the generic system, so every target would
+become its own 2 GB image. A new build takes hours, because nothing is cached between
+steps. Builds have also failed on inputs nobody declared: files missing from a checkout,
+quoting in long shell blocks.
 
 A base is still what [0010](0010-root-and-deployments.md) says: a read-only btrfs
 subvolume, delivered as send streams. What changes is how its tree is made.
@@ -69,8 +68,7 @@ subvolume, delivered as send streams. What changes is how its tree is made.
 
 ## Status
 
-Accepted 2026-11-03, amended 2026-11-05 (kernel, device tree, initramfs and boot image
-as separate stages). Supersedes the tooling sentence of
-[0001](0001-independent-alpine-distribution.md); the rest of 0001 stands. The spike from
-BuildKit export to btrfs streams passed. Nothing else is built yet. Plan and order:
-[GlassineOS/hub#8](https://github.com/GlassineOS/hub/issues/8).
+Accepted 2026-11-03, amended 2026-11-05 (kernel, device tree, initramfs and boot image as
+separate stages). [0001](0001-independent-alpine-distribution.md) was revised to match.
+The spike from BuildKit export to btrfs streams passed. Nothing else is built yet. Plan
+and order: [GlassineOS/hub#8](https://github.com/GlassineOS/hub/issues/8).
