@@ -89,7 +89,8 @@ the bootloader's signature) → **ABL** (the Android bootloader, a UEFI applicat
   image signed with v3 is rejected without any message and the device drops into
   emergency download mode (EDL). *Verified on hardware 2026-03-26.*
 - **GlassineOS replaces the ABL** with a modified build of Qualcomm's open-source
-  bootloader. What it changes compared to stock:
+  bootloader. Its source, the build and how to reproduce the flashed image are in
+  [GlassineOS/abl](https://github.com/GlassineOS/abl). What it changes compared to stock:
 
   | Change | Why |
   |---|---|
@@ -382,6 +383,8 @@ All of these end in crash-dump mode, verified on hardware between 2026-09-25 and
   Air 2).
 - Don't flash with a low battery: a power loss during a bootloader write leaves only the
   drained-battery EDL route.
+- Before any step that can cost the way back in, write its
+  [gate](../../guides/irreversible-operations.md) and get it approved.
 - In bootloader code, never access hardware registers that the UEFI memory map doesn't
   cover: one such read stopped the bootloader before USB came up (red LED), and only the
   drained-battery EDL route got the device back. The GPIO block must be read through its
