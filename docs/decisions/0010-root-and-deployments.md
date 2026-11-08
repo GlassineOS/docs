@@ -52,9 +52,10 @@ stay behind in the old one.
   selected. Persistent state is the migrate list and `/var/lib`. An interrupted switch
   selects nothing and is redone.
 - **Two reset levels.** "Reset system" keeps the migrate list (network, pairings and
-  similar). The full reset keeps only home. A reset is carried at the shutdown switch
-  like an update, so changes made in between are kept. From the recovery it happens at
-  once.
+  similar). The full reset keeps only home and Flatpak's system data, which live on
+  the data partition outside the deployments. A reset is carried at the shutdown
+  switch like an update, so changes made in between are kept. From the recovery it
+  happens at once.
 - **Conflicts work like apk's.** A kept file stays active, and the base's new default
   lands next to it as `.apk-new`. A downgrade stops and asks. User accounts are merged
   at the switch, and owners are remapped by name.
