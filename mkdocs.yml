@@ -87,6 +87,7 @@ nav:
       - guides/ab-on-single-slot.md
       - guides/mainline-bring-up.md
       - guides/boox-firmware.md
+      - guides/irreversible-operations.md
   - Architecture:
       - architecture/index.md
       - architecture/boot-flow.md

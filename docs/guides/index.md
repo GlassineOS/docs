@@ -11,6 +11,8 @@ verified on.
   test slot, crash logs without a serial console, the bring-up order.
 - [Boox firmware](boox-firmware.md): downloading, decrypting and inspecting update
   packages.
+- [Irreversible operations](irreversible-operations.md): the gate to write before a
+  step that could cost the way back into a device, and its form.
 
 Planned:
 
