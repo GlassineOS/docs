@@ -106,8 +106,8 @@ other services have stopped:
 
 Interrupted at any point, nothing is selected and the old deployment boots unchanged.
 The next shutdown redoes the switch from scratch. "Reset system" carries the migrate
-list; the full reset carries nothing (home stays). In the recovery, where nothing runs
-in between, a reset switches at once.
+list; the full reset carries nothing (home and Flatpak's system data stay). In the
+recovery, where nothing runs in between, a reset switches at once.
 
 A hibernate never runs the switch: the kernel powers off by itself.
 
