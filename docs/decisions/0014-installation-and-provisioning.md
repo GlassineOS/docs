@@ -38,6 +38,15 @@ be replaced, install, and prove that it boots.
 - **Nothing irreplaceable is lost.** Partitions the description marks never-write are only
   read. Everything the plan replaces is backed up to the person's computer, and the backup
   is verified before the first write. The way back to stock uses that backup.
+- **One GlassineOS recovery on every machine.** It is the same recovery on a PC and on a
+  device: it lists, selects, pins and removes deployments, resets, repairs the boot, runs
+  the installer's repair and reinstall, and collects diagnostics. It is a client of the
+  same tools the running system uses. On a machine that also keeps another system (dual
+  boot), the GlassineOS recovery can hand over to that system's own recovery (TWRP for
+  stock Android), which then owns that system's work: its partitions, its packages, its
+  backups. GlassineOS never reimplements a secondary recovery, and a machine without one
+  simply has no hand-over. The installer installs the GlassineOS recovery and, where the
+  plan keeps another system, leaves or installs its recovery as the secondary.
 - **Every step says how to escape it.** If a step fails, the plan says where that leaves
   the device and how to get out. Where the only way out needs special hardware (an
   emergency-mode cable), the plan says so before the person confirms.
@@ -61,8 +70,8 @@ be replaced, install, and prove that it boots.
   is shaped for many devices from the start.
 - The Note Air's recipes must be expressed as steps of the Android-bootloader backend, each
   with its escape.
-- The recovery for PCs is not decided: [0007](0007-recovery-mainline-twrp.md) covers devices
-  that start from an Android bootloader.
+- Where a device has one recovery partition and keeps stock Android, the backend has to
+  give the secondary recovery its own place to start from.
 
 ## Status
 
