@@ -111,6 +111,7 @@ nav:
       - decisions/0012-where-documentation-lives.md
       - decisions/0013-images-from-dockerfile-stages.md
       - decisions/0014-installation-and-provisioning.md
+      - decisions/0015-installer-stack.md
   - Dead ends: dead-ends/index.md
   - Contributing:
       - contributing/writing-docs.md
