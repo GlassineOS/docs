@@ -21,6 +21,7 @@ no longer holds.
 | [0011](0011-semantic-search.md) | Semantic search over the documentation: static and transformer profiles | accepted 2026-10-31 |
 | [0012](0012-where-documentation-lives.md) | Where documentation lives, and what the search index covers | proposed 2026-11-03 |
 | [0013](0013-images-from-dockerfile-stages.md) | Images from Dockerfile stages, built with BuildKit | accepted 2026-11-03, amended 2026-11-05 |
+| [0014](0014-installation-and-provisioning.md) | Installation: one guided flow, device descriptions, platform backends | proposed 2026-11-12 |
 
 Template for new records: copy any record and keep the four headings
 (Context, Decision, Consequences, Status).
