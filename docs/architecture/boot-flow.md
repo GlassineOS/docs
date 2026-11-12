@@ -152,8 +152,8 @@ to run the GlassineOS initramfs. GlassineOS never ships a vendor kernel.
 ## Open questions
 
 - **Installed partition layout.** Devices run a development layout today.
-- **Recovery.** Decided: the recovery partition holds the mainline recovery
-  permanently, and new kernels get their test boot through the device's kernel
+- **Recovery.** Decided: the recovery partition holds the GlassineOS recovery
+  ([0007](../decisions/0007-recovery-mainline-twrp.md)) permanently, and new kernels get their test boot through the device's kernel
   hand-off method instead ([0010](../decisions/0010-root-and-deployments.md)). Until that works, kernel
   updates pause, and the test boot described above is a development flow only.
 - **Updates.** Decided: deployments on read-only bases, each tried before it counts
