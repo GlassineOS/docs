@@ -36,8 +36,12 @@ be replaced, install, and prove that it boots.
   the first deployment, the person's storage. Partitions, boot slots and boot entries are
   the backend's means to start deployments. They are never deployments themselves.
 - **Nothing irreplaceable is lost.** Partitions the description marks never-write are only
-  read. Everything the plan replaces is backed up to the person's computer, and the backup
-  is verified before the first write. The way back to stock uses that backup.
+  read. By default the installer makes a full backup of the machine's storage, every
+  partition and the partition table, on the person's computer or a disk they choose, and
+  verifies it before the first write, so any damage can be undone. The way back to stock
+  uses that backup. The person can switch the backup off, so that an installation also
+  works with little free space; the plan then says that there is no way back from it. The
+  values unique to the unit are captured either way.
 - **One GlassineOS recovery on every machine.** It is the same recovery on a PC and on a
   device: it lists, selects, pins and removes deployments, resets, repairs the boot, runs
   the installer's repair and reinstall, and collects diagnostics. It is a client of the
