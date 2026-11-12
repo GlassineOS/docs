@@ -113,7 +113,7 @@ A hibernate never runs the switch: the kernel powers off by itself.
 
 ### Recovery
 
-The mainline recovery calls the same `glassine-deploy` tool through its menu: status,
+The GlassineOS recovery ([0007](../decisions/0007-recovery-mainline-twrp.md)) calls the same `glassine-deploy` tool through its menu: status,
 list, select a deployment, roll back, reset. It cancels a hibernated session (after
 asking) before it writes anything.
 
