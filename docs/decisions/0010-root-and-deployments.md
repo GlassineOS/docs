@@ -62,7 +62,7 @@ stay behind in the old one.
 - **Hibernation stays safe.** A hibernated session is resumed only when nothing has
   touched the data partition since, and the same kernel build and deployment boot.
   Otherwise the image is cancelled before anything is mounted read-write.
-- **Recovery.** The recovery partition holds the mainline recovery permanently. New
+- **Recovery.** The recovery partition holds the GlassineOS recovery ([0007](0007-recovery-mainline-twrp.md)) permanently. New
   kernels get a one-shot test boot through the device's hand-off method, with the
   watchdog armed, instead of being booted from the recovery partition. Kernel updates
   wait until this works.
