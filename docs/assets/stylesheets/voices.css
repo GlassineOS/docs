@@ -76,6 +76,7 @@
   --gl-nav-on-rotate: -1.2deg;
   --gl-toc-on: var(--pen);
 
+  --gl-link-band: var(--v-link-bg);
   --gl-link-thickness: 2px;
   --gl-mark: linear-gradient(transparent 58%, var(--highlight) 58%);
   --gl-mark-decoration: none;
@@ -221,10 +222,10 @@
   --gl-sheet-bg: var(--paper);
 }
 
-/* White on e-ink: bundle.css drops the gradient band under links; the band is drawn as
-   an inset shadow instead. */
-[data-theme="white-eink"] .md-typeset a:not(.md-button):not(.headerlink) {
-  box-shadow: inset 0 -0.5em 0 var(--highlight);
+/* White on e-ink: bundle.css takes the band under links off --v-link-bg (its links draw
+   it as a shadow); the site's links keep it as their background. */
+[data-theme="white-eink"] {
+  --gl-link-band: linear-gradient(transparent 60%, var(--highlight) 60%);
 }
 
 /* ---- Shared by Editorial and Stationery: no hand-drawn marks ----------------------- */

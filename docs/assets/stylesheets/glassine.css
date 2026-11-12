@@ -793,7 +793,7 @@ body {
   text-decoration-color: var(--v-link-deco-color);
   text-decoration-thickness: var(--gl-link-thickness);
   text-underline-offset: 4px;
-  background: var(--v-link-bg);
+  background: var(--gl-link-band);
   padding: 0 2px;
   pointer-events: none;
 }
@@ -1540,7 +1540,7 @@ body {
   text-decoration-color: var(--v-link-deco-color);
   text-decoration-thickness: var(--gl-link-thickness);
   text-underline-offset: 4px;
-  background: var(--v-link-bg);
+  background: var(--gl-link-band);
   padding: 0 2px;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
