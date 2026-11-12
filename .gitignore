@@ -2,6 +2,6 @@ site/
 __pycache__/
 .venv/
 .scratch/
-.fontsrc/
 .cache/
 .cache-local/
+out/
