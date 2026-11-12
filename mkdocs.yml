@@ -9,11 +9,12 @@ copyright: Text CC-BY-SA-4.0 · GlassineOS is not affiliated with Onyx Internati
 theme:
   name: material
   # Three voices (White, Editorial, Stationery), each with three pens, in three
-  # schemes; the reader picks them in the header's Appearance panel. All values come
-  # from theme/tokens.json (hooks/tokens.py turns them into CSS variables). Templates
-  # and styles live in overrides/ and docs/assets/.
+  # schemes; the reader picks them in the header's Appearance panel. Colours, fonts,
+  # type and spacing come from Interleaf's web form, GlassineOS/ui at the version in
+  # theme/ui.ref (hooks/theme.py serves it at assets/webform/); the panel's copy is
+  # theme/appearance.json. Templates and styles live in overrides/ and docs/assets/.
   custom_dir: overrides
-  # Fonts are self-hosted (docs/assets/fonts): no requests to Google Fonts.
+  # The fonts come with the web form: no requests to Google Fonts.
   font: false
   language: en
   features:
@@ -44,8 +45,9 @@ theme:
       accent: custom
 
 extra_css:
-  - assets/stylesheets/fonts.css
-  - assets/stylesheets/tokens.css
+  - assets/webform/tokens.css
+  - assets/webform/bundle.css
+  - assets/stylesheets/words.css
   - assets/stylesheets/glassine.css
   - assets/stylesheets/voices.css
 
@@ -53,7 +55,7 @@ extra_javascript:
   - assets/javascripts/glassine.js
 
 hooks:
-  - hooks/tokens.py
+  - hooks/theme.py
 
 plugins:
   # The theme's search must stay first: the semantic search hooks into its search box.

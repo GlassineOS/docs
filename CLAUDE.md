@@ -3,6 +3,12 @@
 Public documentation site (MkDocs Material, `mkdocs build` must pass in strict mode).
 Rules for writing are in `docs/contributing/writing-docs.md`; follow them.
 
+The look comes from Interleaf's web form (GlassineOS/ui, version in `theme/ui.ref`; see
+README "Look"). The site's CSS names no colour or font of its own and takes the text
+sizes of the voices (body, headings, labels, notes) from the web form's variables;
+only sizes of the site's own controls are literal. A new look is a change in
+GlassineOS/ui plus a bump of `theme/ui.ref`.
+
 ## Distilling from the lab notebook
 
 Content comes from the private lab notebook (diaries, summaries, phase docs, agent

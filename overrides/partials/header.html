@@ -1,7 +1,7 @@
 {#- Header: logo and name, search field, the Appearance button and panel (voice,
     scheme, pen) and the repository link. Material's search partial and data-md-component
-    hooks are kept unchanged. The voices and pens come from theme/tokens.json (see
-    hooks/tokens.py). -#}
+    hooks are kept unchanged. The voices, pens and schemes and their names come from
+    theme/appearance.json (see hooks/theme.py). -#}
 {% set gl = config.extra.glassine_theme %}
 <header class="md-header gl-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header') }}">
@@ -27,9 +27,8 @@
     {#- Appearance: one button that opens a panel with three radio groups (voice,
         scheme, pen) and a sample line. Voice and pen need JavaScript; without it the
         button stays hidden and the page keeps the default voice and house pen. The
-        scheme radios are Material's palette inputs. Every option carries the voice,
-        pen and scheme it shows as data attributes, so the generated token rules colour
-        its preview. -#}
+        scheme radios are Material's palette inputs. Every option carries the web form's
+        data-theme and data-pen of what it shows, so the web form colours its preview. -#}
     {% set v0 = gl.voices[0] %}
     <div class="gl-appearance">
       <button type="button" class="gl-switch gl-appearance__button" aria-haspopup="dialog" aria-expanded="false" aria-controls="gl-appearance" hidden>
@@ -52,7 +51,7 @@
           <div class="gl-options gl-options--voice" role="radiogroup" aria-labelledby="gl-voice-label">
             {% for v in gl.voices %}
               <input class="gl-option__input" type="radio" name="gl-voice" id="gl-voice-{{ v.id }}" value="{{ v.id }}">
-              <label class="gl-option gl-option--voice" for="gl-voice-{{ v.id }}" data-gl-voice="{{ v.id }}" data-gl-pen="{{ v.house }}" data-md-color-scheme="paper">
+              <label class="gl-option gl-option--voice" for="gl-voice-{{ v.id }}" data-theme="{{ v.id }}-paper" data-pen="1">
                 <span class="gl-option__glyph" aria-hidden="true">Aa</span>
                 <span class="gl-option__name">{{ v.label }}</span>
                 <span class="gl-option__tag">{{ v.tag }}</span>
@@ -77,7 +76,7 @@
               {% for p in v.pens %}
                 <input class="gl-option__input" type="radio" name="gl-pen-{{ v.id }}" id="gl-pen-{{ v.id }}-{{ p.id }}" value="{{ p.id }}">
                 <label class="gl-option gl-option--pen" for="gl-pen-{{ v.id }}-{{ p.id }}">
-                  <svg class="gl-swatch" viewBox="0 0 28 20" aria-hidden="true" focusable="false" data-gl-voice="{{ v.id }}" data-gl-pen="{{ p.id }}" data-md-color-scheme="paper"><rect x="1" y="7" width="19" height="10" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg>
+                  <svg class="gl-swatch" viewBox="0 0 28 20" aria-hidden="true" focusable="false" data-theme="{{ v.id }}-paper" data-pen="{{ p.pen }}"><rect x="1" y="7" width="19" height="10" transform="rotate(-4 10 12)"/><circle cx="19" cy="8" r="6"/></svg>
                   <span>{{ p.label }}</span>
                 </label>
               {% endfor %}
@@ -90,7 +89,7 @@
         </div>
       </div>
     </div>
-    <script type="application/json" id="__gl-tokens">{{ gl | tojson }}</script>
+    <script type="application/json" id="__gl-appearance">{{ gl | tojson }}</script>
     {% if not config.theme.palette is mapping %}
       {% include "partials/javascripts/palette.html" %}
     {% endif %}

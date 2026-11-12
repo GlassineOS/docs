@@ -3,20 +3,39 @@
    is optional: without JavaScript the pages keep the White voice, its house pen and
    Material's diagrams.
 
-   The voices, pens and schemes are read from the header's token summary (generated
-   from theme/tokens.json); the words from the --gl-word-* variables of the current
-   voice. */
+   The voices, pens and schemes are read from the header's summary of
+   theme/appearance.json; the words from the --gl-word-* variables of the current
+   voice. The look itself is the web form's: data-theme (voice-scheme) and data-pen
+   (1|2|3) on <body> and on every preview in the panel. */
 (function () {
   "use strict";
 
   var body = document.body;
 
+  function voiceId(el) {
+    return (el.getAttribute("data-theme") || "white-paper").split("-")[0];
+  }
+
+  function schemeId(el) {
+    var t = (el.getAttribute("data-theme") || "").split("-");
+    return t[1] || null;
+  }
+
+  /* Material sets the scheme on <body> (the palette radios, and the media queries of
+     its options); data-theme follows it. */
+  function followScheme() {
+    var scheme = body.getAttribute("data-md-color-scheme");
+    if (!scheme) return;
+    var theme = voiceId(body) + "-" + scheme;
+    if (body.getAttribute("data-theme") !== theme) body.setAttribute("data-theme", theme);
+  }
+
   function store(key, value) {
     try { localStorage.setItem(key, value); } catch (e) { /* private mode */ }
   }
 
-  function tokens() {
-    var el = document.getElementById("__gl-tokens");
+  function appearance() {
+    var el = document.getElementById("__gl-appearance");
     if (!el) return null;
     try { return JSON.parse(el.textContent); } catch (e) { return null; }
   }
@@ -61,21 +80,21 @@
     if (!T || !button || !panel) return;
 
     function voice() {
-      var id = body.getAttribute("data-gl-voice");
+      var id = voiceId(body);
       for (var i = 0; i < T.voices.length; i++) if (T.voices[i].id === id) return T.voices[i];
       return T.voices[0];
     }
 
     function pen(v) {
-      var id = body.getAttribute("data-gl-pen");
-      for (var i = 0; i < v.pens.length; i++) if (v.pens[i].id === id) return v.pens[i];
+      var n = Number(body.getAttribute("data-pen")) || 1;
+      for (var i = 0; i < v.pens.length; i++) if (v.pens[i].pen === n) return v.pens[i];
       return v.pens[0];
     }
 
     function storedPen(v) {
       var id = null;
       try { id = localStorage.getItem("gl-pen-" + v.id); } catch (e) { /* private mode */ }
-      for (var i = 0; i < v.pens.length; i++) if (v.pens[i].id === (id || v.house)) return v.pens[i];
+      for (var i = 0; i < v.pens.length; i++) if (v.pens[i].id === id) return v.pens[i];
       return v.pens[0];
     }
 
@@ -86,7 +105,7 @@
 
     function sync() {
       var v = voice(), p = pen(v);
-      var scheme = body.getAttribute("data-md-color-scheme") || T.defaults.scheme;
+      var scheme = schemeId(body) || T.defaults.scheme;
       var text = { menu: v.words.menu, "menu-title": v.words["menu-title"], pen: v.pen_word };
       var all = document.querySelectorAll("[data-gl-text]");
       for (var i = 0; i < all.length; i++) {
@@ -106,11 +125,11 @@
       /* Voice cards and pen swatches show the current scheme; the scheme pages show
          the current voice and pen. */
       each(".gl-option--voice, .gl-option--pen .gl-swatch", function (el) {
-        el.setAttribute("data-md-color-scheme", scheme);
+        el.setAttribute("data-theme", voiceId(el) + "-" + scheme);
       });
       each(".gl-option__page", function (el) {
-        el.setAttribute("data-gl-voice", v.id);
-        el.setAttribute("data-gl-pen", p.id);
+        el.setAttribute("data-theme", v.id + "-" + schemeId(el));
+        el.setAttribute("data-pen", String(p.pen));
       });
       applyWords();
     }
@@ -145,7 +164,7 @@
       el.addEventListener("keydown", function (ev) {
         if (ev.key === "Enter") ev.stopPropagation();
       });
-      el.addEventListener("change", function () { setTimeout(sync, 0); });
+      el.addEventListener("change", function () { setTimeout(function () { followScheme(); sync(); }, 0); });
     });
 
     each("input[name=gl-voice]", function (el) {
@@ -153,8 +172,8 @@
         var v = null;
         for (var i = 0; i < T.voices.length; i++) if (T.voices[i].id === el.value) v = T.voices[i];
         if (!v) return;
-        body.setAttribute("data-gl-voice", v.id);
-        body.setAttribute("data-gl-pen", storedPen(v).id);
+        body.setAttribute("data-theme", v.id + "-" + (schemeId(body) || T.defaults.scheme));
+        body.setAttribute("data-pen", String(storedPen(v).pen));
         store("gl-voice", v.id);
         sync();
         /* Diagrams are drawn once, in the voice's face: draw them again. */
@@ -164,9 +183,11 @@
 
     each("[data-gl-pens] input", function (el) {
       el.addEventListener("change", function () {
-        var v = voice();
-        body.setAttribute("data-gl-pen", el.value);
-        store("gl-pen-" + v.id, el.value);
+        var v = voice(), p = null;
+        for (var i = 0; i < v.pens.length; i++) if (v.pens[i].id === el.value) p = v.pens[i];
+        if (!p) return;
+        body.setAttribute("data-pen", String(p.pen));
+        store("gl-pen-" + v.id, p.id);
         sync();
       });
     });
@@ -208,7 +229,7 @@
             var initialize = value.initialize;
             value.initialize = function (config) {
               var css = getComputedStyle(document.body);
-              var hand = (body.getAttribute("data-gl-voice") || "white") === "white";
+              var hand = voiceId(body) === "white";
               var extra = {
                 fontFamily: css.getPropertyValue("--md-mermaid-font-family").trim() || "sans-serif"
               };
@@ -234,7 +255,11 @@
   }
 
   hookMermaid();
-  setupAppearance(tokens());
+  followScheme();
+  if (typeof MutationObserver === "function") {
+    new MutationObserver(followScheme).observe(body, { attributes: true, attributeFilter: ["data-md-color-scheme"] });
+  }
+  setupAppearance(appearance());
   splitDecisionNumbers();
   applyWords();
 })();
