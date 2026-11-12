@@ -1,0 +1,128 @@
+{
+  "about": "The Appearance panel's copy: the voices' names, tags and words, the pens' names and the schemes' names. Looks come from Interleaf's web form (theme/ui.ref); hooks/theme.py checks that these voices, schemes and pens are the web form's combinations.",
+  "defaults": {
+    "voice": "white",
+    "scheme": "paper"
+  },
+  "voices": {
+    "white": {
+      "label": "White",
+      "tag": "The instrument: Plex, keylines, a marker.",
+      "words": {
+        "search": "Search",
+        "toc": "On this page",
+        "previous": "← Previous",
+        "next": "Next →",
+        "copy": "Copy",
+        "pen": "Pen",
+        "caution": "Warning",
+        "menu": "Appearance",
+        "menu-title": "Appearance"
+      },
+      "pens": [
+        {
+          "pen": 1,
+          "id": "cobalt",
+          "label": "Cobalt",
+          "slot": "house"
+        },
+        {
+          "pen": 2,
+          "id": "signal",
+          "label": "Signal",
+          "slot": "second"
+        },
+        {
+          "pen": 3,
+          "id": "graphite",
+          "label": "Graphite",
+          "slot": "third"
+        }
+      ]
+    },
+    "editorial": {
+      "label": "Editorial",
+      "tag": "The journal: serif, rules, a red pencil.",
+      "words": {
+        "search": "Search the guides…",
+        "toc": "contents",
+        "previous": "previous",
+        "next": "next",
+        "copy": "copy",
+        "pen": "Pen",
+        "caution": "warning —",
+        "menu": "appearance",
+        "menu-title": "Appearance"
+      },
+      "pens": [
+        {
+          "pen": 1,
+          "id": "rubric",
+          "label": "Rubric",
+          "slot": "house"
+        },
+        {
+          "pen": 2,
+          "id": "blue-pencil",
+          "label": "Blue pencil",
+          "slot": "second"
+        },
+        {
+          "pen": 3,
+          "id": "green-ink",
+          "label": "Green ink",
+          "slot": "third"
+        }
+      ]
+    },
+    "stationery": {
+      "label": "Stationery",
+      "tag": "The desk: Garamond, leather, gold.",
+      "words": {
+        "search": "Look up in the index",
+        "toc": "the index",
+        "previous": "previous page",
+        "next": "next page",
+        "copy": "copy",
+        "pen": "Leather",
+        "caution": "a word of caution",
+        "menu": "the desk",
+        "menu-title": "Arrange the desk"
+      },
+      "pens": [
+        {
+          "pen": 1,
+          "id": "oxblood",
+          "label": "Oxblood",
+          "slot": "house"
+        },
+        {
+          "pen": 2,
+          "id": "bottle-green",
+          "label": "Bottle green",
+          "slot": "second"
+        },
+        {
+          "pen": 3,
+          "id": "navy",
+          "label": "Navy",
+          "slot": "third"
+        }
+      ]
+    }
+  },
+  "schemes": {
+    "paper": {
+      "label": "Paper",
+      "sub": "light screens"
+    },
+    "night": {
+      "label": "Night",
+      "sub": "dark screens"
+    },
+    "eink": {
+      "label": "E-ink",
+      "sub": "greys only"
+    }
+  }
+}

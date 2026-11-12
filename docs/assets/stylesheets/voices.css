@@ -1,158 +1,378 @@
 /* =====================================================================================
    Voices: what Editorial and Stationery draw differently from White.
 
-   glassine.css is the structure and the White voice. Colours, fonts, sizes, edges and
-   words already follow the voice through the --gl-* variables (theme/tokens.json);
-   this file changes only shapes: section numbers, rules, marks in the margin, the
-   frames of admonitions, and the leather desk of Stationery.
+   Colours, fonts, type sizes, spacing and the voices' own variables (--v-*) come from
+   Interleaf's web form (assets/webform/tokens.css and bundle.css), chosen by data-theme
+   and data-pen on <body>. This file first composes the site's own parts (the header,
+   the code blocks, the navigation, the Appearance panel) from those variables, then
+   changes the shapes: section numbers, rules, marks in the margin, the frames of
+   admonitions, and the leather desk of Stationery. It names no colour or font of its
+   own; the few literal shadows and the paper's grain are the ones bundle.css draws.
    ===================================================================================== */
+
+/* ---- The site's parts, per voice ------------------------------------------------------
+   Declared on every data-theme element as bundle.css declares --v-*, so the previews in
+   the Appearance panel, which carry their own data-theme, compose their own values. */
+
+:root,
+[data-theme] {
+  --gl-lead-size: calc(var(--v-body) + 3px);
+  --gl-nav-size: calc(var(--v-body) - 2px);
+  --gl-table-size: calc(var(--v-body) - 1.5px);
+  --gl-title-style: normal;
+  --gl-strong-weight: 600;
+  --gl-brand-weight: 600;
+  --gl-brand-style: normal;
+  --gl-brand-spacing: -0.01em;
+  --gl-num-size: var(--v-h2);
+  --gl-num-weight: 700;
+  --gl-num-style: normal;
+  --gl-num-list: decimal;
+  --gl-num-prefix: "";
+  --gl-num-suffix: "";
+  --gl-note-prefix: "";
+  --gl-radius-code: var(--radius-ui);
+  --gl-option-radius: var(--radius-ui);
+  --gl-logo-radius: 5px;
+  --gl-swatch-radius: 3px;
+  --gl-summary-radius: var(--radius-pill);
+  --gl-summary-style: normal;
+  --gl-summary-weight: 600;
+
+  --gl-frame: none;
+  --gl-edge-field: inset 0 0 0 1.5px var(--ink), inset 0 3px 0 var(--sheet);
+  --gl-edge-pop: inset 0 0 0 1.5px var(--ink), 0 4px 0 var(--shade), 0 18px 40px rgba(0, 0, 0, 0.16);
+  --gl-summary-edge: inset 0 0 0 1.5px var(--ink);
+  --gl-bar-fg: var(--ink);
+  --gl-bar-shadow: none;
+  --gl-field-bg: var(--paper);
+  --gl-field-fg: var(--ink);
+  --gl-button-bg: var(--paper);
+  --gl-button-fg: var(--ink);
+  --gl-focus-bar: currentColor;
+  --gl-focus-nav-on: currentColor;
+
+  --gl-rule-line: var(--stroke-dotted) var(--ink);
+  --gl-th-top: none;
+  --gl-th-bottom: var(--stroke-keyline) var(--ink);
+  --gl-th-colour: var(--pen);
+  --gl-td-last: var(--stroke-keyline) var(--ink);
+
+  --gl-code-bg: var(--sheet);
+  --gl-code-head-bg: var(--sheet);
+  --gl-code-border: var(--stroke-keyline) var(--ink);
+  --gl-code-head: var(--stroke-dotted) var(--ink);
+  --gl-code-shadow: none;
+  --gl-code-line: 1.75;
+
+  --gl-nav-fg: var(--ink);
+  --gl-nav-soft: var(--ink-soft);
+  --gl-nav-sep: var(--stroke-dotted) var(--ink);
+  --gl-nav-on-bg: var(--highlight);
+  --gl-nav-on-fg: var(--ink);
+  --gl-nav-on-decoration: none;
+  --gl-nav-on-style: normal;
+  --gl-nav-on-radius: 6px 12px 8px 12px;
+  --gl-nav-on-rotate: -1.2deg;
+  --gl-toc-on: var(--pen);
+
+  --gl-link-thickness: 2px;
+  --gl-mark: linear-gradient(transparent 58%, var(--highlight) 58%);
+  --gl-mark-decoration: none;
+
+  --gl-sheet-bg: transparent;
+  --gl-sheet-edge: none;
+  --gl-sheet-gilt: 0 solid transparent;
+  --gl-sheet-radius: 0;
+
+  --gl-logo-stroke: var(--ink);
+  --gl-logo-fill: var(--highlight);
+  --gl-logo-pen: var(--pen);
+  --gl-swatch-2: var(--highlight);
+
+  --gl-foot-fg: var(--ink-soft);
+  --gl-foot-link: var(--ink);
+}
+
+[data-theme^="editorial"] {
+  --gl-lead-size: calc(var(--v-body) + 2.5px);
+  --gl-table-size: var(--gl-nav-size);
+  --gl-title-style: italic;
+  --gl-brand-weight: 400;
+  --gl-brand-style: italic;
+  --gl-brand-spacing: 0;
+  --gl-num-size: calc(var(--v-h2) - 4px);
+  --gl-num-weight: 400;
+  --gl-num-style: italic;
+  --gl-num-prefix: "§ ";
+  --gl-radius-code: var(--radius-none);
+  --gl-option-radius: var(--radius-none);
+  --gl-logo-radius: 0;
+  --gl-swatch-radius: 0;
+  --gl-summary-radius: var(--radius-none);
+  --gl-summary-style: italic;
+  --gl-summary-weight: 400;
+
+  --gl-frame: var(--passe-partout);
+  --gl-edge-field: inset 0 -1px 0 var(--ink);
+  --gl-edge-pop: 0 0 0 1px var(--ink), 0 0 0 6px var(--paper), 0 0 0 7px var(--ink), 0 18px 40px rgba(0, 0, 0, 0.18);
+  --gl-summary-edge: inset 0 0 0 1px var(--ink), 3px 3px 0 var(--shade);
+  --gl-field-bg: transparent;
+  --gl-button-bg: transparent;
+
+  --gl-rule-line: var(--stroke-hairline) var(--ink);
+  --gl-th-top: var(--stroke-hairline) var(--ink);
+  --gl-th-bottom: var(--stroke-hairline) var(--ink);
+  --gl-td-last: var(--stroke-double) var(--ink);
+
+  --gl-code-border: var(--stroke-hairline) var(--ink);
+  --gl-code-head: var(--stroke-hairline) var(--ink);
+
+  --gl-nav-sep: var(--stroke-hairline) var(--ink);
+  --gl-nav-on-bg: transparent;
+  --gl-nav-on-fg: var(--accent);
+  --gl-nav-on-decoration: underline;
+  --gl-nav-on-style: italic;
+  --gl-nav-on-radius: 0;
+  --gl-nav-on-rotate: 0deg;
+
+  --gl-link-thickness: 1.5px;
+  --gl-mark: none;
+  --gl-mark-decoration: underline;
+}
+
+[data-theme^="stationery"] {
+  --gl-table-size: var(--gl-nav-size);
+  --gl-title-style: italic;
+  --gl-brand-weight: 500;
+  --gl-brand-spacing: 0.12em;
+  --gl-num-weight: 500;
+  --gl-num-style: italic;
+  --gl-num-list: upper-roman;
+  --gl-num-suffix: ".";
+  --gl-note-prefix: "❧ ";
+  --gl-radius-code: var(--radius-paper);
+  --gl-option-radius: var(--radius-paper);
+  --gl-logo-radius: 3px;
+  --gl-swatch-radius: 2px;
+  --gl-summary-radius: var(--radius-chip);
+  --gl-summary-style: italic;
+  --gl-summary-weight: 500;
+
+  --gl-edge-field: inset 0 2px 3px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--gilt);
+  --gl-edge-pop: var(--card-stack), 0 18px 40px rgba(0, 0, 0, 0.45);
+  --gl-summary-edge: 0 0 0 1px var(--gilt), 0 2px 0 var(--shade);
+  --gl-bar-fg: var(--on-accent);
+  --gl-bar-shadow: 0 3px 6px rgba(0, 0, 0, 0.45);
+  --gl-field-bg: var(--on-accent);
+  --gl-field-fg: var(--grey-1);
+  --gl-button-bg: var(--on-accent);
+  --gl-button-fg: var(--grey-1);
+  --gl-focus-bar: var(--focus-on-leather);
+  --gl-focus-nav-on: var(--focus-on-leather);
+
+  --gl-rule-line: var(--stroke-hairline) var(--gold);
+  --gl-th-top: var(--stroke-hairline) var(--gold);
+  --gl-th-bottom: var(--stroke-double) var(--gold);
+  --gl-th-colour: var(--gold);
+  --gl-td-last: var(--stroke-hairline) var(--gold);
+
+  --gl-code-bg: repeating-linear-gradient(180deg, transparent 0 27px, var(--index-line) 27px 28px), var(--paper);
+  --gl-code-head-bg: var(--paper);
+  --gl-code-border: 0 solid transparent;
+  --gl-code-head: 2px solid var(--index-red);
+  --gl-code-shadow: 0 0 0 1px rgba(40, 25, 10, 0.3), 0 3px 6px rgba(0, 0, 0, 0.15);
+  --gl-code-line: 28px;
+
+  --gl-nav-fg: var(--on-accent);
+  --gl-nav-soft: var(--on-accent-soft);
+  --gl-nav-sep: 1px dashed var(--gilt);
+  --gl-nav-on-bg: var(--gilt);
+  --gl-nav-on-fg: var(--grey-1);
+  --gl-nav-on-style: italic;
+  --gl-nav-on-radius: 2px 6px 6px 2px;
+  --gl-nav-on-rotate: 0deg;
+  --gl-toc-on: var(--gilt);
+
+  --gl-link-thickness: 1px;
+  --gl-mark: linear-gradient(var(--highlight), var(--highlight));
+
+  --gl-sheet-bg: repeating-linear-gradient(0deg, rgba(110, 85, 40, 0.055) 0 1px, transparent 1px 5px), repeating-linear-gradient(90deg, rgba(110, 85, 40, 0.07) 0 1px, transparent 1px 112px), var(--paper);
+  --gl-sheet-edge: var(--sheet-stack);
+  --gl-sheet-gilt: 2px solid var(--gilt);
+  --gl-sheet-radius: var(--radius-paper);
+
+  --gl-logo-stroke: var(--gilt);
+  --gl-logo-fill: var(--gilt);
+  --gl-logo-pen: var(--on-accent);
+  --gl-swatch-2: var(--gilt);
+
+  --gl-foot-fg: var(--on-accent-soft);
+  --gl-foot-link: var(--on-accent);
+}
+
+/* E-ink: patterns and drop shadows go, as in bundle.css; edges become flat lips. */
+[data-theme="stationery-eink"] {
+  --gl-edge-field: inset 0 2px 0 var(--shade), 0 0 0 1px var(--gilt);
+  --gl-edge-pop: var(--card-stack);
+  --gl-bar-shadow: none;
+  --gl-code-bg: var(--paper);
+  --gl-code-shadow: 0 0 0 1px var(--rule);
+  --gl-sheet-bg: var(--paper);
+}
+
+/* White on e-ink: bundle.css drops the gradient band under links; the band is drawn as
+   an inset shadow instead. */
+[data-theme="white-eink"] .md-typeset a:not(.md-button):not(.headerlink) {
+  box-shadow: inset 0 -0.5em 0 var(--highlight);
+}
 
 /* ---- Shared by Editorial and Stationery: no hand-drawn marks ----------------------- */
 
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .md-content__inner > h2::after {
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .md-content__inner > h2::after {
   content: none;
 }
 
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .md-typeset ul:not([class]) > li::before {
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .md-typeset ul:not([class]) > li::before {
   left: -24px;
   top: 0.78em;
   width: 12px;
   height: 1.5px;
   -webkit-mask: none;
   mask: none;
-  background-color: var(--gl-num-colour);
+  background-color: var(--v-num-color);
 }
 
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .md-typeset blockquote {
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .md-typeset blockquote {
   font-style: italic;
 }
 
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .md-typeset blockquote::before {
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .md-typeset blockquote::before {
   width: 2px;
   -webkit-mask: none;
   mask: none;
-  background-color: var(--gl-num-colour);
+  background-color: var(--v-num-color);
 }
 
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .md-typeset .gl-squiggle {
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .md-typeset .gl-squiggle {
   text-decoration: underline;
   text-decoration-style: wavy;
-  text-decoration-color: var(--gl-pen);
+  text-decoration-color: var(--pen);
   text-decoration-thickness: 1.5px;
   text-underline-offset: 5px;
 }
 
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .md-typeset .gl-squiggle::after {
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .md-typeset .gl-squiggle::after {
   content: none;
 }
 
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .md-typeset :is(.md-code__button[data-md-type="copy"], .md-clipboard)::after {
-  background-color: var(--gl-ink);
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .md-typeset :is(.md-code__button[data-md-type="copy"], .md-clipboard)::after {
+  background-color: var(--ink);
 }
 
 /* No hand in these voices: the tip title and the "!" of danger are set in the text face. */
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .md-typeset :is(.admonition, details):is(.tip, .hint, .important) > :is(.admonition-title, summary) {
-  font-family: var(--gl-font-head);
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .md-typeset :is(.admonition, details):is(.tip, .hint, .important) > :is(.admonition-title, summary) {
+  font-family: var(--v-head);
   font-style: italic;
-  font-size: calc(var(--gl-body-size) + 2px);
+  font-size: calc(var(--v-body) + 2px);
 }
 
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug)::after {
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug)::after {
   content: none;
 }
 
-:is([data-gl-voice="editorial"], [data-gl-voice="stationery"]) .gl-hero-art svg g {
+:is([data-theme^="editorial"], [data-theme^="stationery"]) .gl-hero-art svg g {
   transform: none;
 }
 
 /* ---- Editorial ------------------------------------------------------------------------ */
 
 /* "§ 1" in the margin, level with the rule above the heading. */
-[data-gl-voice="editorial"] .md-content__inner > h2::before {
-  top: calc(var(--gl-h2-pad) + 4px);
+[data-theme^="editorial"] .md-content__inner > h2::before {
+  top: calc(var(--v-h2-pad) + 4px);
   height: auto;
   margin-top: 0;
   justify-content: flex-start;
 }
 
 @media screen and (max-width: 76.234375em) {
-  [data-gl-voice="editorial"] .md-content__inner > h2 {
+  [data-theme^="editorial"] .md-content__inner > h2 {
     padding-left: 56px;
   }
 }
 
 /* Drop cap: the first letter of the first paragraph after the title. */
-[data-gl-voice="editorial"] .md-typeset .md-content__inner > h1 + p::first-letter {
+[data-theme^="editorial"] .md-typeset .md-content__inner > h1 + p::first-letter {
   float: left;
   font-size: 74px;
   line-height: 0.82;
   padding: 8px 10px 0 0;
   font-weight: 600;
   font-style: normal;
-  color: var(--gl-pen);
+  color: var(--pen);
 }
 
-[data-gl-voice="editorial"] .md-typeset hr {
+[data-theme^="editorial"] .md-typeset hr {
   height: 0;
   background: none;
   -webkit-mask: none;
   mask: none;
-  border-top: 1px solid var(--gl-ink);
+  border-top: 1px solid var(--ink);
 }
 
-[data-gl-voice="editorial"] .md-typeset hr.gl-rule-end {
-  border-top: 3px double var(--gl-ink);
+[data-theme^="editorial"] .md-typeset hr.gl-rule-end {
+  border-top: 3px double var(--ink);
 }
 
-[data-gl-voice="editorial"] .md-typeset a:hover,
-[data-gl-voice="editorial"] .md-typeset a:focus {
+[data-theme^="editorial"] .md-typeset a:hover,
+[data-theme^="editorial"] .md-typeset a:focus {
   background: none;
   text-decoration-thickness: 2.5px;
 }
 
 /* Admonitions: a passe-partout (rule, paper, rule) for every type; the title in small
    capitals in the pen colour above a hairline. Warnings say so in words. */
-[data-gl-voice="editorial"] .md-typeset .admonition {
+[data-theme^="editorial"] .md-typeset .admonition {
   margin: 34px 6px;
   padding: 18px 22px;
-  background: var(--gl-paper);
-  border: 1px solid var(--gl-ink) !important;
+  background: var(--paper);
+  border: 1px solid var(--ink) !important;
   border-radius: 0;
   box-shadow: var(--gl-frame);
   transform: none;
 }
 
-[data-gl-voice="editorial"] .md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug) {
-  border: 2px solid var(--gl-pen) !important;
-  box-shadow: 0 0 0 5px var(--gl-paper), 0 0 0 7px var(--gl-pen);
+[data-theme^="editorial"] .md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug) {
+  border: 2px solid var(--pen) !important;
+  box-shadow: 0 0 0 5px var(--paper), 0 0 0 7px var(--pen);
 }
 
-[dir][data-gl-voice="editorial"] .md-typeset .admonition[class] > .admonition-title {
+[dir][data-theme^="editorial"] .md-typeset .admonition[class] > .admonition-title {
   position: static;
   display: block;
   max-width: none;
   margin: 0 0 10px;
   padding: 0 0 6px;
-  font-family: var(--gl-font-label);
+  font-family: var(--v-label);
   font-size: 17px;
   font-weight: 400;
   font-style: italic;
   font-variant: normal;
   text-transform: none;
   letter-spacing: 0;
-  color: var(--gl-ink);
+  color: var(--ink);
   background: transparent !important;
   border: 0;
-  border-bottom: 1px solid var(--gl-ink);
+  border-bottom: 1px solid var(--ink);
   border-radius: 0;
   transform: none;
 }
 
-[data-gl-voice="editorial"] .md-typeset .admonition[class] > .admonition-title::before {
+[data-theme^="editorial"] .md-typeset .admonition[class] > .admonition-title::before {
   content: none;
 }
 
-[data-gl-voice="editorial"] .md-typeset .admonition:is(.warning, .caution, .attention, .danger, .error, .failure, .fail, .missing, .bug) > .admonition-title::before {
+[data-theme^="editorial"] .md-typeset .admonition:is(.warning, .caution, .attention, .danger, .error, .failure, .fail, .missing, .bug) > .admonition-title::before {
   content: var(--gl-word-caution) " ";
   display: inline;
   width: auto;
@@ -164,35 +384,35 @@
   font-variant: small-caps;
   text-transform: lowercase;
   letter-spacing: 0.1em;
-  color: var(--gl-pen);
+  color: var(--pen);
 }
 
-[data-gl-voice="editorial"] .md-typeset .admonition:is(.note, .abstract, .summary, .tldr, .info, .todo, .question, .help, .faq, .example, .quote, .cite, .success, .check, .done) > .admonition-title {
+[data-theme^="editorial"] .md-typeset .admonition:is(.note, .abstract, .summary, .tldr, .info, .todo, .question, .help, .faq, .example, .quote, .cite, .success, .check, .done) > .admonition-title {
   font-style: normal;
   font-variant: small-caps;
   text-transform: lowercase;
   letter-spacing: 0.1em;
-  color: var(--gl-pen);
+  color: var(--pen);
 }
 
-[data-gl-voice="editorial"] .md-typeset :is(.admonition, details):is(.tip, .hint, .important) {
+[data-theme^="editorial"] .md-typeset :is(.admonition, details):is(.tip, .hint, .important) {
   border: 0 !important;
-  border-top: 1px solid var(--gl-ink) !important;
-  border-bottom: 1px solid var(--gl-ink) !important;
+  border-top: 1px solid var(--ink) !important;
+  border-bottom: 1px solid var(--ink) !important;
   box-shadow: none;
   margin: 28px 0;
 }
 
 /* Stamps: a hairline box in the pen colour. */
-[data-gl-voice="editorial"] .md-typeset .gl-verified {
-  color: var(--gl-pen);
+[data-theme^="editorial"] .md-typeset .gl-verified {
+  color: var(--pen);
   background: transparent;
-  border: 1px solid var(--gl-pen);
+  border: 1px solid var(--pen);
   border-radius: 0;
   transform: none;
 }
 
-[data-gl-voice="editorial"] .md-typeset .gl-untested {
+[data-theme^="editorial"] .md-typeset .gl-untested {
   border-radius: 0;
   transform: none;
 }
@@ -202,28 +422,28 @@
 /* The desk: leather around the page, a stitched bar on top, the page a sheet of laid
    paper with a gilt edge. Flat colours only, so every colour maps to one grey on
    e-ink, where the texture goes too. */
-[data-gl-voice="stationery"] .md-main,
-[data-gl-voice="stationery"] .md-container {
-  background: var(--gl-desk);
+[data-theme^="stationery"] .md-main,
+[data-theme^="stationery"] .md-container {
+  background: var(--v-desk);
 }
 
-[data-gl-voice="stationery"] .md-header__inner::before {
+[data-theme^="stationery"] .md-header__inner::before {
   content: "";
   position: absolute;
   left: 8px;
   right: 8px;
   top: 7px;
   bottom: 7px;
-  border-top: 1.5px dashed var(--gl-thread);
-  border-bottom: 1.5px dashed var(--gl-thread);
+  border-top: 1.5px dashed var(--gilt);
+  border-bottom: 1.5px dashed var(--gilt);
   pointer-events: none;
 }
 
-[data-gl-voice="stationery"] .md-main__inner {
+[data-theme^="stationery"] .md-main__inner {
   margin-top: 36px;
 }
 
-[data-gl-voice="stationery"] .md-content {
+[data-theme^="stationery"] .md-content {
   background: var(--gl-sheet-bg);
   box-shadow: var(--gl-sheet-edge);
   border-right: var(--gl-sheet-gilt);
@@ -233,7 +453,7 @@
 
 /* The sheet lies on the desk with leather showing on both sides. */
 @media screen and (min-width: 60em) {
-  [data-gl-voice="stationery"] .md-content {
+  [data-theme^="stationery"] .md-content {
     margin-left: 24px;
     margin-right: 24px;
   }
@@ -242,72 +462,71 @@
 /* Material's accent by surface: the pen on paper and sheet, on-accent (cream) where
    text lies on leather. Material's link hover rules read the accent, so setting it on
    these containers keeps hovered text in its own colour (plus the 2px underline)
-   without fighting their specificity. On e-ink the desk is paper: the pen stays. */
-[data-gl-voice="stationery"] :is(.md-header, .md-footer),
-[data-gl-voice="stationery"]:not([data-md-color-scheme="eink"]) .md-sidebar {
-  --md-accent-fg-color: var(--gl-on-accent);
+   without fighting their specificity. */
+[data-theme^="stationery"] :is(.md-header, .md-footer, .md-sidebar) {
+  --md-accent-fg-color: var(--on-accent);
 }
 
-[data-gl-voice="stationery"] .md-content > .md-content__inner {
+[data-theme^="stationery"] .md-content > .md-content__inner {
   padding-top: 36px;
 }
 
 @media screen and (min-width: 60em) {
-  [data-gl-voice="stationery"] .md-content > .md-content__inner {
+  [data-theme^="stationery"] .md-content > .md-content__inner {
     margin: 0 44px 44px 44px !important;
   }
 
-  [data-gl-voice="stationery"] .md-path {
+  [data-theme^="stationery"] .md-path {
     margin-left: 44px;
   }
 }
 
 @media screen and (min-width: 76.25em) {
-  [data-gl-voice="stationery"] .md-content > .md-content__inner {
+  [data-theme^="stationery"] .md-content > .md-content__inner {
     margin: 0 56px 52px 56px !important;
   }
 
-  [data-gl-voice="stationery"] .md-path {
+  [data-theme^="stationery"] .md-path {
     margin-left: 56px;
   }
 }
 
 @media screen and (max-width: 59.984375em) {
-  [data-gl-voice="stationery"] .md-main__inner {
+  [data-theme^="stationery"] .md-main__inner {
     margin: 12px 8px 0;
   }
 
-  [data-gl-voice="stationery"] .md-content > .md-content__inner {
+  [data-theme^="stationery"] .md-content > .md-content__inner {
     padding-top: 20px;
   }
 }
 
-[data-gl-voice="stationery"] .md-path {
+[data-theme^="stationery"] .md-path {
   padding-top: 24px;
 }
 
 /* Gold foil for the current page; the contents list on the leather in cream. */
-[data-gl-voice="stationery"] .md-nav--primary .md-nav__link--active .md-ellipsis {
+[data-theme^="stationery"] .md-nav--primary .md-nav__link--active .md-ellipsis {
   margin-left: -12px;
 }
 
-[data-gl-voice="stationery"] .md-nav--secondary .md-nav__link--active {
+[data-theme^="stationery"] .md-nav--secondary .md-nav__link--active {
   font-style: italic;
 }
 
 @media screen and (max-width: 76.234375em) {
-  [data-gl-voice="stationery"] .md-nav--primary .md-nav__item {
-    border-top-color: var(--gl-thread);
+  [data-theme^="stationery"] .md-nav--primary .md-nav__item {
+    border-top-color: var(--gilt);
     border-top-style: dashed;
   }
 }
 
 /* Section numbers: "I." inline in gold, no box. */
-[data-gl-voice="stationery"] .md-content__inner > h2 {
+[data-theme^="stationery"] .md-content__inner > h2 {
   padding-left: 0;
 }
 
-[data-gl-voice="stationery"] .md-content__inner > h2::before {
+[data-theme^="stationery"] .md-content__inner > h2::before {
   position: static;
   display: inline;
   width: auto;
@@ -315,7 +534,7 @@
   margin: 0 14px 0 0;
 }
 
-[data-gl-voice="stationery"] .md-typeset hr {
+[data-theme^="stationery"] .md-typeset hr {
   height: auto;
   background: none;
   -webkit-mask: none;
@@ -324,75 +543,75 @@
   overflow: visible;
 }
 
-[data-gl-voice="stationery"] .md-typeset hr::after {
+[data-theme^="stationery"] .md-typeset hr::after {
   content: "❧";
   display: block;
-  font-family: var(--gl-font-text);
+  font-family: var(--v-text);
   font-size: 22px;
   line-height: 1;
-  color: var(--gl-gold);
+  color: var(--gold);
 }
 
-[data-gl-voice="stationery"] .md-typeset a:hover,
-[data-gl-voice="stationery"] .md-typeset a:focus {
+[data-theme^="stationery"] .md-typeset a:hover,
+[data-theme^="stationery"] .md-typeset a:focus {
   background: none;
-  text-decoration-color: var(--gl-ink);
+  text-decoration-color: var(--ink);
 }
 
 /* Code: an index card. A red line under the title, blue ruled lines under the code. */
-[data-gl-voice="stationery"] .md-typeset .highlight pre > code {
+[data-theme^="stationery"] .md-typeset .highlight pre > code {
   padding: 0 18px 14px;
 }
 
-[data-gl-voice="stationery"] .md-typeset .highlight .hll {
-  background-color: var(--gl-hl);
+[data-theme^="stationery"] .md-typeset .highlight .hll {
+  background-color: var(--highlight);
 }
 
-[data-gl-voice="stationery"] .md-typeset .highlight span.filename {
+[data-theme^="stationery"] .md-typeset .highlight span.filename {
   min-height: 56px;
 }
 
-[data-gl-voice="stationery"] .md-typeset > pre > code {
+[data-theme^="stationery"] .md-typeset > pre > code {
   border: 0;
   box-shadow: var(--gl-code-shadow);
 }
 
-[data-gl-voice="stationery"] .md-typeset code {
-  background-color: var(--gl-sheet);
+[data-theme^="stationery"] .md-typeset code {
+  background-color: var(--sheet);
 }
 
-[data-gl-voice="stationery"] .md-typeset .highlight code {
+[data-theme^="stationery"] .md-typeset .highlight code {
   background-color: transparent;
   background: var(--gl-code-bg);
 }
 
-[data-gl-voice="stationery"] .md-typeset :is(.md-code__button, .md-clipboard) {
-  background: var(--gl-cream);
+[data-theme^="stationery"] .md-typeset :is(.md-code__button, .md-clipboard) {
+  background: var(--on-accent);
   color: var(--gl-button-fg);
 }
 
-[data-gl-voice="stationery"] .md-typeset .mermaid {
-  background: var(--gl-card);
+[data-theme^="stationery"] .md-typeset .mermaid {
+  background: var(--paper);
   box-shadow: var(--gl-code-shadow);
 }
 
 /* Admonitions: a small stack of cards. A warning is sealed in wax and announced in
    gold small capitals; its title follows in italics. */
-[data-gl-voice="stationery"] .md-typeset .admonition {
+[data-theme^="stationery"] .md-typeset .admonition {
   margin: 30px 0 34px;
   padding: 20px 24px;
-  background: var(--gl-card);
+  background: var(--paper);
   border: 0 !important;
   border-radius: 3px;
-  box-shadow: var(--gl-edge), 0 6px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--v-card-edge), 0 6px 12px rgba(0, 0, 0, 0.1);
   transform: none;
 }
 
-[data-gl-voice="stationery"][data-md-color-scheme="eink"] .md-typeset .admonition {
-  box-shadow: 0 0 0 1.5px #111111, 0 3px 0 0 #ffffff, 0 3px 0 1.5px #111111;
+[data-theme="stationery-eink"] .md-typeset .admonition {
+  box-shadow: var(--card-stack);
 }
 
-[dir][data-gl-voice="stationery"] .md-typeset .admonition[class] > .admonition-title {
+[dir][data-theme^="stationery"] .md-typeset .admonition[class] > .admonition-title {
   position: static;
   display: flex;
   flex-wrap: wrap;
@@ -401,7 +620,7 @@
   max-width: none;
   margin: 0 0 8px;
   padding: 0;
-  font-family: var(--gl-font-head);
+  font-family: var(--v-head);
   font-size: 24px;
   font-weight: 500;
   font-style: italic;
@@ -409,20 +628,20 @@
   text-transform: none;
   letter-spacing: 0;
   line-height: 1.2;
-  color: var(--gl-ink);
+  color: var(--ink);
   background: transparent !important;
   border: 0;
   border-radius: 0;
   transform: none;
 }
 
-[data-gl-voice="stationery"] .md-typeset .admonition[class] > .admonition-title::before {
+[data-theme^="stationery"] .md-typeset .admonition[class] > .admonition-title::before {
   content: none;
 }
 
 /* The seal (::before), then "a word of caution" (::after) on its own line; the title
    text follows below them. */
-[data-gl-voice="stationery"] .md-typeset .admonition:is(.warning, .caution, .attention, .danger, .error, .failure, .fail, .missing, .bug) > .admonition-title::before {
+[data-theme^="stationery"] .md-typeset .admonition:is(.warning, .caution, .attention, .danger, .error, .failure, .fail, .missing, .bug) > .admonition-title::before {
   content: "G";
   order: -2;
   flex: 0 0 26px;
@@ -432,7 +651,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 48% 52% 50% 46% / 50% 46% 54% 50%;
-  background: var(--gl-wax) !important;
+  background: var(--wax) !important;
   -webkit-mask-image: none !important;
   mask-image: none !important;
   font-size: 15px;
@@ -442,79 +661,83 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-[data-gl-voice="stationery"] .md-typeset .admonition:is(.warning, .caution, .attention, .danger, .error, .failure, .fail, .missing, .bug) > .admonition-title::after {
+[data-theme="stationery-eink"] .md-typeset .admonition:is(.warning, .caution, .attention, .danger, .error, .failure, .fail, .missing, .bug) > .admonition-title::before {
+  color: var(--on-accent);
+}
+
+[data-theme^="stationery"] .md-typeset .admonition:is(.warning, .caution, .attention, .danger, .error, .failure, .fail, .missing, .bug) > .admonition-title::after {
   content: var(--gl-word-caution);
   order: -1;
   flex: 1 0 calc(100% - 36px);
-  font-family: var(--gl-font-label);
+  font-family: var(--v-label);
   font-size: 17px;
   font-style: normal;
   font-variant: small-caps;
   text-transform: lowercase;
   letter-spacing: 0.12em;
-  color: var(--gl-gold);
+  color: var(--gold);
   margin-bottom: 6px;
 }
 
-[data-gl-voice="stationery"] .md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug) {
-  box-shadow: inset 4px 0 0 var(--gl-wax), var(--gl-edge), 0 6px 12px rgba(0, 0, 0, 0.1);
+[data-theme^="stationery"] .md-typeset .admonition:is(.danger, .error, .failure, .fail, .missing, .bug) {
+  box-shadow: inset 4px 0 0 var(--wax), var(--v-card-edge), 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-[data-gl-voice="stationery"] .md-typeset .admonition:is(.note, .abstract, .summary, .tldr, .info, .todo, .question, .help, .faq, .example, .quote, .cite, .success, .check, .done, .tip, .hint, .important) > .admonition-title {
-  font-family: var(--gl-font-label);
+[data-theme^="stationery"] .md-typeset .admonition:is(.note, .abstract, .summary, .tldr, .info, .todo, .question, .help, .faq, .example, .quote, .cite, .success, .check, .done, .tip, .hint, .important) > .admonition-title {
+  font-family: var(--v-label);
   font-size: 17px;
   font-style: normal;
   font-variant: small-caps;
   text-transform: lowercase;
   letter-spacing: 0.12em;
-  color: var(--gl-gold);
+  color: var(--gold);
 }
 
 /* Stamps: a gold seal ring before small capitals. */
-[data-gl-voice="stationery"] .md-typeset .gl-verified {
+[data-theme^="stationery"] .md-typeset .gl-verified {
   flex-direction: row;
   gap: 12px;
   padding: 0;
   margin: 8px 0 22px;
-  color: var(--gl-ink);
+  color: var(--ink);
   background: transparent;
   border: 0;
   border-radius: 0;
   transform: none;
 }
 
-[data-gl-voice="stationery"] .md-typeset .gl-verified::before {
+[data-theme^="stationery"] .md-typeset .gl-verified::before {
   content: "";
   flex: none;
   width: 26px;
   height: 26px;
   box-sizing: border-box;
   border-radius: 50%;
-  border: 1.5px solid var(--gl-gold);
-  outline: 1px dashed var(--gl-gold);
+  border: 1.5px solid var(--gold);
+  outline: 1px dashed var(--gold);
   outline-offset: -7px;
 }
 
-[data-gl-voice="stationery"] .md-typeset .gl-verified strong {
-  color: var(--gl-gold);
+[data-theme^="stationery"] .md-typeset .gl-verified strong {
+  color: var(--gold);
 }
 
-[data-gl-voice="stationery"] .md-typeset .gl-untested {
+[data-theme^="stationery"] .md-typeset .gl-untested {
   border-radius: 3px;
   transform: none;
 }
 
 /* Cards and pagination: sheets of the same paper, lying on each other. */
-[data-gl-voice="stationery"] .md-typeset .gl-cards a.gl-card--featured {
-  background: var(--gl-card);
-  box-shadow: inset 0 0 0 1.5px var(--gl-gold), var(--gl-edge);
+[data-theme^="stationery"] .md-typeset .gl-cards a.gl-card--featured {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1.5px var(--gold), var(--v-card-edge);
 }
 
-[data-gl-voice="stationery"] .md-typeset .gl-cards a::before {
-  background-color: var(--gl-gold);
+[data-theme^="stationery"] .md-typeset .gl-cards a::before {
+  background-color: var(--gold);
 }
 
 /* The search results open on paper, so the field's cream and the leather stay out. */
-[data-gl-voice="stationery"] .md-search__overlay {
+[data-theme^="stationery"] .md-search__overlay {
   background-color: rgba(0, 0, 0, 0.35);
 }

@@ -1,8 +1,8 @@
 {#- Scheme radios: Material's palette form, laid out as the Scheme row of the
     Appearance panel. Material hides each input's next sibling unless its scheme is
     current, so that sibling is an empty span; the visible label comes after it. The
-    preview inside each label carries the scheme it shows (glassine.js keeps its voice
-    and pen current). -#}
+    preview inside each label carries the scheme it shows as data-theme (glassine.js
+    keeps its voice and pen current). -#}
 <form class="gl-options gl-options--scheme" data-md-component="palette" role="radiogroup" aria-labelledby="gl-scheme-label">
   {% for option in config.theme.palette %}
     {% set scheme  = option.scheme  | d("default", true) %}
@@ -12,7 +12,7 @@
     <input class="md-option gl-option__input" data-md-color-media="{{ option.media }}" data-md-color-scheme="{{ scheme | replace(' ', '-') }}" data-md-color-primary="{{ primary | replace(' ', '-') }}" data-md-color-accent="{{ accent | replace(' ', '-') }}" type="radio" name="__palette" id="__palette_{{ loop.index0 }}">
     <span class="gl-option__sink" hidden></span>
     <label class="gl-option gl-option--scheme" for="__palette_{{ loop.index0 }}">
-      <span class="gl-option__page" aria-hidden="true" data-gl-voice="white" data-gl-pen="cobalt" data-md-color-scheme="{{ scheme }}"><span></span><span></span><span></span></span>
+      <span class="gl-option__page" aria-hidden="true" data-theme="white-{{ scheme }}" data-pen="1"><span></span><span></span><span></span></span>
       <span class="gl-option__text">
         <span class="gl-option__name">{{ option.label | d(scheme) }}</span>
         <span class="gl-option__sub">{{ sub }}</span>
