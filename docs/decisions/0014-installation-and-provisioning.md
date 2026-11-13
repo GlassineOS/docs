@@ -65,6 +65,13 @@ be replaced, install, and prove that it boots.
   First-boot setup comes after that and isn't the installer's job.
 - **The installer lives in its own repository, `installer`**, which owns the flow and the
   device-description format. Device repositories own their descriptions and recipes.
+- **A device's facts are written once, in its description.** Each device has four parts:
+  its description and its install recipes, in its bootstrap repository; its runtime
+  package (services and bring-up, code only) in `packages`; and its stage and build target
+  in `images`. The installed system carries the description, and every file its tools read
+  for a device fact (the device-data list, the slot of a kept system) is derived from it at
+  the package's build. A new device adds these four parts; the flow and the tools don't
+  change.
 
 ## Consequences
 
