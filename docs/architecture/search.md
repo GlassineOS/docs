@@ -74,6 +74,8 @@ glassine-docs search "how do I get back into recovery" [--profile transformer|st
 ## Open questions
 
 - The static model is 8 MB, most of it the int8 table; a 4-bit table would halve it.
-- The index holds this site only. Other repositories' documentation can join it as
-  further sources (the manifest's source list and the chunk IDs allow it).
+- The index holds this site only. [Decision 0012](../decisions/0012-where-documentation-lives.md)
+  accepts indexing the documentation folders of listed public repositories at pinned
+  commits. The chunk IDs allow it, but the build doesn't read a list of sources yet; that
+  work is tracked in [GlassineOS/search#1](https://github.com/GlassineOS/search/issues/1).
 - Search quality is checked by hand on a few queries; there is no test set yet.

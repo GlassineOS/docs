@@ -19,7 +19,7 @@ no longer holds.
 | [0009](0009-specs-and-acceptance.md) | Specs per repository (Spec Kit + org preset), acceptance in images | accepted 2026-10-03 |
 | [0010](0010-root-and-deployments.md) | Root file system: read-only bases, deployments, live packages | accepted 2026-10-28, revised 2026-11-05 |
 | [0011](0011-semantic-search.md) | Semantic search over the documentation: static and transformer profiles | accepted 2026-10-31 |
-| [0012](0012-where-documentation-lives.md) | Where documentation lives, and what the search index covers | proposed 2026-11-03 |
+| [0012](0012-where-documentation-lives.md) | Where documentation lives, and what the search index covers | accepted 2026-11-14 |
 | [0013](0013-images-from-dockerfile-stages.md) | Images from Dockerfile stages, built with BuildKit | accepted 2026-11-03, amended 2026-11-05 |
 | [0014](0014-installation-and-provisioning.md) | Installation: one guided flow, device descriptions, platform backends | accepted 2026-11-12 |
 | [0015](0015-installer-stack.md) | Installer stack: a Rust core, the Interleaf web form, LVGL on the device later | accepted 2026-11-12 |

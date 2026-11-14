@@ -30,7 +30,38 @@ and the shape of the manifest, not for the build: it reads one source and writes
   public repositories at pinned commits. Chunk IDs take the form
   `<repo>@<commit>:<page>#<anchor>`; the `docs@…` IDs of 0011 are this form already.
 - **Repositories that are not public stay out,** per 0011 ("only published documentation
-  goes in").
+  goes in"). The build fetches each source without credentials, so a private entry fails
+  the build; it is not skipped.
+- **The list of sources is a file in this repository** that the docs CI reads, as the
+  build's input. The build doesn't hold the list itself. Pins move by reviewed pull
+  request, as `GLASSINE_SEARCH_REF` does.
+- **The website's search shows results from other repositories too,** not only
+  `glassine-docs search`.
+
+### The sources file
+
+`search-sources.toml` at the root of this repository, outside `docs/`, so the site
+doesn't publish it. Each `[[source]]` entry has three fields:
+
+| Field | Meaning |
+|---|---|
+| `repository` | A public repository, as `GlassineOS/<name>` |
+| `folder` | Its documentation folder, relative to the repository root |
+| `commit` | The full commit to index; only a reviewed pull request changes it |
+
+This entry is an illustration, not a source:
+
+```toml
+[[source]]
+repository = "GlassineOS/example-repo"
+folder = "docs"
+commit = "<full 40-character commit>"
+```
+
+The file has no active entries. Adding a repository waits for the search build and a
+released pin. The file is not wired yet: the docs CI pins `GLASSINE_SEARCH_REF` to a
+build that doesn't read it. The field names may change until
+[GlassineOS/search#1](https://github.com/GlassineOS/search/issues/1) lands.
 
 ## Consequences
 
@@ -48,8 +79,12 @@ and the shape of the manifest, not for the build: it reads one source and writes
 
 ## Status
 
-Proposed 2026-11-03. Open:
+Accepted 2026-11-14. The two questions that were open when it was proposed:
 
-- Where the list of sources lives, and what moves its pins.
-- Whether the website's search shows other repositories' results, or only
-  `glassine-docs search` does.
+- **Where the list of sources lives, and what moves its pins:** in this repository, in
+  the sources file above. Pins move by reviewed pull request.
+- **Whether the website's search shows other repositories' results:** yes. The search
+  worker and the extra download that this means are part of
+  [GlassineOS/search#1](https://github.com/GlassineOS/search/issues/1).
+
+Until that work is released and the pin moves, the index holds this site only.
