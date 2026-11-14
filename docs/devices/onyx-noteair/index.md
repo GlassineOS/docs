@@ -291,6 +291,40 @@ system with `dd`, or over EDL. `fastboot erase misc` is refused.
   shorted to ground then reaches EDL only if the battery is fully drained and the device
   starts cold with the cable attached. Test points on the board are not known.
 
+### Whole-device backup in EDL
+
+The installer reads the whole internal storage in EDL, read-only, through the loader
+**you supply**. GlassineOS never ships, hosts or links one. Use the peek loader from the
+table above: the installer recognises its checksum and sends it. It never sends the
+standard OEM loader. A file that fits the chip and key but isn't known is sent only after
+you confirm, because this boot ROM also runs loaders signed with test keys.
+
+What the backup holds, *verified on hardware 2026-11-14*:
+
+| Part | Size | Read time |
+|---|---|---|
+| eMMC user area (all 51 partitions, both partition tables) | 31,268,536,320 bytes (61,071,360 sectors of 512 bytes); 13.8 GB compressed with a full `userdata` | about 45 min at 11–12 MB/s |
+| eMMC boot areas 1 and 2 | 4 MiB each, all zeros on this device | seconds |
+
+Every range is read twice and compared, the stored copy is read back, and an image gets
+its final name only after that check. RPMB is never read. Afterwards the installer
+restarts the device into its own system.
+
+Steps:
+
+1. Enter EDL (`fastboot oem reboot-edl`, or `adb reboot edl` from Android).
+2. Run the installer's `emergency-read` with your loader. The installer has no release
+   yet; build it from source. Its
+   [README](https://github.com/GlassineOS/installer) lists the options. On a device not read this
+   way before, start with the partition table only, then one small partition, then
+   everything.
+3. Keep the output folder: it holds the images and a `manifest.json` with their
+   checksums.
+
+**How to undo:** nothing to undo, the run writes nothing to the device. If a run stops
+and the device stays in EDL (the USB device is still `05c6:9008`), hold power for about
+10 s to restart it.
+
 ### Crash-dump mode
 
 After a kernel crash the device can stop in Qualcomm's crash-dump mode (USB `05c6:900e`).
