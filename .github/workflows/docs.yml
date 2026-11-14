@@ -10,7 +10,7 @@ permissions:
 
 env:
   # GlassineOS/search, pinned by full commit. Models come from its release models-1.
-  GLASSINE_SEARCH_REF: 27b35dea17d6f170cddbee2c5f87778429ccec26
+  GLASSINE_SEARCH_REF: 221823eee44851a8df644cea97e8dfc26a30cc95
   NO_MKDOCS_2_WARNING: "1"
 
 jobs:
@@ -36,6 +36,13 @@ jobs:
           restore-keys: |
             search-embeddings-${{ env.GLASSINE_SEARCH_REF }}-
             search-embeddings-
+      # Other repositories' documentation folders, fetched by commit (the folder name holds
+      # the commit, so a pin that moves fetches only what changed).
+      - uses: actions/cache@v6
+        with:
+          path: .cache/glassine-search/sources
+          key: search-sources-${{ hashFiles('search-sources.toml') }}
+          restore-keys: search-sources-
       - run: mkdocs build --strict
       - uses: actions/upload-pages-artifact@v5
         if: github.event_name != 'pull_request' && !github.event.repository.private

@@ -27,8 +27,10 @@ flowchart LR
 
 **Build.** The docs build runs the MkDocs plugin `glassine-search`. It splits every
 rendered page at its headings; a chunk's ID names its source, commit, page and heading
-anchor (`docs@<commit>:guides/qualcomm-boot-and-edl.md#3-enter-edl`). It then builds a
-BM25 keyword index and embeds each chunk twice:
+anchor (`docs@<commit>:docs/guides/qualcomm-boot-and-edl.md#3-enter-edl`; the page is
+its path in the repository, folder included). Besides this site, it indexes the
+documentation folders of the public repositories listed in `search-sources.toml`, each
+at a pinned commit. It then builds a BM25 keyword index and embeds each chunk twice:
 
 | Profile | Model | Vectors | Used by |
 |---|---|---|---|
@@ -61,7 +63,7 @@ its ETag, downloads only files whose hash changed, and keeps everything in
 ## Interfaces
 
 - `https://docs.glassine.org/search/manifest.json` and the files it names: format
-  version 1, specified in the search repository's `docs/format.md`.
+  version 2, specified in the search repository's `docs/format.md`.
 - The command:
 
 ```sh
@@ -69,13 +71,13 @@ pip install "git+https://github.com/GlassineOS/search"
 glassine-docs search "how do I get back into recovery" [--profile transformer|static] [-k N] [--json]
 ```
 
-- The plugin's settings in `mkdocs.yml` (`related_profile`, `related_count`).
+- The plugin's settings in `mkdocs.yml` (`related_profile`, `related_count`,
+  `sources_file`).
 
 ## Open questions
 
 - The static model is 8 MB, most of it the int8 table; a 4-bit table would halve it.
-- The index holds this site only. [Decision 0012](../decisions/0012-where-documentation-lives.md)
-  accepts indexing the documentation folders of listed public repositories at pinned
-  commits. The chunk IDs allow it, but the build doesn't read a list of sources yet; that
-  work is tracked in [GlassineOS/search#1](https://github.com/GlassineOS/search/issues/1).
+- [Decision 0012](../decisions/0012-where-documentation-lives.md) lets the index span the
+  documentation folders of listed public repositories. Repositories that have no
+  documentation folder yet are not indexed.
 - Search quality is checked by hand on a few queries; there is no test set yet.
