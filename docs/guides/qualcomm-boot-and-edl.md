@@ -52,6 +52,41 @@ Loaders are Qualcomm binaries signed per SoC (and sometimes per vendor). They ar
 proprietary; GlassineOS does not ship them. The open-source
 [edl tool](https://github.com/bkerler/edl) works with the loaders collected for it.
 
+### Which loader fits
+
+A loader runs only on the chip it was built for, and only if its signature passes the
+boot ROM's check: on a fused chip, with the key whose hash is burned into the chip. Both values can be read from the boot ROM before any loader
+is sent: in Sahara's command mode it reports the **hardware ID** and the **OEM public
+key hash**.
+
+| Value | Size | Parts |
+|---|---|---|
+| Hardware ID | 8 bytes, 16 hex digits | chip ID (8 digits) · OEM ID (4) · model ID (4) |
+| OEM public key hash | 32 bytes (SHA-256 of the signing root certificate) | the first 8 bytes are enough to tell keys apart |
+
+Loader collections, among them the one the edl tool reads, name each file after these
+two values:
+
+```text
+<hardware ID>_<first 16 hex digits of the key hash>_<type>[_<variant>].<bin|mbn|elf>
+```
+
+- `<type>` is the loader kind: `fhprg`/`FHPRG` for a Firehose programmer, `ENPRG` for
+  the older emergency programmer.
+- `<variant>` is free text from whoever collected the file (a device family, `peek` for
+  a loader patched to also read and write memory).
+- A hardware ID ending in `00000000` means the OEM and model fuses are blank: the loader
+  fits every unit with that chip and key.
+
+The edl tool picks a loader by matching the reported hardware ID and key hash against
+these names. Vendors' own files use a different name, by chip family and storage (for
+example `prog_emmc_ufs_firehose_Sdm636_ddr.elf`); those carry no IDs, so check them by
+trying them (step 4) rather than by name.
+
+A matching name does not prove a fitting or genuine file. Where the chip has no
+secure-boot fuses, the boot ROM runs any loader with a test signature, including a
+modified one. Compare the file's SHA-256 with a known one where the device page lists it.
+
 ## Steps
 
 ### 1. Prepare the host
@@ -131,3 +166,4 @@ after the Sahara step). Then long-press power.
 | Onyx Boox Note Air | boot from the backup GPT, primary repaired by Linux | 2026-06-01 |
 | Onyx Boox Note Air | `adb reboot edl`, partition read and write, loader and sector-size problems | 2026-06-02 |
 | Onyx Boox Note Air | RAM dump from crash-dump mode | 2026-09-28 |
+| Onyx Boox Note Air | hardware ID and key hash read in Sahara command mode, matched to the loader's name | 2026-11-13 |
