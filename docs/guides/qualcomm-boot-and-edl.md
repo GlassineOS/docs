@@ -65,7 +65,7 @@ key hash**.
 | OEM public key hash | 32 bytes (SHA-256 of the signing root certificate) | the first 8 bytes are enough to tell keys apart |
 
 Loader collections, among them the one the edl tool reads, name each file after these
-two values:
+two values, as the boot ROM of a device the file worked on reported them:
 
 ```text
 <hardware ID>_<first 16 hex digits of the key hash>_<type>[_<variant>].<bin|mbn|elf>
@@ -76,16 +76,20 @@ two values:
 - `<variant>` is free text from whoever collected the file (a device family, `peek` for
   a loader patched to also read and write memory).
 - A hardware ID ending in `00000000` means the OEM and model fuses are blank: the loader
-  fits every unit with that chip and key.
+  worked on units with that chip and key, whatever their OEM.
+- The name says where a file worked, not what it is signed for. A loader's own
+  certificates can name another chip and another key: on a chip without secure-boot
+  fuses the boot ROM runs it anyway.
 
 The edl tool picks a loader by matching the reported hardware ID and key hash against
 these names. Vendors' own files use a different name, by chip family and storage (for
 example `prog_emmc_ufs_firehose_Sdm636_ddr.elf`); those carry no IDs, so check them by
 trying them (step 4) rather than by name.
 
-A matching name does not prove a fitting or genuine file. Where the chip has no
-secure-boot fuses, the boot ROM runs any loader with a test signature, including a
-modified one. Compare the file's SHA-256 with a known one where the device page lists it.
+A matching name does not prove a fitting or genuine file, and on a chip without
+secure-boot fuses neither do the file's certificates: the boot ROM runs any loader with a
+test signature, including a modified one. Compare the file's SHA-256 with a known one
+where the device page lists it.
 
 ## Steps
 
@@ -167,3 +171,4 @@ after the Sahara step). Then long-press power.
 | Onyx Boox Note Air | `adb reboot edl`, partition read and write, loader and sector-size problems | 2026-06-02 |
 | Onyx Boox Note Air | RAM dump from crash-dump mode | 2026-09-28 |
 | Onyx Boox Note Air | hardware ID and key hash read in Sahara command mode, matched to the loader's name | 2026-11-13 |
+| Onyx Boox Note Air | the loader that works names another chip and key in its own certificates | 2026-11-14 |
