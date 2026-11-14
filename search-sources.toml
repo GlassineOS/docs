@@ -1,0 +1,9 @@
+# Repositories whose documentation folder the search index covers, per decision 0012.
+# Not read by the docs CI yet: field names may change until GlassineOS/search#1 lands.
+# No active entries. Each entry is a public repository, its documentation folder
+# and a full commit; pins move by reviewed pull request.
+#
+# [[source]]
+# repository = "GlassineOS/example-repo"
+# folder = "docs"
+# commit = "<full 40-character commit>"

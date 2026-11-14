@@ -35,6 +35,23 @@ Where the two meet, the page here owns the design and the reasons. The repositor
 exact names and flags, and the page links to it. [Decision
 0012](../decisions/0012-where-documentation-lives.md) has the reasons.
 
+## Indexing a repository's documentation
+
+[Decision 0012](../decisions/0012-where-documentation-lives.md) lets the search index
+cover the documentation of other public repositories. Only that repository's
+documentation folder is indexed: a README or a spec outside it is not.
+
+To ask for a repository to be indexed, open a pull request to this repository that adds an
+entry to
+[`search-sources.toml`](https://github.com/GlassineOS/docs/blob/main/search-sources.toml):
+the repository, its documentation folder and a full commit. A maintainer reviews it, and
+moving the pin later is another reviewed pull request. The repository must be public, since
+the build fetches it without credentials and a private entry fails the build.
+
+Not yet: the list has no entries and the docs CI doesn't read it. The search build has to
+be released and its pin moved first, so the index holds this site only for now. The field
+names may change until then.
+
 ## Page types
 
 | Type | Where | Template |
