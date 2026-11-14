@@ -270,6 +270,17 @@ system with `dd`, or over EDL. `fastboot erase misc` is refused.
 
 - Use the SDM636 **"peek"** firehose loader. The standard OEM firehose loader starts,
   then hangs while reading the partition table and never writes. *Verified 2026-06-02.*
+- What the boot ROM reports, and the loader names that fit it
+  ([naming convention](../../guides/qualcomm-boot-and-edl.md#which-loader-fits)):
+  *verified 2026-11-13.*
+
+    | Value | Note Air |
+    |---|---|
+    | Hardware ID | `000cc0e100000000` (SDM636, OEM and model fuses blank) |
+    | OEM public key hash | `7be49b72f9e4337223ccb84d6eccca4e61ce16e3602ac2008cb18b75babe6d09` |
+    | Loader name prefix | `000cc0e100000000_7be49b72f9e43372_` |
+    | Peek loader that works | `000cc0e100000000_7be49b72f9e43372_fhprg_bqx2_peek.bin`, SHA-256 `b3e409558677f9b280fed7851e8cc66f0079ad78ef0b07519a3a98d86c14d41b` |
+    | Standard OEM loader (hangs, see above) | `prog_emmc_ufs_firehose_Sdm636_ddr.elf`, SHA-256 `4c2c494e92551b1d7f06f7beece875c0ef2b9b7b2ffab347f76a3dda8fa3d20c` |
 - Only the first operation after entering EDL detects the 512-byte sector size reliably;
   later operations in the same session can fail with "512 vs 4096". Enter EDL again for
   each operation that writes sectors.
