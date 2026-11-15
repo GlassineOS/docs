@@ -58,10 +58,9 @@ folder = "docs"
 commit = "<full 40-character commit>"
 ```
 
-The file has no active entries. Adding a repository waits for the search build and a
-released pin. The file is not wired yet: the docs CI pins `GLASSINE_SEARCH_REF` to a
-build that doesn't read it. The field names may change until
-[GlassineOS/search#1](https://github.com/GlassineOS/search/issues/1) lands.
+The docs build reads the file through the `sources_file` setting of the `glassine-search`
+plugin in `mkdocs.yml`. A repository whose documentation folder has no `.md` files fails
+the build, so it is not listed until it has one.
 
 ## Consequences
 
@@ -71,11 +70,11 @@ build that doesn't read it. The field names may change until
 - Search results from a repository are as old as its pinned commit, and trail the code
   until the pin moves.
 - A README or spec outside a repository's documentation folder is not indexed.
-- The search build has to change first; until then the index holds this site only. The
-  build needs an input list of sources, a way to fetch and render their pages, and links
-  that leave the site. The site's search worker and the related pages also assume a
-  single source. The full list is in
-  [GlassineOS/search#1](https://github.com/GlassineOS/search/issues/1).
+- The search build needed to change first: an input list of sources, a way to fetch and
+  render their pages, links that leave the site, and a worker and related pages that
+  handle more than one source. That work is
+  [GlassineOS/search#1](https://github.com/GlassineOS/search/issues/1), merged in
+  [GlassineOS/search#3](https://github.com/GlassineOS/search/pull/3).
 
 ## Status
 
@@ -87,4 +86,4 @@ Accepted 2026-11-14. The two questions that were open when it was proposed:
   worker and the extra download that this means are part of
   [GlassineOS/search#1](https://github.com/GlassineOS/search/issues/1).
 
-Until that work is released and the pin moves, the index holds this site only.
+That work is released, and the docs CI pins it (`GLASSINE_SEARCH_REF`).

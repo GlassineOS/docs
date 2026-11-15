@@ -1,9 +1,45 @@
 # Repositories whose documentation folder the search index covers, per decision 0012.
-# Not read by the docs CI yet: field names may change until GlassineOS/search#1 lands.
-# No active entries. Each entry is a public repository, its documentation folder
-# and a full commit; pins move by reviewed pull request.
+# Read by the docs build (mkdocs.yml: glassine-search, sources_file). Each entry is a
+# public repository, its documentation folder and a full commit; the build fails on a
+# private or missing repository, an unknown commit, or a folder without .md files.
+# Pins move by reviewed pull request.
 #
 # [[source]]
 # repository = "GlassineOS/example-repo"
 # folder = "docs"
 # commit = "<full 40-character commit>"
+
+[[source]]
+repository = "GlassineOS/boot"
+folder = "docs"
+commit = "9873ceb2bc5eceb7dfc39703bbaef4da75571626"
+
+[[source]]
+repository = "GlassineOS/handwriting"
+folder = "docs"
+commit = "7276064d63757703eb5074cd3c086809b06c7a97"
+
+[[source]]
+repository = "GlassineOS/home"
+folder = "docs"
+commit = "48854b35c3471b85db054a77e05ac8d3ebc46f46"
+
+[[source]]
+repository = "GlassineOS/hub"
+folder = "docs"
+commit = "40d5b6e17a6f0391b4c17b17e50de95e6fc3badc"
+
+[[source]]
+repository = "GlassineOS/images"
+folder = "docs"
+commit = "35ad2f8b44a458bd54e2672588ab649e5cb1c7cd"
+
+[[source]]
+repository = "GlassineOS/search"
+folder = "docs"
+commit = "221823eee44851a8df644cea97e8dfc26a30cc95"
+
+[[source]]
+repository = "GlassineOS/shell"
+folder = "docs"
+commit = "5c2788fdf5ef0880fff9b586d7d98bf4ee6aee5b"
