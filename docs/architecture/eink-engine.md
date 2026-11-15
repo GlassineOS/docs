@@ -161,8 +161,8 @@ the last burst, cleanup at the same delay as with T 0).
 
 **Answering early.** In a motion run the daemon may answer before reading (`ahead=predict`,
 the default), so the next frame arrives just as it is needed. `ahead_ms` limits it to one
-early answer per 23 ms: at most 43.5 app frames per second, which matches A2/2's
-42.5 steps per second.
+early answer per 23 ms: at most 43.5 app frames per second (1000 / 23), close to
+A2/2's 42.5 steps per second (85 / 2; two 11.76 ms frames are 23.52 ms).
 
 **Latch.** With the seeded `sway-latch` flag, sway's repaint waits (at most 50 ms) while
 an app's GPU job is still writing a buffer it committed, so neither the composite nor the
