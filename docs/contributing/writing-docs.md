@@ -48,9 +48,8 @@ the repository, its documentation folder and a full commit. A maintainer reviews
 moving the pin later is another reviewed pull request. The repository must be public, since
 the build fetches it without credentials and a private entry fails the build.
 
-Not yet: the list has no entries and the docs CI doesn't read it. The search build has to
-be released and its pin moved first, so the index holds this site only for now. The field
-names may change until then.
+A repository without a documentation folder of `.md` files can't be listed: the build
+fails on it.
 
 ## Page types
 

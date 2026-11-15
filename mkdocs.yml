@@ -60,7 +60,8 @@ hooks:
 plugins:
   # The theme's search must stay first: the semantic search hooks into its search box.
   - search
-  - glassine-search
+  - glassine-search:
+      sources_file: search-sources.toml
 
 markdown_extensions:
   - admonition
