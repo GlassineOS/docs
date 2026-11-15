@@ -130,14 +130,17 @@ date.**
 - **Tried:** in motion runs, drive real greys with cut A2 steps instead of black-and-white
   dots.
 - **Happened:** about 29 ms a frame on a real scroll (GPU about 23), against the 12.5 ms
-  budget and about 5 ms for the normal path on the same injected scroll. On the panel it was
+  budget and about 5 ms for the normal path on the same injected scroll. The 12.5 ms budget
+  is [unresolved](../architecture/cpu-gpu.md#frame-budget-and-measurements): the 2.3× below
+  is the whole 29 ms against it. Against the 11.76 ms panel period it is 2.5×, and the GPU's
+  23 ms alone against 12.5 ms would be 1.8×. On the panel it was
   "faster, but utterly garbled". Yet the GPU matched the CPU reference (21 frames compared,
   0 differ) and a mid-run read of the panel buffer matched the source at visible levels, so
   the commit was clean and the garble lies past it. What it is was not determined. One GPU
   fault with Chromium's process as the offender hit during testing; its cause is unproven
   (Chromium hangs happen without this mode too).
-- **Stopped because:** the speed needs at least 2.3× with no known way to get it, and the
-  look failed the eye test. The maintainer's call.
+- **Stopped because:** the speed needs at least 2.3× (2.5× against the period) with no known
+  way to get it, and the look failed the eye test. The maintainer's call.
 - **Instead:** motion stays black and white, dithered at the commit; the run's end restores
   the greys.
 - **Date:** shelved 2026-11-01. To resume: find out what the garble is first (a photo), then
