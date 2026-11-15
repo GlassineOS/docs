@@ -200,8 +200,8 @@ So the update job is the biggest item: about 43 % with its share of the main loo
 | Levels | 2.54 ms |
 | Total | 11.9 ms (caller's wall time 3.07 ms) |
 
-`commit_skip`, on by default since: commit 4.2 → 2.6 ms, the daemon's total −7 %, same update
-count (A/B off/on, 45 s each).
+`commit_skip` is on by default (from source). Its A/B, off against on, 45 s each, verified on
+hardware 2026-11-01: commit 4.2 → 2.6 ms, the daemon's total −7 %, same update count.
 
 **Why the scan costs so much.** Per update the input is about 1.5 Mpx, of which only 7.3 % of
 pixels really change, but 33.9 % get flagged: the shadow holds dots, so an unchanged grey differs
