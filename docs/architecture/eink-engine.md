@@ -53,7 +53,7 @@ frames are computed on the SoC at about 85 frames per second, one every 11.76 ms
   drive rules, pixels that stop mid-waveform. The stagger below only exists because of
   this.
 - **Ink lags the voltage.** Particles need about two frames of drive before a change
-  shows (panel lab runs, as recorded 2026-10-14: one black frame from white still reads white,
+  shows (panel lab runs, 2026-10-14: one black frame from white still reads white,
   two read faint, three read clear).
 
 ### What the daemon owns

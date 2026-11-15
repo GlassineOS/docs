@@ -37,7 +37,7 @@ hardware, the split and the numbers.
 | Memory, Silver core | DRAM read 1.97 GB/s, write 9.23 (**unconfirmed:** the same figure as Gold's copy rate and above Gold's write rate; not checked against the run record), copy 3.77 | 2026-10-25 |
 | GPU | Adreno 509 (a5xx), fused top clock 430 MHz; steps 160, 266, 370, 430 | 2026-10-11 |
 | GPU rings | 4 rings with the CP firmware that supports it; the rings switch only between submits, unless a submit has yield points of its own | 2026-10-26 |
-| DSP | no compute DSP, so no HVX to offload to. Only the modem and the audio/sensor DSP run; the power statistics' compute-DSP slot stays dead | power statistics, date not recorded |
+| DSP | no compute DSP, so no HVX to offload to. Only the modem and the audio/sensor DSP run; the power statistics' compute-DSP slot stays dead | from source, untested (read from the power statistics) |
 
 Notes:
 
@@ -186,7 +186,7 @@ window: 4585 panel frames, 0 late, 2271 app updates).
 | Stream / drive (Gold) | 13.4 s | 21.9 % | ~2.9 ms a panel frame |
 | Main loop | 12.9 s | 21.1 % | ingest ~1.6 ms a frame, policy, the caller's update parts |
 | Frame workers (Gold) | 10.0 s | 16.4 % | claim bands, update parts |
-| A CPU-0 thread (inferred: the sync helper) | 2.4 s | | |
+| A CPU-0 thread (the sync helper, going by its pinning; from source, untested) | 2.4 s | | |
 | Ingest pool, pen, Mesa | about 0 | | |
 
 So the update job is the biggest item: about 43 % with its share of the main loop.
@@ -302,7 +302,7 @@ of this isn't measured).
 
 **Input boost.** With the power mode's `boost=150`, every CPU's minimum clock goes to the top
 until 150 ms after the last input. `boost_run` (seeded) extends it during a run, up to 3 s after
-the last input. One A/B recorded 23.8 vs 22.2 frames per second in
+the last input. One A/B gave 23.8 vs 22.2 frames per second in
 Chromium (2026-10-15, scripted input); another found no gain (2026-10-11). It's seeded under the
 "fastest settings" rule, not for proven benefit.
 
