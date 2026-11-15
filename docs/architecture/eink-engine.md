@@ -6,17 +6,20 @@ between CPU and GPU, with timings, is on its own page:
 [CPU and GPU](cpu-gpu.md).
 
 !!! warning "Status"
-    **Source not public yet.** The daemon and its sway patches live in a private
-    repository and will move to a public one; this page has nothing to link to. Runtime
-    paths and names (the config file, the control FIFO, the session's flag files, some
-    binary names) **will change at that move**, so this page uses neutral names:
-    "`eink.conf`", "the control FIFO", "flag file".
+    The daemon is public: [GlassineOS/epd](https://github.com/GlassineOS/epd). Its README
+    lists the [runtime interfaces](https://github.com/GlassineOS/epd#runtime-interfaces): the
+    config files (`/etc/glassine/eink.conf`, `/etc/glassine/epd.conf`), the control FIFO,
+    the sockets and the status files. This page owns the design and the reasons and keeps
+    neutral names ("`eink.conf`", "the control FIFO", "flag file"); the README is the
+    reference for exact names and paths. Where the README doesn't name something, such as
+    the session's flag files, the name here is from source, untested.
 
     Written largely by AI agents and not reviewed by anyone who knows this hardware or
     these subsystems well. Numbers are from one device, a Note Air.
 
-    Dates below mean *verified on hardware* on that day. A statement without a date is
-    *from source, untested as stated*, read from the code on 2026-11-01. "Host" means
+    Dates below mean *verified on hardware* on that day, as the lab's run records state
+    it; none of these numbers was re-measured when the page was written. A statement
+    without a date is *from source, untested as stated*, read from the code on 2026-11-01. "Host" means
     the test ran on a PC, not on the device.
 
 ## Purpose
@@ -510,8 +513,9 @@ context is reset with it. A fault with it as the offender was seen on the fixed 
 
 ### Configuration file
 
-`eink.conf` is read at start and when its mtime or size changes, then once more 300 ms
-later (writers rewrite it key by key). Writers take a file lock, and the file is writable
+`eink.conf` (the per-application profiles; its path is in the
+[epd README](https://github.com/GlassineOS/epd#runtime-interfaces)) is read at start and
+when its mtime or size changes, then once more 300 ms later (writers rewrite it key by key). Writers take a file lock, and the file is writable
 by the desktop user's group.
 
 ```text
@@ -526,7 +530,8 @@ Exceptions: `@boost=` is ignored there (the power mode owns it). At most 48 app 
 
 ### The control FIFO
 
-One line, whitespace-separated commands. Writing is open to the device; the daemon
+One line, whitespace-separated commands. Its path, owner and mode are in the
+[epd README](https://github.com/GlassineOS/epd#runtime-interfaces). Writing is open to the device; the daemon
 re-validates what matters (brush files), but don't treat it as a security boundary. Don't
 `grep` through the runtime directory: reading a FIFO blocks and consumes commands.
 
@@ -677,4 +682,5 @@ A pixman fallback (a marker under `/run`) lasts one boot and doesn't change the 
 - **Pen:** latency end to end is unmeasured.
 - **Scroll dither:** a threshold table that travels with the content, to stop photos boiling
   in a scroll. An idea; nothing built.
-- **Public source:** the move to a public repository, and the renames that come with it.
+- **Names:** the page uses neutral names in places. The
+  [epd README](https://github.com/GlassineOS/epd#runtime-interfaces) is the reference for exact runtime names and paths.

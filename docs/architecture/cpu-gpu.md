@@ -5,13 +5,15 @@ modes and its options are on [E-ink engine](eink-engine.md); this page is about 
 hardware, the split and the numbers.
 
 !!! warning "Status"
-    Device numbers are from one Note Air, under the conditions stated. **The source is not
-    public yet**, and runtime names will change when it moves to its public repository.
+    Device numbers are from one Note Air, under the conditions stated. The daemon is public:
+    [GlassineOS/epd](https://github.com/GlassineOS/epd), and its README lists the
+    [runtime names and paths](https://github.com/GlassineOS/epd#runtime-interfaces), which this page doesn't repeat.
     Written largely by AI agents, unreviewed. Treat the reasoning as a working record, not
     as expert analysis of this GPU.
 
-    A date means *verified on hardware* that day. "From source" means read from the code,
-    2026-11-01. Estimates say so. **Scripted touch scrolls didn't actually move content
+    A date means *verified on hardware* that day, as the lab's run records state it: none of
+    these numbers was re-measured when the page was written. "From source" means read from
+    the code, 2026-11-01, and untested. Estimates say so. **Scripted touch scrolls didn't actually move content
     under sway until that was fixed on 2026-11-01**, so scripted "scroll" numbers from
     before that date describe an app's own activity, not a scroll. This page uses them only
     where marked.
