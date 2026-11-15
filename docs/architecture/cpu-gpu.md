@@ -81,7 +81,7 @@ flowchart TD
 | Scan, commit, levels | CPU | 4 helpers on Silver + main | decisions and bytes are branchy and small; the GPU has no way to return them quickly, and read-backs are expensive here |
 | Policy | CPU | main | a state machine |
 | Claim, run-end passes | CPU | drive thread + workers, Gold | per-pixel but rare; the GPU version was tried and lost ([below](#cpu-versus-gpu)) |
-| Drive frames | GPU | ring 0 | the only per-frame, per-pixel, whole-panel work. 2.5–4× over the 12.5 ms budget on four Gold cores (pre-fix scripted input, see the table below), but the budget is [unresolved](#frame-budget-and-measurements) |
+| Drive frames | GPU | ring 0 | the only per-frame, per-pixel, whole-panel work. 2.5–4× over the 12.5 ms [design target](#frame-budget-and-measurements) on four Gold cores (pre-fix scripted input, see the table below) |
 | Flip | CPU, little time | drive thread, Gold | a real-time deadline |
 | Pen preview | CPU | pen thread | a few pixels; GPU raster for the pen was rejected in design, not measured |
 
@@ -107,7 +107,7 @@ and that is the default.
 
 **Why a full GPU engine isn't the target.** The claim on the GPU was 27–30 ms against
 9.8 ms for one A53 (2026-10-04). A GPU-resident single state was probed and didn't fit
-(full-panel GC16 mid-run 113–119 ms against the 12.5 ms budget, which is [unresolved](#frame-budget-and-measurements); 2026-10-25). So the design
+(full-panel GC16 mid-run 113–119 ms against the 12.5 ms [design target](#frame-budget-and-measurements); 2026-10-25). So the design
 keeps decisions on the CPU.
 
 ### CPU versus GPU
@@ -134,16 +134,17 @@ production path.
 
 ### Frame budget and measurements
 
-The panel period is 11.76 ms (85 frames per second), and it decides if a frame is late.
+The panel period is 11.76 ms (85 frames per second), and the period alone decides if a
+frame is late. The working budget for a frame's work is 12.5 ms. It is a design target, not
+a measurement: the aim is a one-frame A2 step (A2/1, the `stagger_a21` option, off by
+default because it is over budget) at the panel's native 85 Hz, where today's pipeline
+delivers A2/2 at 42.5 steps per second. 12.5 ms is about 80 frames per second, a little over
+the period, so a pipeline that just met it would still miss some slots: a target to tighten.
 
-**Unresolved: the 12.5 ms "working budget".** This page and the
+This page and the
 [a2grey dead end](../dead-ends/index.md#motion-greys-as-cut-a2-steps-a2grey) compare work
-against a 12.5 ms budget that was described as set during design for full-panel motion at
-42.5 steps per second. That reason doesn't give 12.5 ms: 42.5 steps per second is 23.5 ms
-(two panel frames, A2/2), and 12.5 ms is longer than the 11.76 ms period. No record checked
-for this page says which figure was meant, so each use is marked. Against the period, the
-same comparisons are about 2.7–4.3× (the CPU drive frames), 9.6–10× (the GC16 probe) and
-2.5× (the a2grey dead end).
+against it. Against the period instead, the same comparisons are about 2.7–4.3× (the CPU
+drive frames), 9.6–10× (the GC16 probe) and 2.5× (the a2grey dead end).
 
 **The real scroll: Nautilus full screen, 2026-11-01.** A scripted 60 s touch scroll with
 proven motion (42 strokes), no extra GPU load, sway on GLES. Timers off unless stated.

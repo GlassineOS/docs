@@ -131,8 +131,8 @@ date.**
   dots.
 - **Happened:** about 29 ms a frame on a real scroll (GPU about 23), against the 12.5 ms
   budget and about 5 ms for the normal path on the same injected scroll. The 12.5 ms budget
-  is [unresolved](../architecture/cpu-gpu.md#frame-budget-and-measurements): the 2.3× below
-  is the whole 29 ms against it. Against the 11.76 ms panel period it is 2.5×, and the GPU's
+  is a [design target](../architecture/cpu-gpu.md#frame-budget-and-measurements), not a
+  measurement: the 2.3× below is the whole 29 ms against it. Against the 11.76 ms panel period it is 2.5×, and the GPU's
   23 ms alone against 12.5 ms would be 1.8×. On the panel it was
   "faster, but utterly garbled". Yet the GPU matched the CPU reference (21 frames compared,
   0 differ) and a mid-run read of the panel buffer matched the source at visible levels, so
