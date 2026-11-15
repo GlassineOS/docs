@@ -34,7 +34,7 @@ hardware, the split and the numbers.
 | Silver cores | 4, logical CPUs 0, 5, 6, 7, Kryo 260 Silver (A53 class), capacity 640 | 2026-10-25 |
 | CPU clocks | both clusters capped at 1.4016 GHz (nominal point, open-loop voltage in our port). Gold steps 300, 1113.6, 1401.6 MHz | 2026-10-30 |
 | Memory, Gold core | DRAM read 5.98 GB/s, write 8.89, copy 9.23 | 2026-10-25 |
-| Memory, Silver core | DRAM read 1.97 GB/s, write 9.23, copy 3.77 | 2026-10-25 |
+| Memory, Silver core | DRAM read 1.97 GB/s, write 9.23 (**unconfirmed:** the same figure as Gold's copy rate and above Gold's write rate; not checked against the run record), copy 3.77 | 2026-10-25 |
 | GPU | Adreno 509 (a5xx), fused top clock 430 MHz; steps 160, 266, 370, 430 | 2026-10-11 |
 | GPU rings | 4 rings with the CP firmware that supports it; the rings switch only between submits, unless a submit has yield points of its own | 2026-10-26 |
 | DSP | no compute DSP, so no HVX to offload to. Only the modem and the audio/sensor DSP run; the power statistics' compute-DSP slot stays dead | power statistics, date not recorded |
