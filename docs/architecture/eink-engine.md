@@ -297,8 +297,9 @@ payback. The ladder remains available through `mmin`, `mmax`, `ladder` and per a
 
 ### Refresh modes and waveforms
 
-The waveform file holds the panel's drives per temperature range. Lengths at 24 °C, as
-read from it:
+The waveform file holds the panel's drives per temperature range. Lengths at 24 °C (from
+source, untested; the same counts are in code comments of
+[GlassineOS/epd](https://github.com/GlassineOS/epd)):
 
 | Mode | Frames | About | What it does | Used for |
 |---|---|---|---|---|
@@ -348,7 +349,7 @@ the run's cleanup, or 250 ms after targets last changed (`stagger_linger`).
 | 0 | fixed steps of n frames, staggered |
 | 1 | drives toward the target while the panel model is short of the rail |
 | 2 | ctl 1 plus payback through the idle slots. Kept, not recommended: no measurable DC gain, −16 % app frames (2026-10-11) |
-| 3 | a **pulse instead of the idle frame**: a step may drive its whole cycle, reversals too, up to K pulses without an idle (`stagger_k`, 8). White to black in 10 frames instead of 17 |
+| 3 | a **pulse instead of the idle frame**: a step may drive its whole cycle, reversals too, up to K pulses without an idle (`stagger_k`, 8). White to black in 10 frames instead of 17 (the 10 is A2's length above; **the 17 is not explained here:** the code names a 17-frame cut of DU at 24 °C, and whether that is the comparison is unconfirmed) |
 | 4 | **ctl 3's steps on GPU bit planes**, the seeded default |
 
 **Ctl 4, bit planes.** State per pixel becomes separate bit planes over 32-pixel words, so
