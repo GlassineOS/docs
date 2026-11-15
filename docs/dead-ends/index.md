@@ -113,6 +113,8 @@ date.**
 - **Instead:** an OS-initiated idle hierarchy with the stock state IDs.
 - **Date:** 2026-09-28.
 
+## E-ink engine
+
 ### Compositing in the e-ink engine with a read-back
 
 - **Tried (X desktop):** the e-ink engine blended windows on the GPU and read the result
@@ -122,8 +124,6 @@ date.**
   engine as a dma-buf; the engine converts it and computes the drive frames on the GPU,
   with no read-back in between.
 - **Date:** 2026-09-29; the current design since 2026-10-11.
-
-## E-ink engine
 
 ### Motion greys as cut A2 steps (a2grey)
 
