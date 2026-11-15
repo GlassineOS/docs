@@ -54,7 +54,10 @@ frames are computed on the SoC at about 85 frames per second, one every 11.76 ms
   this.
 - **Ink lags the voltage.** Particles need about two frames of drive before a change
   shows (panel lab runs, 2026-10-14: one black frame from white still reads white,
-  two read faint, three read clear).
+  two read faint, three read clear). That is an isolated frame. A2/2's "faint" below is a
+  step inside a run, where a pixel can drive past its one frame (matched cuts and the rail
+  hammer, below), so the two don't contradict; the single frame inside a run has not been
+  measured separately.
 
 ### What the daemon owns
 
