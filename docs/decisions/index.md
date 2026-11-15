@@ -23,6 +23,7 @@ no longer holds.
 | [0013](0013-images-from-dockerfile-stages.md) | Images from Dockerfile stages, built with BuildKit | accepted 2026-11-03, amended 2026-11-05 |
 | [0014](0014-installation-and-provisioning.md) | Installation: one guided flow, device descriptions, platform backends | accepted 2026-11-12 |
 | [0015](0015-installer-stack.md) | Installer stack: a Rust core, the Interleaf web form, LVGL on the device later | accepted 2026-11-12 |
+| [0016](0016-firmware-two-kinds.md) | Firmware: what comes from a device, what is published for redistribution | accepted 2026-11-16 |
 
 Template for new records: copy any record and keep the four headings
 (Context, Decision, Consequences, Status).
