@@ -137,8 +137,7 @@ GBM by itself.
 can't sit in the per-draw shader: translucent pixels and blended edges would come out
 wrong. A final pass over each frame's damage writes through the table, as a 256×1
 texture. The daemon then knows from the tag that the bytes are final. Still scene,
-device, 2026-11-01: the panel byte for byte equal to the daemon's own CPU table
-(199 levels). A frame carrying a different tag isn't read; the whole-picture frame
+device, 2026-11-01: the panel byte for byte equal to the daemon's own CPU table. A frame carrying a different tag isn't read; the whole-picture frame
 follows. On pixman there is no such pass, and the daemon applies the table itself.
 
 **In-place ingest (hold a frame).** When a frame is tagged with the daemon's table and
