@@ -79,7 +79,7 @@ flowchart TD
 | Scan, commit, levels | CPU | 4 helpers on Silver + main | decisions and bytes are branchy and small; the GPU has no way to return them quickly, and read-backs are expensive here |
 | Policy | CPU | main | a state machine |
 | Claim, run-end passes | CPU | drive thread + workers, Gold | per-pixel but rare; the GPU version was tried and lost ([below](#cpu-versus-gpu)) |
-| Drive frames | GPU | ring 0 | the only per-frame, per-pixel, whole-panel work. 2.5–4× over the 12.5 ms budget on four Gold cores, but the budget is [unresolved](#frame-budget-and-measurements) |
+| Drive frames | GPU | ring 0 | the only per-frame, per-pixel, whole-panel work. 2.5–4× over the 12.5 ms budget on four Gold cores (pre-fix scripted input, see the table below), but the budget is [unresolved](#frame-budget-and-measurements) |
 | Flip | CPU, little time | drive thread, Gold | a real-time deadline |
 | Pen preview | CPU | pen thread | a few pixels; GPU raster for the pen was rejected in design, not measured |
 
@@ -118,7 +118,7 @@ stated. Conditions vary: compare within a row.
 | Composite to the panel | pixman copy 2.7; rotated copy 8.2; rotated OVER 37; exact grey composite 30 (A53 at 1.11 GHz) | R8 2.2–2.4; +2 per OVER layer (430 MHz) | GPU | 2026-10-11 bench |
 | Gamma table over an R8 frame | one Gold core 3.85; four Gold bands 1.77 (+ a 1.4 ms sync) | 2.6 in the daemon's own pass; the pass in sway's frame not timed alone | GPU, in sway | 2026-10-26, 2026-10-11 |
 | Daemon's read of a live frame (~2.45 Mpx damage) | CPU table, four bands 6.0; copy after GPU table 3.2–3.4; in place 2.0 | — | in place | 2026-11-01 |
-| Stagger drive, A2/2, scroll | ctl 3 on planes: four Gold threads 31.5–50, one thread 89–161 | same rule on planes 15.6–17.6 (430 MHz); ctl 4's two-tier rule 1.75 for the drive, 2.5 for the whole pass, idle | GPU | 2026-10-30 (CPU), 2026-11-01 (GPU) |
+| Stagger drive, A2/2, scripted input | ctl 3 on planes: four Gold threads 31.5–50, one thread 89–161 (**before the 2026-11-01 scroll fix:** not a scroll) | same rule on planes 15.6–17.6 (430 MHz; no date, not verified for this page); ctl 4's two-tier rule 1.75 for the drive, 2.5 for the whole pass, idle | GPU | 2026-10-30 (CPU), 2026-11-01 (ctl 4) |
 | Per-pixel claim | one A53 9.8 | 27–30 | CPU | 2026-10-04 |
 | Dizzy dots (a full window update) | 10.6–11.5 a commit on 4 threads | block form ~4× the CPU; layered form 232–417 for a full panel, with barrier faults on the A509 | CPU | 2026-10-14, 2026-10-16, 2026-10-24 |
 | Non-staggered drive frame | about 28 of CPU | low: the daemon's CPU dropped 74 % when drive frames moved to the GPU | GPU | 2026-10-02, 2026-09-29 |
@@ -234,7 +234,7 @@ The controls, in the shipped order:
 | Chunked separate submits | opt-in | costs frame rate in most apps (OpenMW 56–58 vs 66–74 frames per second); off since 2026-10-16 |
 | Early answers to sway (`ahead_ms`) | 23 ms | limits apps to 43.5 frames a second during runs |
 | Latch (repaint waits for ready buffers) | seeded | the daemon's ingest 51.5 → 11.3 ms (2026-10-11, GNOME Software's own activity) |
-| Foreground boost | seeded, 70 % floor | apps in front run almost wholly on Gold; Chromium's renderer main thread on Silver 12–22 % → 3 % of its time (2026-10-26, scripted input); no measured speed gain on a scroll, CPU-bound work and battery are unmeasured |
+| Foreground boost | seeded, 70 % floor | apps in front run almost wholly on Gold; Chromium's renderer main thread on Silver 12–22 % → 3 % of its time (2026-10-26, scripted input); no measured speed gain in that run, which predates the scroll fix and so was not a scroll. CPU-bound work and battery are unmeasured |
 
 Rendering profiles are per app and set in settings. Chromium's Flatpak starts on `short`.
 
