@@ -4,7 +4,7 @@
 
 | Artifact | Scheme |
 |---|---|
-| Images | calendar versions `YYYY.MM[.patch]`, tied to the Alpine release they are based on |
+| Images | calendar versions `YYYY.MM.DD`: the UTC day the base was built; bases built on the same day share it and differ by id |
 | Our libraries and daemons | semantic versioning |
 | Forks | `<upstream version>-glassine<N>` |
 
