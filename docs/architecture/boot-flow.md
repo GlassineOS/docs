@@ -103,6 +103,40 @@ Services that only apply to one kernel check which kernel is running and skip
 otherwise. User data (`/home`, container storage, Flatpak apps) lives on a data
 partition, outside the root image. The e-ink engine and the desktop session start last.
 
+### Restart and shutdown
+
+A restart from the power menu is **soft** where it can be: the running kernel stays,
+and only the system above it starts again. After the services and processes have
+stopped, the init process goes back into a copy of the boot steps that the cold start
+kept in memory. That copy mounts, picks and assembles the next deployment as a cold
+start does and hands over to its init, without firmware, loader or a new kernel.
+Anything else is a **cold** restart, an ordinary reboot: a session that isn't healthy
+yet, a kernel waiting for its test, a request to the loader, and a few more cases. A
+step of the soft start that fails restarts cold before it writes anything, so no try of
+a candidate is used. The boot repository's `docs/deployments.md` ("Restart") lists every
+reason.
+
+The init system (OpenRC) **starts and stops services in parallel**. A service whose stop
+must finish before a file system goes away has to say so with a hard dependency
+(`need localmount`, not only `after *`): the parallel stop of `localmount` waits for its
+dependants, but not for services that are merely ordered after it. The step that writes
+the loader's start count at shutdown and the kernel promotion are such services.
+
+Measured on the Note Air (verified on hardware 2026-11-21), same deployment, one by one
+and in parallel:
+
+| From the press (soft restart) or the kernel's start (cold start) | One by one | Parallel |
+|---|---|---|
+| Soft restart: old system gone | 16.2 s | 9.9–11.2 s |
+| Soft restart: new desktop shell started | 33.4 s | 22.1–23.5 s |
+| Cold start: desktop shell started | 25.6 s | 19.0 s |
+
+Wi-Fi, Bluetooth and the modem came up the same way in both. A restart that also
+switches to a new deployment adds 5–7 s (measured 17.8 s to the old system gone).
+
+**Verified on hardware** Note Air · 2026-11-21
+{ .gl-verified }
+
 ### Test boot
 
 A test boot comes from the test partition after a one-shot request. It never writes the
