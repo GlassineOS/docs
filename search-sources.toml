@@ -12,7 +12,7 @@
 [[source]]
 repository = "GlassineOS/boot"
 folder = "docs"
-commit = "9873ceb2bc5eceb7dfc39703bbaef4da75571626"
+commit = "bb5adca9cf88dd789d9b7bc662276fe74644cee2"
 
 [[source]]
 repository = "GlassineOS/handwriting"
@@ -22,17 +22,17 @@ commit = "7276064d63757703eb5074cd3c086809b06c7a97"
 [[source]]
 repository = "GlassineOS/home"
 folder = "docs"
-commit = "48854b35c3471b85db054a77e05ac8d3ebc46f46"
+commit = "6f69757d03366e934178a4bba3bd4a79331f683e"
 
 [[source]]
 repository = "GlassineOS/hub"
 folder = "docs"
-commit = "40d5b6e17a6f0391b4c17b17e50de95e6fc3badc"
+commit = "83c2b7eff1301715c06f58430c337a50a45a9518"
 
 [[source]]
 repository = "GlassineOS/images"
 folder = "docs"
-commit = "35ad2f8b44a458bd54e2672588ab649e5cb1c7cd"
+commit = "dad1db3c2557cf67f4de86adef499930ba503bf5"
 
 [[source]]
 repository = "GlassineOS/search"
@@ -42,4 +42,4 @@ commit = "221823eee44851a8df644cea97e8dfc26a30cc95"
 [[source]]
 repository = "GlassineOS/shell"
 folder = "docs"
-commit = "5c2788fdf5ef0880fff9b586d7d98bf4ee6aee5b"
+commit = "e581af34923f2bcb53c3896788773732fa89990e"
