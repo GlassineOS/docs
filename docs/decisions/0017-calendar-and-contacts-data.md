@@ -21,16 +21,16 @@ read Evolution Data Server (EDS), which has its own CalDAV and CardDAV backends.
 ## Decision
 
 - **One store, served over CalDAV and CardDAV on the device.** A small local server
-  (Radicale) listens on `127.0.0.1` and is the only program that writes the data. It starts
-  on the first connection.
+  listens on `127.0.0.1` and is the only program that writes the data. It starts on the
+  first connection.
 - **Every app is a client of it.** The planner talks CalDAV to it, as does any app that
   speaks CalDAV itself.
 - **EDS is one more client.** GlassineOS installs EDS sources that point at the local
   server, so GNOME apps see the same data with no code on either side. EDS gets no outside
   accounts of its own. GNOME Online Accounts doesn't offer calendars or contacts.
   Reimplementing the EDS interfaces stays possible later, but isn't needed for this.
-- **One sync program talks to the outside.** A sync engine (pimsync) syncs the local server
-  with zero or more outside CalDAV and CardDAV servers. Nothing else syncs this data, so no
+- **One sync program talks to the outside.** A sync engine syncs the local server with zero
+  or more outside CalDAV and CardDAV servers. Nothing else syncs this data, so no
   two programs sync the same items.
 - **Standard properties first.** An entry's text goes in the standard properties (`SUMMARY`,
   `DESCRIPTION`, `LOCATION`), so every client shows it. Ink goes in an `ATTACH`, and layout
@@ -41,20 +41,23 @@ read Evolution Data Server (EDS), which has its own CalDAV and CardDAV backends.
 
 ## Consequences
 
+- The server and the sync engine are chosen by the repositories that package them, and
+  can be replaced by any that meet this record; their names live there, not here.
 - No app needs to know where the data is synced to. An outside service is added in one
   place, the sync settings.
 - The planner keeps no store of its own; it keeps a local cache only for speed and for
   working offline.
 - Each part needs work before release:
     - **The planner** needs a CalDAV client.
-    - **The image** needs Radicale, pimsync, EDS and the EDS sources for the local server.
+    - **The image** needs the local server, the sync engine, EDS and the EDS sources for the
+      local server.
     - **The settings** need a page for outside services.
 - **To verify on the device** before the planner depends on this:
     1. A GNOME Calendar edit keeps the `X-GLASSINE-*` properties and the ink `ATTACH`.
     2. EDS refreshes as soon as another client writes, without waiting for its poll
        interval.
     3. The memory cost of EDS plus the local server.
-    4. pimsync against one outside server, including a conflict.
+    4. The sync engine against one outside server, including a conflict.
 
 ## Status
 
