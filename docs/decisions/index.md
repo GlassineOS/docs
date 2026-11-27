@@ -24,6 +24,7 @@ no longer holds.
 | [0014](0014-installation-and-provisioning.md) | Installation: one guided flow, device descriptions, platform backends | accepted 2026-11-12 |
 | [0015](0015-installer-stack.md) | Installer stack: a Rust core, the Interleaf web form, LVGL on the device later | accepted 2026-11-12 |
 | [0016](0016-firmware-two-kinds.md) | Firmware: what comes from a device, what is published for redistribution | accepted 2026-11-16 |
+| [0017](0017-calendar-and-contacts-data.md) | Personal data: one local calendar and contacts store, every app a client | accepted 2026-11-27 |
 
 Template for new records: copy any record and keep the four headings
 (Context, Decision, Consequences, Status).
