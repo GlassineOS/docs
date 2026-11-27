@@ -111,6 +111,39 @@ recovery, where nothing runs in between, a reset switches at once.
 
 A hibernate never runs the switch: the kernel powers off by itself.
 
+### Clean-up
+
+Nothing has to be removed by hand: deployments, bases and kernel module sets that nothing
+can boot go by themselves.
+
+- **Deployments** go after a switch, after an accept, and before a reset or update makes
+  a new one. Current, previous, candidate, staged, the last failed one and the booted one
+  stay, and so does any deployment that is mounted.
+- **Bases** go at the same points, after the deployments: a base stays as long as any
+  remaining deployment names it, so how many bases stay follows from the deployments
+  (the current one and the one to fall back to). A mounted base stays too. While a
+  deployment's record can't be read, or a hibernated session's base can't be told,
+  nothing is removed: unreadable never counts as unused.
+- **Kernel module sets** go at the same points: a set stays while any kernel that can
+  still start uses it (the running kernel, the ones the kernel records name, the kernel
+  in the boot partition or slot the device starts from, a hibernated session's kernel)
+  or it was received since this start. If any of these can't be read, nothing is
+  removed.
+- **A new base that doesn't fit** makes the receive remove the unused bases first (never
+  the parent of an incremental stream), and try once more if the partition still runs
+  out of space. If it still doesn't fit, the receive stops with the space needed and the
+  space free, and nothing is kept.
+
+The system partition is sized for one complete base and a few incremental updates, so
+updates should arrive as incremental streams: a full stream per update fills it after a
+handful.
+
+**Verified on hardware** Note Air · 2026-11-21 (a base removed after a stage and after an accept)
+{ .gl-verified }
+
+**From source** module sets: untested on hardware
+{ .gl-untested }
+
 ### Recovery
 
 The GlassineOS recovery ([0007](../decisions/0007-recovery-mainline-twrp.md)) calls the same `glassine-deploy` tool through its menu: status,
