@@ -117,8 +117,13 @@ Nothing has to be removed by hand: deployments, bases and kernel module sets tha
 can boot go by themselves.
 
 - **Deployments** go after a switch, after an accept, and before a reset or update makes
-  a new one. Current, previous, candidate, staged, the last failed one and the booted one
-  stay, and so does any deployment that is mounted.
+  a new one. Current, candidate, staged, the last failed one and the booted one stay, and
+  so does any deployment that is mounted. Of the earlier deployments, the most recent ones
+  stay up to the device's `keep_updates` (its description: 1 on the Note Air, where a
+  deployment can cost over a gigabyte of the data partition; 4 on a PC), the previous one
+  always among them. A deployment can be pinned to stay. When an update needs more room
+  on either partition, the kept earlier deployments other than the previous one and the
+  pinned ones go, but only if removing all of them gives the room; otherwise none goes.
 - **Bases** go at the same points, after the deployments: a base stays as long as any
   remaining deployment names it, so how many bases stay follows from the deployments
   (the current one and the one to fall back to). A mounted base stays too. While a
@@ -138,10 +143,10 @@ The system partition is sized for one complete base and a few incremental update
 updates should arrive as incremental streams: a full stream per update fills it after a
 handful.
 
-**Verified on hardware** Note Air · 2026-11-21 (a base removed after a stage and after an accept)
+**Verified on hardware** Note Air · 2026-11-21 (a base removed after a stage and after an accept) · 2026-11-28 (15 unused module sets removed after an accept, the running kernel's kept)
 { .gl-verified }
 
-**From source** module sets: untested on hardware
+**From source** keeping more than one earlier deployment, pins, and the room rule: tested in the boot repository's tests and on virtual PCs, untested on hardware
 { .gl-untested }
 
 ### Recovery
