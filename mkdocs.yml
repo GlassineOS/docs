@@ -117,6 +117,7 @@ nav:
       - decisions/0015-installer-stack.md
       - decisions/0016-firmware-two-kinds.md
       - decisions/0017-calendar-and-contacts-data.md
+      - decisions/0018-secrets.md
   - Dead ends: dead-ends/index.md
   - Contributing:
       - contributing/writing-docs.md
