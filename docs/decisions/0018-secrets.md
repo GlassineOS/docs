@@ -30,6 +30,12 @@ expect the freedesktop **Secret Service** interface on the session bus.
   runs before login. Syncing in 0017 runs only while the person is logged in.
 - The login has to hand the password to the provider so that it unlocks without asking a
   second time.
+- A login with no password has nothing to unlock the store with. The e-ink session logs
+  in that way today, so the person's store there has an empty password and opens by
+  itself at login: its secrets are protected only by the file permissions of the
+  person's home until the device has an unlock of its own (a pattern or a PIN,
+  [GlassineOS/hub#107](https://github.com/GlassineOS/hub/issues/107)). That unlock sets
+  its password on the same store, so no secret moves.
 
 ## Status
 
