@@ -25,6 +25,7 @@ no longer holds.
 | [0015](0015-installer-stack.md) | Installer stack: a Rust core, the Interleaf web form, LVGL on the device later | accepted 2026-11-12 |
 | [0016](0016-firmware-two-kinds.md) | Firmware: what comes from a device, what is published for redistribution | accepted 2026-11-16 |
 | [0017](0017-calendar-and-contacts-data.md) | Personal data: one local calendar and contacts store, every app a client | accepted 2026-11-27 |
+| [0018](0018-secrets.md) | Secrets: the Secret Service interface, one store per person, unlocked at login | accepted 2026-11-28 |
 
 Template for new records: copy any record and keep the four headings
 (Context, Decision, Consequences, Status).
